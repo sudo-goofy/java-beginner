@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 198" width="520" height="198" role="img">
+  <rect width="520" height="198" fill="none"/>
+  <rect x="20" y="20" width="480" height="66" fill="#FBF7EE" stroke="#14110C" stroke-width="1" stroke-linejoin="round"/>
+  <text x="32" y="44" font-family="JetBrains Mono, monospace" font-size="16" font-weight="700" fill="#14110C" text-anchor="start">trafficLight</text>
+  <path d="M20.0 20 L46.0 86" fill="none" stroke="#14110C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="90.0" y="74" font-family="JetBrains Mono, monospace" font-size="15" font-weight="700" fill="#14110C" text-anchor="middle">red</text>
+  <path d="M140.0 20 L166.0 86" fill="none" stroke="#14110C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="210.0" y="74" font-family="JetBrains Mono, monospace" font-size="15" font-weight="700" fill="#14110C" text-anchor="middle">yellow</text>
+  <path d="M260.0 20 L286.0 86" fill="none" stroke="#14110C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="330.0" y="74" font-family="JetBrains Mono, monospace" font-size="15" font-weight="700" fill="#14110C" text-anchor="middle">green</text>
+  <path d="M380.0 20 L406.0 86" fill="none" stroke="#14110C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="450.0" y="74" font-family="JetBrains Mono, monospace" font-size="15" font-weight="700" fill="#F15060" text-anchor="middle">else</text>
+  <rect x="20.0" y="86" width="120.0" height="92" fill="#FBF7EE" stroke="#14110C" stroke-width="1" stroke-linejoin="round"/>
+  <text x="80.0" y="136.76" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="600" fill="#14110C" text-anchor="middle">stop</text>
+  <rect x="140.0" y="86" width="120.0" height="92" fill="#FBF7EE" stroke="#14110C" stroke-width="1" stroke-linejoin="round"/>
+  <text x="200.0" y="136.76" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="600" fill="#14110C" text-anchor="middle">brake</text>
+  <rect x="260.0" y="86" width="120.0" height="92" fill="#FBF7EE" stroke="#14110C" stroke-width="1" stroke-linejoin="round"/>
+  <text x="320.0" y="136.76" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="600" fill="#14110C" text-anchor="middle">go</text>
+  <rect x="380.0" y="86" width="120.0" height="92" fill="#FBF7EE" stroke="#14110C" stroke-width="1" stroke-linejoin="round"/>
+  <text x="440.0" y="136.76" font-family="Bricolage Grotesque, sans-serif" font-size="14" font-weight="600" fill="#14110C" text-anchor="middle">blink</text>
+</svg>

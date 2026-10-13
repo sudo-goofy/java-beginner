@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 6 · Conditionals · Cheat Sheet: Java</title>
+<meta name="description" content="Conditionals in Java: if and else, the logical operators &amp;&amp;, || and ! with a truth table, String comparison, switch, the ternary operator and the structogram.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../../img/favicon.svg">
+<link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Remember this: bookmark</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Quick think: question for you</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Exercise: pencil</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>ZombieApocalypse project task: zombie head</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Scenario task: stopwatch</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: flag</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Explained differently: repeat</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Answer: key</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>The key points: page with dog-eared corner</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Learning goals: target</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Console: prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>IDE: editor window with sidebar</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Error message: bug</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Correct: check mark</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Wrong: cross</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Duration: clock</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Chapter: open notebook</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Table of contents</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Next</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Back</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Down</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Expandable</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Opens a window</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Night shift</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Day view</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Clear progress</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Print</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Skip to content</a>
+
+<nav class="topbar" aria-label="Main navigation">
+  <div class="topbar-innen">
+    <a class="marke" href="../index.html"> <img class="oakymarke" src="../../img/kapitel/oaky.svg" alt="" width="128" height="148"> Cheat Sheet: Java </a> <span class="topbar-titel">Chapter 6 · Conditionals</span> <span class="topbar-rechts"> <a class="btn btn-klein" href="../index.html">Learning path</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Choose language"><span>EN</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="../../kapitel/06-verzweigungen.html" lang="de" hreflang="de">Deutsch</a></li><li><a href="06-verzweigungen.html" lang="en" hreflang="en" aria-current="true">English</a></li></ul></details><!--/sprache-->
+    </span>
+  </div>
+  <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+  <header class="kapitel-kopf">
+    <p class="kicker">Chapter 6 of 11 · if, else, switch, logical operators</p>
+    <h1>Conditionals</h1>
+    <p class="vorspann">So far, your code ran line by line from top to bottom. Now it forks like a railroad junction: depending on the condition, one part or the other runs.</p>
+    <p class="kapitel-meta">
+      <span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>approx. 50 min</span>
+    </p>
+  </header>
+
+ <section class="einstieg" aria-label="Intro: the problem">
+ <p class="einstieg-kopf">THE PROBLEM</p>
+ <p class="einstieg-frage">It is 5 degrees outside. What does this program recommend?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox runner" data-out="Off to the outdoor pool!">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Wetter.java</p>
+<pre><code class="java">int temperature = 5;
+System.out.println("Off to the outdoor pool!");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>Outdoor pool at 5 degrees? The program always says the same thing, no matter how cold it is.</p>
+ <button class="btn einstieg-knopf" type="button">Deciding with <code>if</code></button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-out="Jacket on!">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Wetter.java</p>
+<pre><code class="java">int temperature = 5;
+if (temperature &gt; 25) {
+    System.out.println("Off to the outdoor pool!");
+} else {
+    System.out.println("Jacket on!");
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">Now the program checks the temperature and picks a branch accordingly. This chapter shows how conditionals work.</p>
+ </div>
+ </section>
+
+
+
+  <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Contents of this chapter">
+    <h2 id="in-diesem-kapitel">In this chapter</h2>
+  </nav>
+
+  <details class="baustein ziele">
+    <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>After this chapter you can<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+    <div class="inhalt">
+      <ul>
+      <li>write conditionals with <code>if</code>, <code>else if</code> and <code>else</code></li>
+      <li>explain why Strings are compared with <code>equals()</code> instead of <code>==</code></li>
+      <li>combine conditions with <code>&amp;&amp;</code>, <code>||</code> and <code>!</code> and set up their <strong>truth table</strong></li>
+      <li>write a multi-way selection with <code>switch</code> and <code>-&gt;</code></li>
+      <li>draw a sequence, a conditional and a multi-way selection as a structogram</li>
+    </ul>
+    </div>
+  </details>
+
+  <section class="block">
+    <h2 id="if-else-die-weiche"><span class="nr">6.1</span> Conditionals with if, else if and else</h2>
+    <p class="wozu">A program should act differently depending on the situation: outdoor pool or hoodie, entry or quarantine. <code>if</code> checks a condition and then picks exactly one path.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="if">if</span> (<var data-teil="bed">condition</var>) <span data-teil="block">{</span>
+    <var data-teil="anw">statements if the condition is true</var>
+<span data-teil="block">}</span> <span data-teil="elseif">else if</span> (<var data-teil="bed">other condition</var>) <span data-teil="block">{</span>
+    <var data-teil="anw">statements if this one is true</var>
+<span data-teil="block">}</span> <span data-teil="else">else</span> <span data-teil="block">{</span>
+    <var data-teil="anw">statements for all other cases</var>
+<span data-teil="block">}</span></code></pre>
+      <p class="aufbau-info"><code>else if</code> and <code>else</code> are optional. The condition always evaluates to <code>true</code> or <code>false</code>, usually through a comparison: <code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code>, <code>==</code> (equal?) and <code>!=</code> (not equal?).</p>
+      <div hidden data-erkl="if"><strong><code>if</code></strong> starts the conditional: first the condition in parentheses, then the block. No semicolon belongs after the closing parenthesis: with <code>if (temperature &gt; 25);</code> the <code>if</code> already ends at the semicolon, and the block below always runs.</div>
+      <div hidden data-erkl="bed"><strong>Condition:</strong> always goes in parentheses, e.g. <code>temperature &gt; 25</code>. A <code>boolean</code> variable is enough on its own: <code>if (vaccinated)</code>. For equality you use <code>==</code>, because <code>if (age = 18)</code> is an assignment, and the compiler reports it as an error.</div>
+      <div hidden data-erkl="block"><strong>The curly braces</strong> delimit the block of a branch: everything between them belongs to it. With <code>} else</code>, the brace closes the block before it, then the next branch begins. Without braces, only the first statement belongs to the branch, even if the second one is indented the same way.</div>
+      <div hidden data-erkl="anw"><strong>Statements:</strong> what should happen in this branch, indented, each ending with <code>;</code>, e.g. <code>System.out.println("Outdoor pool!");</code>. A branch can contain any number of statements, including another <code>if</code>.</div>
+      <div hidden data-erkl="elseif"><strong><code>else if</code></strong> checks another condition, but only if all the conditions before it were <code>false</code>. You can have as many of these as you like, and the order matters: if <code>temperature &gt; 10</code> comes before <code>temperature &gt; 25</code>, the branch for over 25 degrees never gets its turn.</div>
+      <div hidden data-erkl="else"><strong><code>else</code></strong> has no condition. Its block runs if no condition before it was true, which is why it always comes last. Without <code>else</code>, no branch runs in that case.</div>
+    </div>
+
+    <div class="codebox">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Wetter.java (excerpt)</p>
+<pre><code class="java">if (temperature &gt; 25) {
+    System.out.println("Outdoor pool!");
+} else if (temperature &gt; 10) {
+    System.out.println("So-so. Jacket optional.");
+} else {
+    System.out.println("Hoodie on, tea on.");
+}</code></pre>
+    </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">LINE BY LINE</p>
+      <table>
+        <tr><td><code>if (temperature &gt; 25)</code></td><td>checks the comparison. If it is <code>true</code>, the block below runs, and all the other branches are skipped.</td></tr>
+        <tr><td><code>{ … }</code></td><td>the block: everything between the curly braces belongs to this branch.</td></tr>
+        <tr><td><code>else if (temperature &gt; 10)</code></td><td>is only checked if everything before it was <code>false</code>. So it is already settled here: at most 25 degrees.</td></tr>
+        <tr><td><code>else</code></td><td>the rest: runs if no condition matched, and therefore needs none.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="widget">
+    <h3>The conditional, hands-on</h3>
+    <p class="widget-hinweis">Drag the temperature slider and watch which branch runs.</p>
+    <p style="display:flex;align-items:center;gap:14px"><input type="range" id="ifw-slider" min="-10" max="40" value="18" style="flex:1" aria-label="Temperature">
+      <strong id="ifw-temp" style="font-family:var(--f-mono);min-width:64px;text-align:right">18 °C</strong></p>
+    <div class="codebox flach zweige" id="ifw-branches">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Wetter.java (excerpt)</p>
+<pre><code class="nohl"><span class="zw-block">int temperature = <span id="ifw-wert">18</span>;</span><span class="zw-block zw-zweig">if (temperature &gt; 25) {
+    System.out.println("Outdoor pool!");</span><span class="zw-block zw-zweig">} else if (temperature &gt; 10) {
+    System.out.println("So-so. Jacket optional.");</span><span class="zw-block zw-zweig">} else {
+    System.out.println("Hoodie on, tea on.");
+}</span></code></pre>
+      <div class="konsole" id="ifw-out" role="status" aria-live="polite"></div>
+    </div>
+    <p class="statuszeile" id="ifw-note" style="margin-top:12px"></p>
+  </section>
+
+  <section class="block">
+    <div class="baustein selbst">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>You first, then Java</p>
+      <p>What does the code print at exactly 25 degrees, and what at exactly 10 degrees? Jot down your guess before you move the slider.</p>
+    </div>
+    <p>At 25 degrees you get “So-so. Jacket optional.”, since <code>25 &gt; 25</code> is <code>false</code> and <code>25 &gt; 10</code> is <code>true</code>. At 10 degrees you get “Hoodie on, tea on.”, because <code>10 &gt; 10</code> is <code>false</code> as well. At the boundaries, it matters whether <code>&gt;</code> or <code>&gt;=</code> is used.</p>
+
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+      <p><strong>Exactly one branch always runs:</strong> the first one whose condition is true.</p>
+      <ul>
+        <li><code>=</code> stores a value in a variable (assignment), <code>==</code> checks whether two values are equal (comparison).</li>
+        <li><code>if (age = 18)</code> &rarr; compiler error. <code>if (age == 18)</code> &rarr; correct.</li>
+      </ul>
+    </div>
+
+    <h3>Exercise 6.1.1: Which branch runs?</h3>
+    <p>For each temperature, enter which branch of the code above runs: <code>if</code>, <code>else if</code> or <code>else</code>.</p>
+    <div class="codebox cloze">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Which branch?</p>
+<pre><code class="nohl luecken">temperatur   Zweig
+30           <input class="cz" data-a="if" size="8">
+26           <input class="cz" data-a="if" size="8">
+18           <input class="cz" data-a="else if" size="8">
+11           <input class="cz" data-a="else if" size="8">
+0            <input class="cz" data-a="else" size="8">
+-3           <input class="cz" data-a="else" size="8"></code></pre>
+      <div class="cloze-leiste">
+        <button class="btn btn-klein cloze-check" type="button">Check</button>
+        <p class="cloze-meldung"></p>
+      </div>
+    </div>
+
+    <details class="baustein optional" id="ternaerer-operator">
+      <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-up: Short form: the ternary operator</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+      <div class="inhalt">
+    <p>If you only pick <strong>one value</strong>, five lines of <code>if/else</code> are overkill. The short form fits on one line.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><var data-teil="bed">condition</var> <span data-teil="frage">?</span> <var data-teil="wahr">value if true</var> <span data-teil="doppelpunkt">:</span> <var data-teil="falsch">value if false</var></code></pre>
+      <p class="aufbau-info">The result is a value. It goes to the right of the <code>=</code> or wherever a value is needed.</p>
+      <div hidden data-erkl="bed"><strong>Condition:</strong> an expression of type <code>boolean</code>, e.g. <code>hunger &gt; 5</code>. It is evaluated first and decides which of the two values is the result.</div>
+      <div hidden data-erkl="frage"><strong>The question mark</strong> comes after the condition and separates it from the first value. Together with the colon, it forms an operator with three parts, hence the name: ternary means three-part.</div>
+      <div hidden data-erkl="wahr"><strong>Value if true:</strong> the result if the condition is <code>true</code>, e.g. <code>"feed"</code>. This is a value, not a statement: <code>System.out.println(…)</code> does not belong here.</div>
+      <div hidden data-erkl="doppelpunkt"><strong>The colon</strong> separates the two values. It is required: unlike an <code>if</code> without <code>else</code>, the ternary operator always needs both values.</div>
+      <div hidden data-erkl="falsch"><strong>Value if false:</strong> the result if the condition is <code>false</code>, e.g. <code>"keep sleeping"</code>. Both values must match the type of the variable to the left of the <code>=</code>, so for <code>String message</code> two Strings.</div>
+    </div>
+
+    <div class="codebox">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Five lines that could be one</p>
+<pre><code class="java">String message;
+if (hunger &gt; 5) {
+    message = "feed";
+} else {
+    message = "keep sleeping";
+}</code></pre>
+    </div>
+
+    <div class="codebox runner" data-out="feed">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Shorthand.java</p>
+<pre><code class="java">public class Shorthand {
+
+    public static void main(String[] args) {
+        int hunger = 7;
+
+        String message = hunger &gt; 5 ? "feed" : "keep sleeping";
+
+        System.out.println(message);
+    }
+
+}</code></pre>
+      <div class="konsole" id="tern-out"></div>
+      <p class="run-leiste"><button class="btn btn-klein run-btn" type="button">Run</button></p>
+    </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">LINE BY LINE</p>
+      <table>
+        <tr><td><code>hunger &gt; 5</code></td><td>the question: Is hunger greater than 5?</td></tr>
+        <tr><td><code>? "feed"</code></td><td>After the question mark comes the value for <code>true</code>.</td></tr>
+        <tr><td><code>: "keep sleeping"</code></td><td>The colon separates the answers, and the value for <code>false</code> follows it.</td></tr>
+      </table>
+    </div>
+
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+      <p>The ternary operator <strong>returns a value</strong>. It does not replace an <code>if</code> with several statements. And don't nest it.</p>
+    </div>
+      </div>
+    </details>
+  </section>
+
+  <section class="block">
+    <h2 id="texte-vergleichen"><span class="nr">6.2</span> Comparing Strings with equals()</h2>
+    <p class="wozu">Often the decision depends on an input: Did someone type “yes”? <code>==</code> compares numbers, Strings are compared with <code>equals</code>.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><var data-teil="text">text</var>.<span data-teil="equals">equals</span>(<span data-teil="vgl">"</span><var data-teil="vgl">comparison text</var><span data-teil="vgl">"</span>)
+<var data-teil="text">text</var>.<span data-teil="ignore">equalsIgnoreCase</span>(<span data-teil="vgl">"</span><var data-teil="vgl">comparison text</var><span data-teil="vgl">"</span>)</code></pre>
+      <p class="aufbau-info">Both return <code>true</code> or <code>false</code> and thus fit directly into an <code>if</code>. The second form ignores upper and lower case.</p>
+      <div hidden data-erkl="text"><strong>text:</strong> the String you check, usually a variable like <code>answer</code>. If it comes from the keyboard, first remove the spaces at the edges with <code>trim()</code>, because <code>" yes".equals("yes")</code> gives <code>false</code>.</div>
+      <div hidden data-erkl="equals"><strong><code>equals</code></strong> compares the content of two Strings character by character, including upper and lower case: <code>"Yes".equals("yes")</code> gives <code>false</code>. For Strings you never use <code>==</code>, because it does not compare the content.</div>
+      <div hidden data-erkl="ignore"><strong><code>equalsIgnoreCase</code></strong>: “ignore case” means that upper and lower case are ignored. <code>"YES".equalsIgnoreCase("yes")</code> gives <code>true</code>. Spaces still count, though: <code>" yes"</code> and <code>"yes"</code> remain different.</div>
+      <div hidden data-erkl="vgl"><strong>Comparison text:</strong> the expected text in double quotes, e.g. <code>"yes"</code>. Instead of a fixed text, a String variable also works, then without quotes: <code>expectedAnswer.equals(answer)</code>.</div>
+    </div>
+
+    <div class="widget" style="margin-top:20px">
+      <h3>Mini experiment: the nasty String comparison</h3>
+      <p class="widget-hinweis">The answer came in through the keyboard and contains exactly "yes". Compare it with the expected "yes":</p>
+      <div class="codebox flach">
+        <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Vergleich.java</p>
+<pre><code class="java">String expectedAnswer = "yes";
+String answer = input.trim();   // came from the user, content: "yes"</code></pre>
+      </div>
+      <p style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-klein" id="eq-1" style="font-family:var(--f-mono)">expectedAnswer == answer</button>
+        <button class="btn btn-klein" id="eq-2" style="font-family:var(--f-mono)">expectedAnswer.equals(answer)</button></p>
+      <div class="sim-konsole" id="eq-out"></div>
+      <p class="statuszeile" id="eq-note" style="margin-top:10px"></p>
+    </div>
+
+    <div class="codebox runner" data-in="  YES  " data-out="Are you vaccinated? (yes/no)\nWelcome to the camp.">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Admission.java</p>
+<pre><code class="java">import java.util.Scanner;
+
+public class Admission {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("Are you vaccinated? (yes/no)");
+        String answer = keyboard.nextLine().trim().toLowerCase();
+
+        if (answer.equals("yes")) {
+            System.out.println("Welcome to the camp.");
+        } else {
+            System.out.println("Quarantine first.");
+        }
+    }
+
+}</code></pre>
+      <div class="run-leiste">
+        <button class="btn btn-klein run-btn"> Run</button>
+        <span class="run-hinweis">CONSOLE: typed was “&nbsp;&nbsp;YES&nbsp;&nbsp;”</span>
+      </div>
+      <div class="konsole"></div>
+    </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">LINE BY LINE</p>
+      <table>
+        <tr><td><code>keyboard.nextLine()</code></td><td>reads the line as it was typed, spaces included.</td></tr>
+        <tr><td><code>.trim().toLowerCase()</code></td><td>prepares it with the String methods from Chapter 5: spaces at the edges removed, everything lowercase. “&nbsp;&nbsp;YES&nbsp;&nbsp;” becomes “yes”.</td></tr>
+        <tr><td><code>answer.equals("yes")</code></td><td>compares the <strong>content</strong>: <code>true</code> if exactly “yes” is in it.</td></tr>
+        <tr><td><code>else</code></td><td>everything else, including “no”, “jo” or an empty String.</td></tr>
+      </table>
+    </div>
+
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+      <p>Strings are <strong>never</strong> compared with <code>==</code>: for Strings it does not check the content and often returns <code>false</code> for identical texts (the why: Chapter 9). Iron rule: <strong>numbers &rarr; <code>==</code>, Strings &rarr; <code>.equals()</code></strong>.</p>
+    </div>
+
+    <h3>Exercise 6.2.1: Five comparisons, one yes</h3>
+    <p>“&nbsp;Yes&nbsp;” was typed, with one space before and after it. That is exactly what <code>input</code> contains. What does each line give: <code>true</code> or <code>false</code>?</p>
+    <div class="baustein uebung wahrheit">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-aufgabe"></use></svg>Five comparisons</p>
+      <div class="wt-rahmen">
+      <table class="wt-tabelle wt-ausdruck">
+        <thead><tr>
+          <th scope="col">Comparison</th>
+          <th scope="col" class="wt-trenn">Result</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><code>input.equals("Yes")</code></td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="Result of input.equals("Ja")" data-a="false"><label><input type="radio" name="wt621-1" value="true"><span>true</span></label><label><input type="radio" name="wt621-1" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td><code>input.trim().equals("Yes")</code></td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="Result of input.trim().equals("Ja")" data-a="true"><label><input type="radio" name="wt621-2" value="true"><span>true</span></label><label><input type="radio" name="wt621-2" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td><code>input.trim().equals("yes")</code></td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="Result of input.trim().equals("ja")" data-a="false"><label><input type="radio" name="wt621-3" value="true"><span>true</span></label><label><input type="radio" name="wt621-3" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td><code>input.trim().equalsIgnoreCase("yes")</code></td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="Result of input.trim().equalsIgnoreCase("ja")" data-a="true"><label><input type="radio" name="wt621-4" value="true"><span>true</span></label><label><input type="radio" name="wt621-4" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td><code>input.trim() == "Yes"</code></td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="Result of input.trim() == "Ja"" data-a="false"><label><input type="radio" name="wt621-5" value="true"><span>true</span></label><label><input type="radio" name="wt621-5" value="false"><span>false</span></label></span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="cloze-leiste">
+        <button class="btn btn-klein cloze-check" type="button">Check</button>
+        <p class="cloze-meldung"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2 id="verknuepfungen"><span class="nr">6.3</span> Logical operators: &amp;&amp;, || and !</h2>
+    <p class="wozu">One condition is rarely enough: only someone who is of age <em>and</em> has a ticket may get in. For that, you combine conditions with exactly three symbols.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><var data-teil="bed">condition</var> <span data-teil="und">&amp;&amp;</span> <var data-teil="bed">condition</var>     AND: both must be true
+<var data-teil="bed">condition</var> <span data-teil="oder">||</span> <var data-teil="bed">condition</var>     OR: one is enough, two bars
+<span data-teil="nicht">!</span><var data-teil="bed">condition</var>                 NOT: flips true and false</code></pre>
+      <p class="aufbau-info">A <strong>truth table</strong> describes this completely. With two conditions it has exactly four rows, there are no more cases.</p>
+      <div hidden data-erkl="bed"><strong>Condition:</strong> Each side is an expression of type <code>boolean</code> on its own, such as a comparison like <code>age &gt;= 18</code> or a variable like <code>hasTicket</code>. That is why the variable has to appear on both sides: the compiler reports <code>age &gt;= 18 &amp;&amp; &lt; 65</code> as an error, the correct form is <code>age &gt;= 18 &amp;&amp; age &lt; 65</code>.</div>
+      <div hidden data-erkl="und"><strong><code>&amp;&amp;</code> (AND)</strong> gives <code>true</code> only if both sides are <code>true</code>, e.g. with <code>age &gt;= 18 &amp;&amp; hasTicket</code>. If the left side is already <code>false</code>, the right side is not evaluated at all: this is called short-circuit evaluation.</div>
+      <div hidden data-erkl="oder"><strong><code>||</code> (OR)</strong> gives <code>true</code> as soon as at least one side is <code>true</code>, even if both are. If <code>&amp;&amp;</code> and <code>||</code> appear in one condition, <code>&amp;&amp;</code> is evaluated first. Parentheses make the order unambiguous.</div>
+      <div hidden data-erkl="nicht"><strong><code>!</code> (NOT)</strong> goes directly in front of a condition: <code>!bitten</code> is <code>true</code> if <code>bitten</code> has the value <code>false</code>. It binds the strongest, so <code>!a &amp;&amp; b</code> means <code>(!a) &amp;&amp; b</code>. If it should apply to a whole expression, use parentheses: <code>!(a &amp;&amp; b)</code>.</div>
+    </div>
+
+    <div class="wt-rahmen">
+      <table class="wt-tabelle">
+        <thead><tr>
+          <th scope="col">A</th>
+          <th scope="col">B</th>
+          <th scope="col" class="wt-trenn">A &amp;&amp; B</th>
+          <th scope="col">A || B</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td>false</td>
+            <td>false</td>
+            <td class="wt-trenn">false</td>
+            <td>false</td>
+          </tr>
+          <tr>
+            <td>false</td>
+            <td>true</td>
+            <td class="wt-trenn">false</td>
+            <td>true</td>
+          </tr>
+          <tr>
+            <td>true</td>
+            <td>false</td>
+            <td class="wt-trenn">false</td>
+            <td>true</td>
+          </tr>
+          <tr>
+            <td>true</td>
+            <td>true</td>
+            <td class="wt-trenn">true</td>
+            <td>true</td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="wt-tabelle">
+        <thead><tr>
+          <th scope="col">A</th>
+          <th scope="col" class="wt-trenn">!A</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td>false</td>
+            <td class="wt-trenn">true</td>
+          </tr>
+          <tr>
+            <td>true</td>
+            <td class="wt-trenn">false</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+      <p><strong>The OR in Java is an inclusive or.</strong></p>
+      <ul>
+        <li>In everyday language: “coffee or tea?” usually means one of the two, not both.</li>
+        <li><code>||</code> returns <code>true</code> as soon as <em>at least one</em> side is true, even if both are.</li>
+        <li>The last row of the OR column (both true) comes up in exams.</li>
+      </ul>
+    </div>
+
+    <div class="widget" style="margin:20px 0">
+      <h3>The logic lab</h3>
+      <p class="widget-hinweis">Club entry: of age AND ticket. Flip the switches and watch how the conditions are evaluated:</p>
+      <p style="display:flex;gap:20px;flex-wrap:wrap;font-size:1rem"><label style="cursor:pointer"><input type="checkbox" id="ll-adult" style="accent-color:var(--blau-ink);transform:scale(1.4);margin-right:8px">of age (18+)</label>
+        <label style="cursor:pointer"><input type="checkbox" id="ll-ticket" style="accent-color:var(--blau-ink);transform:scale(1.4);margin-right:8px">has ticket</label></p>
+      <div class="sim-konsole" id="ll-out" style="margin-bottom:10px"></div>
+      <p class="statuszeile" id="ll-verdict"></p>
+    </div>
+
+    <div class="codebox">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Kurzschluss.java (excerpt)</p>
+<pre><code class="java">if (name != null &amp;&amp; name.equals("Mia")) {
+    System.out.println("Hello Mia.");
+}</code></pre>
+    </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">LINE BY LINE</p>
+      <table>
+        <tr><td><code>name != null</code></td><td>first checks whether there is any text in <code>name</code> at all.</td></tr>
+        <tr><td><code>&amp;&amp;</code></td><td>If the left side is <code>false</code>, the result is already settled, and the right side is not evaluated at all. This is called <strong>short-circuit evaluation</strong>. The same goes for <code>||</code>: if the left side is already <code>true</code>, the result is settled.</td></tr>
+        <tr><td><code>name.equals("Mia")</code></td><td>therefore only runs if <code>name</code> contains a text. In the reverse order, there would be a <a href="../panik.html">NullPointerException</a>.</td></tr>
+      </table>
+    </div>
+
+    <div class="baustein selbst">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>You first, then Java</p>
+      <p>What does <code>age &gt; 12 || age &lt; 5 &amp;&amp; hasCompanion</code> give for <code>age = 15</code> and <code>hasCompanion = false</code>? Jot down your guess before you read on, and pay attention to what is evaluated first.</p>
+    </div>
+
+    <p><strong>Precedence:</strong> <code>!</code> binds the strongest, then <code>&amp;&amp;</code>, then <code>||</code>. So the example above means <code>age &gt; 12 || (age &lt; 5 &amp;&amp; hasCompanion)</code>, and thus <code>true || (false &amp;&amp; false)</code>, which is <code>true</code>. Calculated from left to right, the result would be <code>false</code>. If in doubt, use parentheses. Experienced people use them anyway.</p>
+
+    <h3>Exercise 6.3.2: The truth table on your own</h3>
+    <p>Click the result in each cell: <code>true</code> or <code>false</code>. The last column is new: <code>!=</code> asks whether the two are <strong>different</strong>. In exactly one row it differs from <code>||</code>: that is the <em>exclusive</em> or of everyday language.</p>
+    <div class="baustein uebung wahrheit">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-aufgabe"></use></svg>Truth table: fill in</p>
+      <div class="wt-rahmen">
+      <table class="wt-tabelle">
+        <thead><tr>
+          <th scope="col">A</th>
+          <th scope="col">B</th>
+          <th scope="col" class="wt-trenn">A &amp;&amp; B</th>
+          <th scope="col">A || B</th>
+          <th scope="col">A != B</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td>false</td>
+            <td>false</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="A &amp;&amp; B for A false, B false" data-a="false"><label><input type="radio" name="wt632-1-2" value="true"><span>true</span></label><label><input type="radio" name="wt632-1-2" value="false"><span>false</span></label></span></td>
+            <td class="wt-feld"><span class="wt" role="radiogroup" aria-label="A || B for A false, B false" data-a="false"><label><input type="radio" name="wt632-1-3" value="true"><span>true</span></label><label><input type="radio" name="wt632-1-3" value="false"><span>false</span></label></span></td>
+            <td class="wt-feld"><span class="wt" role="radiogroup" aria-label="A != B for A false, B false" data-a="false"><label><input type="radio" name="wt632-1-4" value="true"><span>true</span></label><label><input type="radio" name="wt632-1-4" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td>false</td>
+            <td>true</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="A &amp;&amp; B for A false, B true" data-a="false"><label><input type="radio" name="wt632-2-2" value="true"><span>true</span></label><label><input type="radio" name="wt632-2-2" value="false"><span>false</span></label></span></td>
+            <td class="wt-feld"><span class="wt" role="radiogroup" aria-label="A || B for A false, B true" data-a="true"><label><input type="radio" name="wt632-2-3" value="true"><span>true</span></label><label><input type="radio" name="wt632-2-3" value="false"><span>false</span></label></span></td>
+            <td class="wt-feld"><span class="wt" role="radiogroup" aria-label="A != B for A false, B true" data-a="true"><label><input type="radio" name="wt632-2-4" value="true"><span>true</span></label><label><input type="radio" name="wt632-2-4" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td>true</td>
+            <td>false</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="A &amp;&amp; B for A true, B false" data-a="false"><label><input type="radio" name="wt632-3-2" value="true"><span>true</span></label><label><input type="radio" name="wt632-3-2" value="false"><span>false</span></label></span></td>
+            <td class="wt-feld"><span class="wt" role="radiogroup" aria-label="A || B for A true, B false" data-a="true"><label><input type="radio" name="wt632-3-3" value="true"><span>true</span></label><label><input type="radio" name="wt632-3-3" value="false"><span>false</span></label></span></td>
+            <td class="wt-feld"><span class="wt" role="radiogroup" aria-label="A != B for A true, B false" data-a="true"><label><input type="radio" name="wt632-3-4" value="true"><span>true</span></label><label><input type="radio" name="wt632-3-4" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td>true</td>
+            <td>true</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="A &amp;&amp; B for A true, B true" data-a="true"><label><input type="radio" name="wt632-4-2" value="true"><span>true</span></label><label><input type="radio" name="wt632-4-2" value="false"><span>false</span></label></span></td>
+            <td class="wt-feld"><span class="wt" role="radiogroup" aria-label="A || B for A true, B true" data-a="true"><label><input type="radio" name="wt632-4-3" value="true"><span>true</span></label><label><input type="radio" name="wt632-4-3" value="false"><span>false</span></label></span></td>
+            <td class="wt-feld"><span class="wt" role="radiogroup" aria-label="A != B for A true, B true" data-a="false"><label><input type="radio" name="wt632-4-4" value="true"><span>true</span></label><label><input type="radio" name="wt632-4-4" value="false"><span>false</span></label></span></td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="wt-tabelle">
+        <thead><tr>
+          <th scope="col">A</th>
+          <th scope="col" class="wt-trenn">!A</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td>false</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="!A for A false" data-a="true"><label><input type="radio" name="wt632n-1-1" value="true"><span>true</span></label><label><input type="radio" name="wt632n-1-1" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td>true</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="!A for A true" data-a="false"><label><input type="radio" name="wt632n-2-1" value="true"><span>true</span></label><label><input type="radio" name="wt632n-2-1" value="false"><span>false</span></label></span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="cloze-leiste">
+        <button class="btn btn-klein cloze-check" type="button">Check</button>
+        <p class="cloze-meldung"></p>
+      </div>
+    </div>
+
+    <h3>Exercise 6.3.3: From code to table</h3>
+    <p>At the gate of the camp, this condition is in place. Set up its truth table: first the helper column <code>!bitten</code>, then the result.</p>
+    <div class="codebox">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Tor.java (excerpt)</p>
+<pre><code class="java">if (!bitten || vaccinated) {
+    System.out.println("Welcome to the camp.");
+}</code></pre>
+    </div>
+    <div class="baustein uebung wahrheit">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-aufgabe"></use></svg>Who gets in?</p>
+      <div class="wt-rahmen">
+      <table class="wt-tabelle">
+        <thead><tr>
+          <th scope="col">bitten</th>
+          <th scope="col">vaccinated</th>
+          <th scope="col" class="wt-trenn">!bitten</th>
+          <th scope="col">Result</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td>false</td>
+            <td>false</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="!bitten for bitten false, vaccinated false" data-a="true"><label><input type="radio" name="wt633-1-2" value="true"><span>true</span></label><label><input type="radio" name="wt633-1-2" value="false"><span>false</span></label></span></td>
+            <td class="wt-feld"><span class="wt" role="radiogroup" aria-label="Result for bitten false, vaccinated false" data-a="true"><label><input type="radio" name="wt633-1-3" value="true"><span>true</span></label><label><input type="radio" name="wt633-1-3" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td>false</td>
+            <td>true</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="!bitten for bitten false, vaccinated true" data-a="true"><label><input type="radio" name="wt633-2-2" value="true"><span>true</span></label><label><input type="radio" name="wt633-2-2" value="false"><span>false</span></label></span></td>
+            <td class="wt-feld"><span class="wt" role="radiogroup" aria-label="Result for bitten false, vaccinated true" data-a="true"><label><input type="radio" name="wt633-2-3" value="true"><span>true</span></label><label><input type="radio" name="wt633-2-3" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td>true</td>
+            <td>false</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="!bitten for bitten true, vaccinated false" data-a="false"><label><input type="radio" name="wt633-3-2" value="true"><span>true</span></label><label><input type="radio" name="wt633-3-2" value="false"><span>false</span></label></span></td>
+            <td class="wt-feld"><span class="wt" role="radiogroup" aria-label="Result for bitten true, vaccinated false" data-a="false"><label><input type="radio" name="wt633-3-3" value="true"><span>true</span></label><label><input type="radio" name="wt633-3-3" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td>true</td>
+            <td>true</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="!bitten for bitten true, vaccinated true" data-a="false"><label><input type="radio" name="wt633-4-2" value="true"><span>true</span></label><label><input type="radio" name="wt633-4-2" value="false"><span>false</span></label></span></td>
+            <td class="wt-feld"><span class="wt" role="radiogroup" aria-label="Result for bitten true, vaccinated true" data-a="true"><label><input type="radio" name="wt633-4-3" value="true"><span>true</span></label><label><input type="radio" name="wt633-4-3" value="false"><span>false</span></label></span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="cloze-leiste">
+        <button class="btn btn-klein cloze-check" type="button">Check</button>
+        <p class="cloze-meldung"></p>
+      </div>
+    </div>
+    <details class="baustein">
+      <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> And now the matching sentence<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+      <div class="inhalt">
+        <p>In words: <span class="hl">Whoever has not been bitten or is vaccinated may get in.</span> The last row is the interesting one: bitten <em>and</em> vaccinated gives <code>true</code>. Not a mistake in the table, but a decision in the code. Is that wise at the camp gate? A truth table settles such questions before the program runs.</p>
+      </div>
+    </details>
+
+    <h3>Exercise 6.3.4: From language to code</h3>
+    <p>The rule for the night watch is: <em>Whoever is rested and not injured may. The watch chief always may.</em> Write the condition and set up the table: three variables, eight rows.</p>
+    <div class="codebox cloze">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Nachtwache.java: the condition</p>
+<pre><code class="nohl luecken">if (<input class="cz" data-muster="(?:\(\s*(?:rested\s*&amp;&amp;\s*!\s*injured|!\s*injured\s*&amp;&amp;\s*rested)\s*\)|(?:rested\s*&amp;&amp;\s*!\s*injured|!\s*injured\s*&amp;&amp;\s*rested))\s*\|\|\s*boss|boss\s*\|\|\s*(?:\(\s*(?:rested\s*&amp;&amp;\s*!\s*injured|!\s*injured\s*&amp;&amp;\s*rested)\s*\)|(?:rested\s*&amp;&amp;\s*!\s*injured|!\s*injured\s*&amp;&amp;\s*rested))" data-a="rested&amp;&amp;!injured||boss~(rested&amp;&amp;!injured)||boss~boss||rested&amp;&amp;!injured~boss||(rested&amp;&amp;!injured)" size="32">) { … }</code></pre>
+      <div class="cloze-leiste">
+        <button class="btn btn-klein cloze-check" type="button">Check</button>
+        <p class="cloze-meldung"></p>
+      </div>
+    </div>
+    <div class="baustein uebung wahrheit">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-aufgabe"></use></svg>May keep watch?</p>
+      <div class="wt-rahmen">
+      <table class="wt-tabelle">
+        <thead><tr>
+          <th scope="col">rested</th>
+          <th scope="col">injured</th>
+          <th scope="col">boss</th>
+          <th scope="col" class="wt-trenn">may keep watch?</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td>false</td>
+            <td>false</td>
+            <td>false</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="may keep watch? for rested false, injured false, boss false" data-a="false"><label><input type="radio" name="wt634-1-3" value="true"><span>true</span></label><label><input type="radio" name="wt634-1-3" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td>false</td>
+            <td>false</td>
+            <td>true</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="may keep watch? for rested false, injured false, boss true" data-a="true"><label><input type="radio" name="wt634-2-3" value="true"><span>true</span></label><label><input type="radio" name="wt634-2-3" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td>false</td>
+            <td>true</td>
+            <td>false</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="may keep watch? for rested false, injured true, boss false" data-a="false"><label><input type="radio" name="wt634-3-3" value="true"><span>true</span></label><label><input type="radio" name="wt634-3-3" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td>false</td>
+            <td>true</td>
+            <td>true</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="may keep watch? for rested false, injured true, boss true" data-a="true"><label><input type="radio" name="wt634-4-3" value="true"><span>true</span></label><label><input type="radio" name="wt634-4-3" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td>true</td>
+            <td>false</td>
+            <td>false</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="may keep watch? for rested true, injured false, boss false" data-a="true"><label><input type="radio" name="wt634-5-3" value="true"><span>true</span></label><label><input type="radio" name="wt634-5-3" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td>true</td>
+            <td>false</td>
+            <td>true</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="may keep watch? for rested true, injured false, boss true" data-a="true"><label><input type="radio" name="wt634-6-3" value="true"><span>true</span></label><label><input type="radio" name="wt634-6-3" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td>true</td>
+            <td>true</td>
+            <td>false</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="may keep watch? for rested true, injured true, boss false" data-a="false"><label><input type="radio" name="wt634-7-3" value="true"><span>true</span></label><label><input type="radio" name="wt634-7-3" value="false"><span>false</span></label></span></td>
+          </tr>
+          <tr>
+            <td>true</td>
+            <td>true</td>
+            <td>true</td>
+            <td class="wt-feld wt-trenn"><span class="wt" role="radiogroup" aria-label="may keep watch? for rested true, injured true, boss true" data-a="true"><label><input type="radio" name="wt634-8-3" value="true"><span>true</span></label><label><input type="radio" name="wt634-8-3" value="false"><span>false</span></label></span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="cloze-leiste">
+        <button class="btn btn-klein cloze-check" type="button">Check</button>
+        <p class="cloze-meldung"></p>
+      </div>
+    </div>
+
+    <details class="baustein optional">
+      <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-up: Negating a condition correctly</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+      <div class="inhalt">
+        <p>You want the opposite of a condition? Just putting a <code>!</code> in front of everything goes wrong. The following holds:</p>
+        <div class="codebox">
+          <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Two equations that always hold</p>
+<pre><code class="nohl ausgabe">!(a &amp;&amp; b)   is the same as   !a || !b
+!(a || b)   is the same as   !a &amp;&amp; !b</code></pre>
+        </div>
+        <p>When negating, <strong>the operator changes too</strong>: AND becomes OR and vice versa. Check it against the table from Exercise 6.3.2. These are <em>De Morgan's laws</em>, popular in exams.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="block">
+    <h2 id="switch"><span class="nr">6.4</span> Multi-way selection with switch</h2>
+    <p class="wozu">If you check a variable against many <strong>fixed values</strong>, an <code>else if</code> chain becomes long and hard to follow. <code>switch</code> assigns each value its own case. For <em>ranges</em> like “greater than 25”, you stick with <code>if</code>.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="switch">switch</span> (<var data-teil="var">variable</var>) {
+    <span data-teil="case">case</span> <var data-teil="wert">value</var> <span data-teil="pfeil">-&gt;</span> <var data-teil="anw">statement</var>;
+    <span data-teil="case">case</span> <var data-teil="wert">value</var>, <var data-teil="wert">value</var> <span data-teil="pfeil">-&gt;</span> <var data-teil="anw">statement</var>;
+    <span data-teil="default">default</span> <span data-teil="pfeil">-&gt;</span> <var data-teil="anw">statement for all other values</var>;
+}</code></pre>
+      <p class="aufbau-info"><code>switch</code> only checks for equality, with <code>int</code>, <code>char</code>, <code>String</code> and <code>enum</code>; <code>long</code>, <code>double</code> and <code>boolean</code> do not work. If a case needs several statements, they go in curly braces: <code>default -&gt; { … }</code>.</p>
+      <div hidden data-erkl="switch"><strong><code>switch</code></strong> starts the multi-way selection: in parentheses what is checked, then the cases in curly braces. The case whose value matches runs, otherwise <code>default</code>.</div>
+      <div hidden data-erkl="var"><strong>Variable:</strong> its value is evaluated once and then compared with the values of the cases, e.g. <code>zone</code> or <code>grade</code>. Instead of a variable, an expression like <code>input.trim()</code> also works.</div>
+      <div hidden data-erkl="case"><strong><code>case</code></strong> starts a case. If the value of the variable matches one of the values after it, this case runs. Several values for the same case are separated by a comma: <code>case 6, 7 -&gt;</code>.</div>
+      <div hidden data-erkl="wert"><strong>Value:</strong> a fixed value of the same type as the variable, <code>case "North"</code> for a String, <code>case 3</code> for an <code>int</code>. Ranges like <code>&gt; 25</code> do not work here, and each value may appear in only one case.</div>
+      <div hidden data-erkl="pfeil"><strong>The arrow <code>-&gt;</code></strong> separates the case from what happens then. You type it as a minus sign and a greater-than sign, with no space between them. After the case, the <code>switch</code> is over, a <code>break</code> is not needed.</div>
+      <div hidden data-erkl="default"><strong><code>default</code></strong> is the case for all values that appear in no <code>case</code>, and it usually goes at the end. If it is missing and no case matches, no statement of the <code>switch</code> runs.</div>
+      <div hidden data-erkl="anw"><strong>Statement:</strong> what should happen in this case, with <code>;</code> at the end, e.g. <code>System.out.println("Bunker A");</code>.</div>
+    </div>
+
+    <div class="codebox">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>The same thing twice</p>
+<pre><code class="java">// with else if, works but is tedious to read
+if (zone.equals("North")) {
+    System.out.println("Bunker A");
+} else if (zone.equals("South")) {
+    System.out.println("Bunker B");
+} else {
+    System.out.println("Zone unknown.");
+}
+
+// with switch, same logic, easier to read
+switch (zone) {
+    case "North" -&gt; System.out.println("Bunker A");
+    case "South" -&gt; System.out.println("Bunker B");
+    default    -&gt; System.out.println("Zone unknown.");
+}</code></pre>
+    </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">LINE BY LINE</p>
+      <table>
+        <tr><td><code>switch (zone)</code></td><td>evaluates <code>zone</code> once.</td></tr>
+        <tr><td><code>case "North" -&gt;</code></td><td>If the value matches, exactly what is to the right of the arrow runs. After that, the <code>switch</code> is over.</td></tr>
+        <tr><td><code>default -&gt;</code></td><td>the case “nothing matched”. Optional, but almost always sensible.</td></tr>
+      </table>
+    </div>
+
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+      <ul>
+        <li><code>switch</code> checks a variable against fixed values, <code>case 6, 7 -&gt;</code> combines cases.</li>
+        <li>Exactly <strong>one</strong> case always runs. The arrow form does not need a <code>break</code>.</li>
+      </ul>
+    </div>
+
+    <details class="baustein optional">
+      <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-up: switch that returns a value</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+      <div class="inhalt">
+        <p>Often you do not want to print anything, but just <strong>select a value</strong>. Then the whole <code>switch</code> can go to the right of the <code>=</code>:</p>
+
+        <div class="codebox runner" data-out="Zone South: Bunker B">
+          <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>BunkerPlan.java</p>
+<pre><code class="java">public class BunkerPlan {
+
+    public static void main(String[] args) {
+        String zone = "South";
+
+        String bunker = switch (zone) {
+            case "North" -&gt; "Bunker A";
+            case "South" -&gt; "Bunker B";
+            default -&gt; "unknown";
+        };
+
+        System.out.println("Zone " + zone + ": " + bunker);
+    }
+
+}</code></pre>
+          <div class="konsole"></div>
+          <p class="run-leiste"><button class="btn btn-klein run-btn" type="button">Run</button></p>
+        </div>
+
+        <div class="baustein selbst">
+          <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>You first, then Java</p>
+          <p>At the very end there is <code>};</code> instead of just <code>}</code>. Why is that? Jot down your guess before you read on.</p>
+        </div>
+
+        <p>The line is an <strong>assignment</strong>, and like every statement it ends with a semicolon. Here the <code>switch</code> is not a block but the value on the right-hand side. Because it must always return a value, every possible value needs a case. For numbers and Strings, that means: <code>default</code> is required.</p>
+      </div>
+    </details>
+
+    <details class="baustein optional">
+      <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-up: The old form with colon and break</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+      <div class="inhalt">
+        <p>Before Java 14, the arrow did not exist yet. That is why you will come across this form in old code and in some exam tasks:</p>
+        <div class="codebox">
+          <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>The old form</p>
+<pre><code class="java">switch (zone) {
+    case "North":
+        System.out.println("Bunker A");
+        break;
+    default:
+        System.out.println("Zone unknown.");
+}</code></pre>
+        </div>
+        <p>Colon instead of arrow, and each case ends itself with <code>break;</code>. If a <code>break</code> is missing, the program continues, <em>without a new check</em>, into the next <code>case</code> and prints more than intended. This is called <strong>fall-through</strong> and was the most common switch trap for years. You should be able to read this form, you do not have to write it: with <code>-&gt;</code> this mistake cannot happen in the first place.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="widget">
+    <h3>The traffic light changes</h3>
+    <p class="widget-hinweis">Fixed states, fixed order: the textbook case for <code>switch</code>. Press <code>advance()</code> and watch which <code>case</code> applies.</p>
+    <div class="wflex" style="align-items:center">
+      <div style="flex:0 0 auto">
+        <div class="ampel">
+          <div class="lamp" id="amp-rot"></div>
+          <div class="lamp" id="amp-gelb"></div>
+          <div class="lamp" id="amp-gruen"></div>
+        </div>
+        <p style="text-align:center;margin-top:12px"><button class="btn btn-klein" id="amp-btn" type="button">advance()</button></p>
+      </div>
+      <div style="flex:1 1 17rem">
+        <div class="codebox zweige" style="margin:0" id="amp-zweige">
+          <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>TrafficLight.java (excerpt)</p>
+<pre><code class="nohl"><span class="zw-block">String color = <span id="amp-wert">"red"</span>;</span><span class="zw-block">switch (color) {</span><span class="zw-block zw-zweig">    case "red"      -&gt; color = "red-yellow";</span><span class="zw-block zw-zweig">    case "red-yellow" -&gt; color = "green";</span><span class="zw-block zw-zweig">    case "green"    -&gt; color = "yellow";</span><span class="zw-block zw-zweig">    case "yellow"     -&gt; color = "red";</span><span class="zw-block">}</span></code></pre>
+        </div>
+        <p class="statuszeile" id="amp-note" role="status" aria-live="polite" style="margin-top:10px"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2 id="struktogramme"><span class="nr">6.5</span> Structograms according to DIN 66261</h2>
+    <p class="wozu">Before typing, professionals plan the flow in a <strong>language-independent</strong> way. The most common tool is the <strong>structogram</strong> according to DIN 66261: nested rectangles, read from top to bottom. The <span class="hl">shape reveals the structure</span> before you even read the text.</p>
+
+    <h3>Sequence: one after the other</h3>
+    <figure class="opener">
+      <img src="../../img/en/kapitel/struktogramm-sequenz.svg" width="520" height="194"
+           alt="Three equally sized rectangles stacked on top of each other: count supplies, subtract usage, print remainder.">
+      <figcaption>One box per statement, from top to bottom. Each exactly once.</figcaption>
+    </figure>
+
+    <h3>Conditional: if/else</h3>
+    <figure class="opener">
+      <img src="../../img/en/kapitel/struktogramm-verzweigung.svg" width="520" height="206"
+           alt="A rectangle with a triangular head: on top the condition hunger greater than 5, on the left the yes branch with feed, on the right the no branch with let sleep.">
+      <figcaption>The split head is the hallmark. Exactly one branch runs.</figcaption>
+    </figure>
+
+    <h3>Multi-way selection: the switch in the diagram</h3>
+    <figure class="opener">
+      <img src="../../img/en/kapitel/struktogramm-mehrfach.svg" width="520" height="198"
+           alt="A rectangle with a fanned-out head: the cases red, yellow, green and else, with one statement below each.">
+      <figcaption>One head, many cases. On the right the else case: the counterpart of <code>default</code>, so it may also be missing.</figcaption>
+    </figure>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">LINE BY LINE</p>
+      <table>
+        <tr><td><code>if (hunger &gt; 5)</code></td><td>the split head: the condition on top, two diagonals below it.</td></tr>
+        <tr><td><code>{ feed }</code></td><td>the left field under “yes”.</td></tr>
+        <tr><td><code>else { keep sleeping }</code></td><td>the right field under “no”. Without <code>else</code> it stays empty: then nothing happens.</td></tr>
+        <tr><td><code>switch (trafficLight)</code></td><td>the fanned-out head: one field per <code>case</code>, on the right the else case for <code>default</code>.</td></tr>
+      </table>
+    </div>
+
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+      <p>Structograms have no arrows and no jumps.</p>
+      <ul>
+        <li>What is stacked on top of each other runs one after the other.</li>
+        <li>What is side by side are alternatives.</li>
+      </ul>
+    </div>
+
+    <aside class="rand">
+      <p>The fourth basic form, the <strong>loop</strong>, has an L-shaped frame. It comes in Chapter 7, together with the loops.</p>
+    </aside>
+
+    <details class="baustein optional">
+      <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-up: Structogram or flowchart?</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+      <div class="inhalt">
+        <p>The second notation is the <strong>flowchart</strong> (PAP, DIN 66001): boxes and diamonds, connected with arrows. Both describe the same thing, the difference is pedagogical:</p>
+        <ul>
+          <li>In a flowchart you can draw arrows anywhere, even across and backwards.</li>
+          <li>In a structogram, boxes sit inside each other instead of being connected. Spaghetti code simply cannot be drawn with it. Not a shortcoming, but the point.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section class="block">
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>That's enough for now</p>
+      <ul>
+        <li><code>if/else</code> is a conditional: condition in parentheses (true or false), exactly one branch runs.</li>
+        <li><code>=</code> assigns, <code>==</code> compares numbers, <code>.equals()</code> compares Strings.</li>
+        <li>Build conditions from comparisons and <code>&amp;&amp;</code>, <code>||</code>, <code>!</code>. Precedence: <code>!</code> before <code>&amp;&amp;</code> before <code>||</code>, when in doubt use parentheses.</li>
+        <li><code>switch</code> checks a variable against fixed values. With <code>-&gt;</code> exactly one case runs.</li>
+        <li>In a structogram, the shape reveals the structure.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <section class="baustein uebung quiz">
+    <h3>Checkpoint</h3>
+    <p class="widget-hinweis">Four questions, no time limit. Counts only for you.</p>
+
+    <div class="qq">
+      <p class="qq-text">What is wrong with <code>if (points = 100)</code>?</p>
+      <div class="qq-opt">
+        <button data-ok>It assigns instead of comparing, the correct form would be <code>==</code></button>
+        <button data-why="The parentheses are perfectly fine. The problem is the single =, which ASSIGNS the value instead of comparing.">The condition needs no parentheses</button>
+      </div>
+      <p class="qq-erklaerung" hidden><code>=</code> assigns the value 100 to <code>points</code>, <code>==</code> checks whether the value is 100. Here the compiler reports an error, but not with a <code>boolean</code> variable.</p>
+    </div>
+
+    <div class="qq">
+      <p class="qq-text">Two Strings both contain the text <code>"yes"</code>. What does <code>==</code> return?</p>
+      <div class="qq-opt">
+        <button data-why="That is true for numbers. But a String is not a simple value, and == compares something other than the content there.">Always <code>true</code>, the content is the same after all</button>
+        <button data-ok>Can be <code>false</code>, for content you use <code>equals()</code></button>
+      </div>
+      <p class="qq-erklaerung" hidden>Hence the iron rule: numbers with <code>==</code>, Strings with <code>equals()</code>.</p>
+    </div>
+
+    <div class="qq">
+      <p class="qq-text">What happens after <code>case "North" -&gt; System.out.println("Bunker A");</code>?</p>
+      <div class="qq-opt">
+        <button data-ok>The switch is over, the following cases do not run along</button>
+        <button data-why="That was the old form with a colon. The arrow closes the case by itself, there is no break here.">The program continues into the next case</button>
+        <button data-why="The value is evaluated only once, at the start of the switch.">The condition is checked again</button>
+      </div>
+      <p class="qq-erklaerung" hidden>With the arrow, exactly <strong>one</strong> case always runs. You only need the old <code>break</code> to read other people's code.</p>
+    </div>
+
+    <div class="qq">
+      <p class="qq-text">How can you recognize a conditional in a structogram?</p>
+      <div class="qq-opt">
+        <button data-ok>By the split head: two diagonals form a triangle with the condition</button>
+        <button data-why="There are no arrows at all in a structogram, that is exactly the difference from the flowchart.">By the arrows leading away from the condition</button>
+      </div>
+      <p class="qq-erklaerung" hidden>The shape carries the meaning: triangle head = conditional, fan = multi-way selection, L frame = loop.</p>
+    </div>
+
+    <div class="quiz-ergebnis" hidden></div>
+  </section>
+
+  <div class="kapitel-ende">
+    <div class="blaettern">
+      <a class="btn" href="05-strings-eingabe.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Chapter 5</a> <a class="btn btn-haupt" href="07-schleifen.html">Chapter 7: Loops<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </div>
+  </div>
+
+</main>
+
+<footer class="seitenfuss">
+  <div class="seitenfuss-innen">
+    <p><strong>Cheat Sheet: Java</strong> · Java basics for Learning Field 5, “Adapting software for data management”, IT professions, grade 10.</p>
+  </div>
+</footer>
+
+<script src="../../js/app.js"></script>
+<script>
+(function () {
+  var $ = CC.$, $$ = CC.$$;
+
+  /* ---------- if-Verzweigung ---------- */
+
+ function updateIf() {
+ var t = +$('#ifw-slider').value;
+ $('#ifw-temp').textContent = t + ' °C';
+ var active = t > 25 ? 0 : t > 10 ? 1 : 2;
+ $('#ifw-wert').textContent = t;
+ /* Der ganze laufende Zweig leuchtet, Kopf, Rumpf und Klammer; die übrigen
+    treten zurück. */
+ $$('#ifw-branches .zw-zweig').forEach(function (z, i) {
+ z.classList.toggle('aktiv', i === active);
+ z.classList.toggle('aus', i !== active);
+ });
+ $('#ifw-out').textContent = ['Outdoor pool!', 'So-so. Jacket optional.', 'Hoodie on, tea on.'][active];
+ var notes = [
+ 'Condition 1 is true → branch 1 runs. The other branches are skipped.',
+ 'Condition 1 was false, condition 2 is true → branch 2 runs. Exactly ONE branch always runs.',
+ 'All conditions false → the else branch runs. That is why else needs no condition.'
+ ];
+ $('#ifw-note').textContent = notes[active];
+ }
+ $('#ifw-slider').addEventListener('input', updateIf);
+ updateIf();
+
+
+  /* ---------- String-Vergleich: == vs equals ---------- */
+
+ $('#eq-1').addEventListener('click', function () {
+ $('#eq-out').textContent = '> expectedAnswer == answer\nfalse ';
+ $('#eq-note').innerHTML = 'Both contain "yes", still false! == does not check the content for Strings, but whether both variables refer to <strong>the same object in memory</strong> (you get the full why in Chapter 9). The nasty part: with some Strings == happens to return true, so your code works “most of the time”. Brrr.';
+ });
+ $('#eq-2').addEventListener('click', function () {
+ $('#eq-out').textContent = '> expectedAnswer.equals(answer)\ntrue ';
+ $('#eq-note').innerHTML = '<strong>equals() compares the content</strong>, character by character. Exactly what you want for Strings. Always.';
+ });
+
+
+  /* ---------- Logik-Labor ---------- */
+
+ function llUpdate() {
+ var a = $('#ll-adult').checked, t = $('#ll-ticket').checked;
+ var und = a && t, oder = a || t;
+ $('#ll-out').textContent =
+ 'boolean volljaehrig = ' + a + ';\n' +
+ 'boolean hasTicket = ' + t + ';\n\n' +
+ 'volljaehrig && hasTicket → ' + und + (und ? ' ' : ' ') + '\n' +
+ 'volljaehrig || hasTicket → ' + oder + (oder ? ' ' : ' ') + '\n' +
+ '!volljaehrig → ' + !a;
+ $('#ll-verdict').textContent = und
+ ? ' Entry! Both conditions true, so && is true.'
+ : oder
+ ? ' && gives false (one condition is missing). || would be true, but the club just checks with &&.'
+ : ' Both false. No amount of charm helps here: && false, || false.';
+ }
+ $('#ll-adult').addEventListener('change', llUpdate);
+ $('#ll-ticket').addEventListener('change', llUpdate);
+ llUpdate();
+
+
+  /* ---------- Ampel (switch-case) ---------- */
+
+  (function () {
+    var FARBEN = ['red', 'red-yellow', 'green', 'yellow'];
+    var LAMPEN = { 'red': ['red'], 'red-yellow': ['red', 'yellow'], 'green': ['green'], 'yellow': ['yellow'] };
+    var i = 0;
+
+    function zeichne() {
+      var farbe = FARBEN[i];
+      ['red', 'yellow', 'green'].forEach(function (f) {
+        var el = $('#amp-' + f);
+        if (el) el.className = 'lamp' + (LAMPEN[farbe].indexOf(f) >= 0 ? ' an-' + f : '');
+      });
+      /* Der case, der beim nächsten schalte() greift, leuchtet ganz. */
+      $('#amp-wert').textContent = '"' + farbe + '"';
+      $$('#amp-zweige .zw-zweig').forEach(function (z, j) {
+        z.classList.toggle('aktiv', j === i);
+        z.classList.toggle('aus', j !== i);
+      });
+      var note = $('#amp-note');
+      if (note) note.textContent = 'color is "' + farbe + '": On the next advance(), case "' + farbe +
+        '" applies and sets color to "' + FARBEN[(i + 1) % FARBEN.length] + '". Exactly one case always applies.';
+    }
+
+    var btn = $('#amp-btn');
+    if (btn) btn.addEventListener('click', function () { i = (i + 1) % FARBEN.length; zeichne(); });
+    zeichne();
+  })();
+
+})();
+</script>
+</body>
+</html>

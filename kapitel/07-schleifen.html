@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 7 · Schleifen · Cheat Sheet: Java</title>
+<meta name="description" content="Schleifen in Java: while, do-while und for, Schritt für Schritt durchgesteppt, dazu Endlosschleifen und das Struktogramm der Wiederholung.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../img/favicon.svg">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Merksatz: Lesezeichen</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kurz nachgedacht: Frage an dich</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufgabe: Stift</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Projektaufgabe ZombieApocalypse: Zombiekopf</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Handlungsorientierte Aufgabe: Stoppuhr</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: Fahne</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nochmal anders erklärt: Wiederholung</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Auflösung: Schlüssel</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Das Wichtigste in Kürze: Seite mit Eselsohr</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Lernziele: Zielscheibe</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Konsole: Prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Entwicklungsumgebung: Editorfenster mit Seitenleiste</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fehlermeldung: Käfer</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Richtig: Haken</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Falsch: Kreuz</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Dauer: Uhr</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kapitel: aufgeschlagenes Heft</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Inhaltsverzeichnis</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Weiter</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Zurück</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nach unten</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufklappbar</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Öffnet ein Fenster</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nachtschicht</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Tagesansicht</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fortschritt löschen</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Drucken</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Zum Inhalt springen</a>
+
+<nav class="topbar" aria-label="Hauptnavigation">
+  <div class="topbar-innen">
+    <a class="marke" href="../index.html">
+      <img class="oakymarke" src="../img/kapitel/oaky.svg" alt="" width="128" height="148">
+      Cheat Sheet: Java
+    </a>
+    <span class="topbar-titel">Kapitel 7 · Schleifen</span>
+    <span class="topbar-rechts">
+      <a class="btn btn-klein" href="../index.html">Lernpfad</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Sprache wählen"><span>DE</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="07-schleifen.html" lang="de" hreflang="de" aria-current="true">Deutsch</a></li><li><a href="../en/kapitel/07-schleifen.html" lang="en" hreflang="en">English</a></li></ul></details><!--/sprache-->
+    </span>
+  </div>
+  <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+  <header class="kapitel-kopf">
+    <p class="kicker">Kapitel 7 von 11 · while, do-while, for</p>
+    <h1>Schleifen</h1>
+    <p class="vorspann">Niemand schreibt hundertmal dieselbe Zeile. Dafür gibt es Schleifen, und drei Arten, sie zu bauen.</p>
+    <p class="kapitel-meta">
+      <span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>ca. 55 min</span>
+    </p>
+  </header>
+
+ <section class="einstieg" aria-label="Einstieg: das Problem">
+ <p class="einstieg-kopf">DAS PROBLEM</p>
+ <p class="einstieg-frage">Das Programm soll von 1 bis 10 zählen. Wie viele Zeilen braucht das?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox runner" data-out="1\n2\n3">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Zaehlen.java</p>
+<pre><code class="java">System.out.println(1);
+System.out.println(2);
+System.out.println(3);
+// und so weiter: noch sieben Zeilen bis 10</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>Drei Zeilen für drei Zahlen. Bis 10 wären es zehn Zeilen, bis 1000 tausend.</p>
+ <button class="btn einstieg-knopf" type="button">Mit einer Schleife</button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-out="1\n2\n3\n4\n5\n6\n7\n8\n9\n10">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Zaehlen.java</p>
+<pre><code class="java">for (int i = 1; i &lt;= 10; i++) {
+    System.out.println(i);
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">Drei Zeilen, egal ob bis 10 oder bis 1000: Du änderst nur die Zahl in der Bedingung. Wie Schleifen funktionieren, zeigt dieses Kapitel.</p>
+ </div>
+ </section>
+
+
+
+  <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Inhalt dieses Kapitels">
+    <h2 id="in-diesem-kapitel">In diesem Kapitel</h2>
+  </nav>
+
+  <details class="baustein ziele">
+    <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>Danach kannst du<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+    <div class="inhalt">
+      <ul>
+      <li>die drei Schleifen unterscheiden: <code>while</code>, <code>do-while</code> und <code>for</code></li>
+      <li>eine Endlosschleife erkennen, bevor sie dein Programm aufhängt</li>
+      <li>eine for-Schleife Schritt für Schritt im Kopf ausführen</li>
+      <li>erklären, wann eine Schleife gar nicht läuft und wann genau einmal</li>
+      <li>eine Wiederholung als Struktogramm zeichnen</li>
+      <li>eine Schleife in eine Schleife setzen und sagen, wie oft der innere Rumpf läuft</li>
+      <li>mit <code>break</code> und <code>continue</code> aus einer Runde oder aus der ganzen Schleife aussteigen</li>
+    </ul>
+    </div>
+  </details>
+
+
+  <section class="block">
+    <h2 id="schleifen-dinge-wiederholen-ohne-durchzudrehen"><span class="nr">7.1</span> Kopfgesteuerte Schleife: while</h2>
+    <p class="wozu">Eine Schleife wiederholt einen Block, statt ihn hundertmal hinzuschreiben. <code>while</code> heißt „solange“: Der Block läuft wieder und wieder, solange die Bedingung <code>true</code> ist.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="while">while</span> (<var data-teil="bed">Bedingung</var>) <span data-teil="kl">{</span>
+    <var data-teil="rumpf">Anweisungen, die wiederholt werden</var>
+<span data-teil="kl">}</span></code></pre>
+      <p class="aufbau-info">Der Block in den geschweiften Klammern heißt <strong>Rumpf</strong>. Die Bedingung wird <strong>vor</strong> jeder Runde geprüft, wie beim <code>if</code>: Sie ergibt <code>true</code> oder <code>false</code>.</p>
+      <div hidden data-erkl="while"><strong><code>while</code></strong> heißt „solange“ und leitet die Schleife ein. Hinter die runde Klammer kommt kein Semikolon: Bei <code>while (i &lt; 5);</code> ist der Rumpf leer, und der Block darunter gehört nicht mehr zur Schleife.</div>
+      <div hidden data-erkl="bed"><strong>Bedingung:</strong> ein Vergleich wie <code>battery &lt; 100</code> oder eine <code>boolean</code>-Variable. Prüfst du auf Gleichheit, schreib <code>==</code>, nicht <code>=</code>.</div>
+      <div hidden data-erkl="kl"><strong>Die geschweiften Klammern</strong> markieren Anfang und Ende des Rumpfs. Ergibt die Bedingung <code>false</code>, geht es mit der ersten Zeile hinter der schließenden Klammer weiter.</div>
+      <div hidden data-erkl="rumpf"><strong>Schleifenrumpf:</strong> die Anweisungen für eine Runde, etwa <code>charge();</code>. Mindestens eine davon muss eine Variable aus der Bedingung verändern, etwa mit <code>i++</code>. Sonst ergibt die Bedingung nie <code>false</code>, und die Schleife läuft endlos.</div>
+    </div>
+
+    <div class="codebox">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>DieDreiSchleifen.java (1 von 3)</p>
+<pre><code class="java">// while, "SOLANGE Bedingung: wiederhole" (prüft VORHER)
+while (battery < 100) {
+    charge();
+}</code></pre>
+    </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+      <table>
+        <tr><td><code>while (battery &lt; 100)</code></td><td>prüft vor jeder Runde, ob der Akku noch nicht voll ist. Ist das <code>true</code>, läuft der Rumpf.</td></tr>
+        <tr><td><code>charge();</code></td><td>der Rumpf. Danach geht es zurück nach oben zur Prüfung. Damit die Schleife je endet, muss <code>charge()</code> den Wert von <code>battery</code> erhöhen.</td></tr>
+        <tr><td><code>}</code></td><td>Ist die Bedingung <code>false</code>, geht es hinter dieser Klammer weiter.</td></tr>
+      </table>
+    </div>
+
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+      <p>Etwas im Rumpf muss die Bedingung Richtung <code>false</code> bewegen, sonst läuft die Schleife ewig.</p>
+    </div>
+
+ <div class="oaky">
+ <img class="figur" src="../img/kapitel/oaky-erschrickt.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p><strong>Vorsicht, Endlosschleife:</strong> Wird die Bedingung nie false (etwa weil
+ <code>i++</code> fehlt), läuft die Schleife ewig. Dann hilft nur die Stopp-Taste deiner IDE.
+ Passiert allen, einmal pro Woche.</p>
+ </div>
+ </div>
+
+ <div class="widget" style="margin-top:20px">
+ <h3>Der Endlosschleifen-Simulator</h3>
+ <p class="widget-hinweis">Einmal muss man es erlebt haben, hier gefahrlos. Starte die Schleife und finde den Ausweg. (Spoiler: der rote Knopf. In deiner IDE: <!--ide:kurz-stoppen-->
+<em>VS Code:</em> rotes Quadrat im Terminal · <kbd>Strg</kbd> + <kbd>C</kbd> · <em>IntelliJ IDEA:</em> rotes Quadrat im Run-Fenster · <kbd>Strg</kbd> + <kbd>F2</kbd>
+<!--/ide:kurz-stoppen-->)</p>
+ <div class="codebox flach">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Ups.java (Ausschnitt)</p>
+<pre><code class="java">while (true) {                       // true wird NIE false. Nie.
+    System.out.println("Help, I can't get out of here!");
+}</code></pre>
+ </div>
+ <p style="display:flex;gap:10px;margin:12px 0"><button class="btn btn-klein" id="inf-run"> Ausführen</button>
+ <button class="btn btn-klein" id="inf-stop"> STOP (der rote Knopf)</button></p>
+ <div class="sim-konsole" id="inf-out" style="max-height:150px;overflow:auto"></div>
+ <p class="statuszeile" id="inf-status" style="margin-top:10px">Trau dich. Wir haben einen roten Knopf.</p>
+ </div>
+
+ <p>Erst ein Puzzle: Der Countdown ist durcheinandergeraten.</p>
+
+ <div class="parsons">
+ <p class="parsons-titel"><strong>Code-Puzzle:</strong> Sortiere die Zeilen so, dass das Programm 3, 2, 1 und dann „Start!“ ausgibt. Denk dran: Was muss VOR der Schleife existieren? Was muss IN ihr passieren, damit sie endet?</p>
+ <div class="parsons-zeilen">
+ <div class="p-zeile">int rakete = 3;</div>
+ <div class="p-zeile">while (rakete > 0) {</div>
+ <div class="p-zeile"> System.out.println(rakete);</div>
+ <div class="p-zeile"> rakete = rakete - 1;</div>
+ <div class="p-zeile">}</div>
+ <div class="p-zeile">System.out.println("Start!");</div>
+ </div>
+ <button class="btn btn-klein parsons-check">Kompilieren </button>
+ <p class="parsons-meldung"></p>
+ </div>
+  </section>
+
+  <section class="block">
+    <h2 id="kurz-ueben-schleifen-selbst-bauen-und-lesen"><span class="nr">7.2</span> Zählschleife: for</h2>
+    <p class="wozu">Steht vorher fest, wie oft etwas laufen soll, ist <code>for</code> die passende Schleife. Alles Organisatorische steht in einer Zeile: wo der Zähler startet, wie lange es weitergeht und was nach jeder Runde passiert.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="for">for</span> (<var data-teil="start">Start</var><span data-teil="semi">;</span> <var data-teil="bed">Bedingung</var><span data-teil="semi">;</span> <var data-teil="schritt">Schritt</var>) <span data-teil="kl">{</span>
+    <var data-teil="rumpf">Anweisungen, die wiederholt werden</var>
+<span data-teil="kl">}</span></code></pre>
+      <p class="aufbau-info">Die drei Teile in der Klammer trennt ein Semikolon. Der Start läuft einmal, die Bedingung wird vor jeder Runde geprüft, der Schritt nach jeder Runde ausgeführt.</p>
+      <div hidden data-erkl="for"><strong><code>for</code></strong> leitet die Zählschleife ein. In der runden Klammer dahinter steht alles, was den Zähler steuert. Wie bei <code>while</code> kommt hinter die schließende runde Klammer kein Semikolon.</div>
+      <div hidden data-erkl="start"><strong>Start:</strong> deklariert den Zähler und gibt ihm seinen Anfangswert, etwa <code>int i = 0</code>. Der Zähler gilt nur in der Schleife, hinter ihrer schließenden Klammer gibt es ihn nicht mehr.</div>
+      <div hidden data-erkl="semi"><strong>Die zwei Semikolons</strong> trennen Start, Bedingung und Schritt voneinander. Hinter dem Schritt steht keins: <code>for (int i = 0; i &lt; 3; i++;)</code> meldet der Compiler als Fehler.</div>
+      <div hidden data-erkl="bed"><strong>Bedingung:</strong> meist ein Vergleich mit dem Zähler, etwa <code>i &lt; 3</code>. Achte auf <code>&lt;</code> oder <code>&lt;=</code>: Mit Start <code>0</code> ergibt <code>i &lt; 3</code> drei Runden, <code>i &lt;= 3</code> vier.</div>
+      <div hidden data-erkl="schritt"><strong>Schritt:</strong> verändert den Zähler, meist mit <code>i++</code>, also um 1 erhöhen. Er muss den Zähler so verändern, dass die Bedingung irgendwann <code>false</code> ergibt, sonst läuft die Schleife endlos.</div>
+      <div hidden data-erkl="kl"><strong>Die geschweiften Klammern</strong> markieren Anfang und Ende des Rumpfs. Ergibt die Bedingung <code>false</code>, geht es mit der ersten Zeile hinter der schließenden Klammer weiter.</div>
+      <div hidden data-erkl="rumpf"><strong>Schleifenrumpf:</strong> die Anweisungen für eine Runde. Hier kannst du den aktuellen Wert des Zählers benutzen, etwa <code>System.out.println("Round " + i);</code>.</div>
+    </div>
+
+    <div class="codebox">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>DieDreiSchleifen.java (2 von 3)</p>
+<pre><code class="java">// for, die Zählschleife: alles Organisatorische in einer Zeile
+for (int i = 0; i < 3; i++) {
+    System.out.println("Round " + i);
+}</code></pre>
+    </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+      <table>
+        <tr><td><code>int i = 0</code></td><td><strong>Start:</strong> legt den Zähler <code>i</code> an und setzt ihn auf 0. Läuft genau einmal, vor der ersten Runde. Das „ab 0 zählen“ wird in Kapitel 8 wichtig.</td></tr>
+        <tr><td><code>i &lt; 3</code></td><td><strong>Weitermachen, solange?</strong> Vor jeder Runde geprüft. Bei <code>false</code> ist Schluss.</td></tr>
+        <tr><td><code>i++</code></td><td><strong>Nach jeder Runde:</strong> <code>i</code> um 1 erhöhen.</td></tr>
+        <tr><td><code>System.out.println("Round " + i);</code></td><td>der Rumpf, jedes Mal mit dem aktuellen Wert von <code>i</code>.</td></tr>
+      </table>
+    </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">SCHREIBTISCHTEST · RUNDE FÜR RUNDE</p>
+      <table>
+        <tr><td><strong><code>i</code></strong></td><td><strong><code>i &lt; 3</code> ?</strong></td><td><strong>was passiert</strong></td></tr>
+        <tr><td><code>0</code></td><td><code>true</code></td><td>Ausgabe „Round 0“, dann macht <code>i++</code> aus 0 eine 1</td></tr>
+        <tr><td><code>1</code></td><td><code>true</code></td><td>Ausgabe „Round 1“, dann wird <code>i</code> zu 2</td></tr>
+        <tr><td><code>2</code></td><td><code>true</code></td><td>Ausgabe „Round 2“, dann wird <code>i</code> zu 3</td></tr>
+        <tr><td><code>3</code></td><td><code>false</code></td><td>Schluss: Die Schleife ist nach 3 Runden fertig, weiter geht es hinter der schließenden Klammer</td></tr>
+      </table>
+    </div>
+    <p>Noch klarer wird es im Stepper unten.</p>
+  </section>
+
+ <section class="widget">
+ <h3>Der Schleifen-Stepper</h3>
+ <p class="widget-hinweis">Die for-Schleife Schritt für Schritt: Jeder Klick auf „Schritt“ führt genau einen Teil aus, den Start, die Prüfung, den Rumpf oder den Schritt. So gehen Profis im Debugger durch ihren Code.</p>
+
+ <div class="wflex">
+ <div style="flex:2 1 300px">
+ <div class="codebox flach" style="margin:0">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Schleife.java</p>
+<pre><code class="nohl" style="background:none;border:none;padding:0;white-space:pre;color:#f0eef7;font-size:0.92rem;line-height:2">for (<span id="st-init" class="st-part">int i = 0</span>; <span id="st-cond" class="st-part">i &lt; 3</span>; <span id="st-inc" class="st-part">i++</span>) {
+    <span id="st-body" class="st-part">System.out.println("Round " + i);</span>
+}
+<span id="st-end" class="st-part">// fertig, hier geht's weiter</span></code></pre>
+ </div>
+ <p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-klein" id="st-step">Schritt </button>
+ <button class="btn btn-klein" id="st-auto">Auto </button>
+ <button class="btn btn-klein" id="st-reset"> Reset</button></p>
+ </div>
+ <div style="flex:1 1 200px">
+ <div style="display:flex;justify-content:center;margin-bottom:14px">
+ <div class="var-box" style="width:120px;min-height:90px">
+ <span class="var-type">int</span>
+ <span class="var-name">i</span>
+ <span class="var-value" id="st-i">: </span>
+ </div>
+ </div>
+ <p class="statuszeile" id="st-status" style="text-align:center">Bereit. Drück „Schritt“.</p>
+ </div>
+ </div>
+ <div class="sim-konsole" id="st-out" style="margin-top:14px"></div>
+ </section>
+
+  <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Das <code>i</code> aus der for-Zeile gilt nur <em>in</em> der Schleife, hinter der schließenden
+ Klammer is es weg (<a href="04-methoden.html#wo-eine-variable-gilt">Kapitel 4</a>). Was die Schleife
+ <strong>überleben</strong> soll (Summe, Zähler, Merker), deklarierst du deshalb <strong>davor</strong>.</p>
+ </div>
+
+ <p>Und jetzt Code <strong>lesen</strong>, die Königsdisziplin. Was gibt diese Schleife aus?</p>
+
+ <div class="codebox runner" data-trace data-out="6">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Summe.java (Ausschnitt)</p>
+<pre><code class="java">int sum = 0;
+for (int i = 1; i <= 3; i++) {
+    sum = sum + i;
+}
+System.out.println(sum);   // println steht NACH der Schleife!</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <p>Zum Schluss <strong>Schleife und if zusammen</strong>: das Klatschspiel aus der Grundschule
+ in Java (mit <code>%</code> aus Kapitel 3):</p>
+
+ <div class="codebox runner" data-out="1\n2\n3 CLAP! \n4\n5\n6 CLAP! \n7\n8\n9 CLAP! \n10">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Klatschspiel.java (Ausschnitt)</p>
+<pre><code class="java">for (int i = 1; i <= 10; i++) {
+    if (i % 3 == 0) {                       // Rest 0 beim Teilen durch 3?
+        System.out.println(i + " CLAP! ");
+    } else {
+        System.out.println(i);
+    }
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+  </section>
+
+  <section class="block">
+    <h2 id="while-vs-do-while-der-schwarzfahrer-test"><span class="nr">7.3</span> Fußgesteuerte Schleife: do-while</h2>
+    <p class="wozu">Manchmal muss der Rumpf laufen, bevor es überhaupt etwas zu prüfen gibt: Ob eine PIN falsch ist, weiß man erst, wenn sie eingegeben wurde. <code>do-while</code> stellt die Prüfung deshalb ans Ende.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="do">do</span> <span data-teil="kl">{</span>
+    <var data-teil="rumpf">Anweisungen, die wiederholt werden</var>
+<span data-teil="kl">}</span> <span data-teil="while">while</span> (<var data-teil="bed">Bedingung</var>)<span data-teil="semi">;</span></code></pre>
+      <p class="aufbau-info">Hinter der Bedingung steht ein Semikolon. Geprüft wird erst <strong>nach</strong> dem Rumpf, also läuft er mindestens einmal.</p>
+      <div hidden data-erkl="do"><strong><code>do</code></strong> heißt „mache“ und leitet die Schleife ein. Hier wird nichts geprüft, das Programm geht direkt in den Rumpf.</div>
+      <div hidden data-erkl="kl"><strong>Die geschweiften Klammern</strong> markieren Anfang und Ende des Rumpfs. Direkt hinter der schließenden Klammer folgt die Prüfung mit <code>while</code>.</div>
+      <div hidden data-erkl="rumpf"><strong>Schleifenrumpf:</strong> die Anweisungen für eine Runde, etwa <code>enterPin();</code>. Auch hier muss etwas im Rumpf dafür sorgen, dass die Bedingung irgendwann <code>false</code> ergibt.</div>
+      <div hidden data-erkl="while"><strong><code>while</code></strong> leitet hier die Prüfung am Ende ein. Es ist dasselbe Schlüsselwort wie bei der while-Schleife, nur steht es hinter dem Rumpf statt davor.</div>
+      <div hidden data-erkl="bed"><strong>Bedingung:</strong> etwa <code>pinWrong</code>. Ergibt sie <code>true</code>, beginnt die nächste Runde wieder bei <code>do</code>. Bei <code>false</code> geht es mit der Zeile darunter weiter.</div>
+      <div hidden data-erkl="semi"><strong>Das Semikolon</strong> schließt die do-while-Schleife ab. Fehlt es, meldet der Compiler <code>';' expected</code>. Bei der while-Schleife steht hinter der Bedingung dagegen keins.</div>
+    </div>
+
+    <div class="codebox">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>DieDreiSchleifen.java (3 von 3)</p>
+<pre><code class="java">// do-while, "mach ERST, prüf DANACH" (läuft mindestens 1x)
+do {
+    enterPin();
+} while (pinWrong);</code></pre>
+    </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+      <table>
+        <tr><td><code>do {</code></td><td>steigt ohne Prüfung in den Rumpf ein.</td></tr>
+        <tr><td><code>enterPin();</code></td><td>der Rumpf: Die erste Eingabe kommt auf jeden Fall.</td></tr>
+        <tr><td><code>} while (pinWrong);</code></td><td>erst jetzt die Prüfung. Ist die PIN falsch, geht es zurück zu <code>do</code>, sonst weiter unter dieser Zeile.</td></tr>
+      </table>
+    </div>
+
+ <p>Zwei <strong>fast identische</strong> Schleifen. Einziger Unterschied: Die Bedingung wird
+ <em>vor</em> oder <em>nach</em> dem Rumpf geprüft. Macht das was aus?</p>
+
+ <div class="predict" data-target="#wd-while, #wd-do">
+ <p class="predict-q"><strong>Erst festlegen:</strong> <code>hasTicket</code> ist <code>false</code>. Was gibt der <strong>while</strong>-Block (Variante A) aus?</p>
+ <div class="predict-opts">
+ <button>Gar nichts</button>
+ <button>Einmal „eine Station gefahren“</button>
+ <button>Er läuft endlos</button>
+ </div>
+ <p class="predict-notiz" hidden>Festgelegt! Jetzt führ beide Blöcke aus und vergleiche.</p>
+ </div>
+
+ <div class="wflex">
+ <div class="feld">
+ <h4>Variante A: while</h4>
+ <div class="codebox flach" style="margin:10px 0">
+<pre><code class="java">boolean hasTicket = false;
+while (hasTicket) {
+    rideOneStop();
+}</code></pre>
+ </div>
+ <button class="btn btn-klein" id="wd-while"> Ausführen</button>
+ <div class="sim-konsole" id="wd-while-out" style="margin-top:10px"></div>
+ </div>
+ <div class="feld">
+ <h4>Variante B: do-while</h4>
+ <div class="codebox flach" style="margin:10px 0">
+<pre><code class="java">boolean hasTicket = false;
+do {
+    rideOneStop();
+} while (hasTicket);</code></pre>
+ </div>
+ <button class="btn btn-klein" id="wd-do"> Ausführen</button>
+ <div class="sim-konsole" id="wd-do-out" style="margin-top:10px"></div>
+ </div>
+ </div>
+
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Auflösung: erst beide ausführen, dann aufklappen!<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Ohne Ticket fährt A <strong>keine</strong> Station, B <strong>genau eine</strong>.</p>
+ <ul>
+ <li><strong>while</strong> prüft <em>vor</em> dem Rumpf: <code>hasTicket</code> ist von Anfang an <code>false</code>, also läuft der Rumpf null-mal.</li>
+ <li><strong>do-while</strong> prüft erst <em>nach</em> dem Rumpf: <code>rideOneStop()</code> läuft einmal, erst danach ergibt die Prüfung <code>false</code>.</li>
+ </ul>
+ </div>
+ </details>
+
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+      <p><code>while</code> prüft <strong>vorher</strong>, läuft also vielleicht nie. <code>do-while</code> prüft <strong>nachher</strong>, läuft mindestens einmal.</p>
+    </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Nochmal anders erklärt: die drei Schleifen im Vergleich</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <ul>
+ <li><strong>while</strong> prüft <em>vor</em> dem Rumpf (kopfgesteuert). Ergibt die Bedingung gleich beim ersten Mal <code>false</code>, läuft der Rumpf null-mal.</li>
+ <li><strong>do-while</strong> prüft <em>nach</em> dem Rumpf (fußgesteuert). Der Rumpf läuft immer mindestens einmal, etwa bei einer PIN-Eingabe.</li>
+ <li><strong>for</strong> prüft ebenfalls <em>vor</em> jeder Runde. Start, Bedingung und Schritt stehen in einer Zeile: die Zählschleife.</li>
+ </ul>
+ <p>Faustregel: <strong>Anzahl bekannt &rarr; for. Anzahl unknown &rarr; while.</strong>
+ „Erst machen, dann prüfen“ &rarr; do-while (am seltensten).</p>
+ </div>
+ </details>
+  </section>
+
+
+  <section class="block">
+    <h2 id="struktogramm-wiederholung"><span class="nr">7.4</span> Wiederholung im Struktogramm</h2>
+    <p class="wozu">Drei Grundformen kennst du aus Kapitel 6, die vierte ist die Wiederholung. Sie bekommt
+      einen <strong>L-förmigen Rahmen</strong>: Der Balken mit der Bedingung und ein schmaler
+      Streifen an der Seite umfassen den Rumpf. Ob <code>while</code> oder <code>do-while</code>,
+      <em>sieht</em> man sofort: Der Bedingungsbalken sitzt oben oder unten.</p>
+
+    <figure class="opener weit">
+      <img src="../img/kapitel/struktogramm-wiederholung.svg" width="520" height="214"
+           alt="Zwei Struktogramme nebeneinander: links die kopfgesteuerte Schleife mit dem Bedingungsbalken oben, rechts die fußgesteuerte Schleife mit dem Bedingungsbalken unten.">
+      <figcaption>Oben oder unten, mehr Unterschied ist es nicht, und genau der entscheidet.</figcaption>
+    </figure>
+
+    <p>Links steht die Bedingung <strong>über</strong> dem Rumpf: zuerst geprüft, im Zweifel
+      läuft er nie (kopfgesteuert). Rechts steht sie <strong>unter</strong> dem Rumpf: Er läuft mindestens
+      einmal (fußgesteuert). Das ist der Unterschied zwischen Variante A und B aus dem Ticket-Beispiel, nur gezeichnet.</p>
+
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+      <p>Vier Grundformen reichen für jedes Programm: Sequenz, Verzweigung, Mehrfachauswahl,
+        Wiederholung.</p>
+    </div>
+
+    <div class="baustein selbst">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>Erst du, dann Java</p>
+      <p>Zeichne den Countdown aus dem Code-Puzzle oben als Struktogramm.
+        Welche Grundform steckt drin, und was steht im Bedingungsbalken?</p>
+    </div>
+  </section>
+
+
+  <section class="block">
+    <h2 id="schleife-in-der-schleife"><span class="nr">7.5</span> Verschachtelte Schleifen</h2>
+    <p class="wozu">Im Rumpf einer Schleife darf alles stehen, also auch eine zweite Schleife. Die äußere zählt
+      dann die <strong>Zeilen</strong>, die innere, was in einer Zeile passiert.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="aussen">for</span> (<var data-teil="start">äußerer Start</var>; <var data-teil="bed">Bedingung</var>; <var data-teil="schritt">Schritt</var>) <span data-teil="aussen">{</span>
+    <span data-teil="innen">for</span> (<var data-teil="start">innerer Start</var>; <var data-teil="bed">Bedingung</var>; <var data-teil="schritt">Schritt</var>) <span data-teil="innen">{</span>
+        <var data-teil="eintrag">Anweisungen für einen Eintrag der Zeile</var>
+    <span data-teil="innen">}</span>
+    <var data-teil="zeilenende">Anweisungen am Ende der Zeile</var>
+<span data-teil="aussen">}</span></code></pre>
+      <p class="aufbau-info">Pro Durchlauf der äußeren läuft die innere <strong>komplett</strong> durch.</p>
+      <div hidden data-erkl="aussen"><strong>Die äußere Schleife</strong> reicht vom ersten <code>for</code> bis zur letzten schließenden Klammer. Eine Runde der äußeren ergibt eine Zeile, im Einmaleins zählt <code>row</code> von 1 bis 3.</div>
+      <div hidden data-erkl="innen"><strong>Die innere Schleife</strong> steht im Rumpf der äußeren. Sie zählt die Einträge einer Zeile, im Einmaleins <code>column</code> von 1 bis 4.</div>
+      <div hidden data-erkl="start"><strong>Äußerer und innerer Start:</strong> Der äußere läuft genau einmal, der innere in jeder Runde der äußeren neu. Der innere Zähler beginnt also in jeder Zeile wieder von vorn. Die beiden Zähler brauchen verschiedene Namen, etwa <code>row</code> und <code>column</code>.</div>
+      <div hidden data-erkl="bed"><strong>Bedingung:</strong> Jede Schleife hat ihre eigene, etwa <code>row &lt;= 3</code> außen und <code>column &lt;= 4</code> innen. Die innere Bedingung darf auch den Zähler der äußeren benutzen, dann ist jede Zeile unterschiedlich lang.</div>
+      <div hidden data-erkl="schritt"><strong>Schritt:</strong> verändert den Zähler der eigenen Schleife, also <code>row++</code> außen und <code>column++</code> innen. Ein häufiger Fehler ist <code>row++</code> in der inneren Schleife: Dann ändert sich <code>column</code> nie, und die innere Schleife läuft endlos.</div>
+      <div hidden data-erkl="eintrag"><strong>Anweisungen für einen Eintrag:</strong> der Rumpf der inneren Schleife, etwa <code>line = line + (row * column) + " ";</code>. Hier kannst du beide Zähler benutzen, den äußeren und den inneren.</div>
+      <div hidden data-erkl="zeilenende"><strong>Anweisungen am Ende der Zeile:</strong> Sie stehen hinter der inneren Schleife, aber noch in der äußeren, und laufen deshalb einmal je Zeile. Ein Beispiel ist die Ausgabe der fertigen Zeile mit <code>System.out.println(line.trim());</code>.</div>
+    </div>
+
+ <div class="codebox runner" data-trace data-out="1 2 3 4\n2 4 6 8\n3 6 9 12">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>TimesTable.java</p>
+<pre><code class="java">public class TimesTable {
+
+    public static void main(String[] args) {
+        for (int row = 1; row &lt;= 3; row++) {
+            String line = "";
+
+            for (int column = 1; column &lt;= 4; column++) {
+                line = line + (row * column) + " ";
+            }
+
+            System.out.println(line.trim());
+        }
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+      <table>
+        <tr><td><code>for (int row = 1; row &lt;= 3; row++)</code></td><td>die äußere Schleife: drei Runden, eine je Ausgabezeile.</td></tr>
+        <tr><td><code>String line = "";</code></td><td>steht in der äußeren Schleife: Jede Reihe beginnt mit einem leeren Text.</td></tr>
+        <tr><td><code>for (int column = 1; column &lt;= 4; column++)</code></td><td>die innere Schleife: läuft in <strong>jeder</strong> Runde der äußeren viermal.</td></tr>
+        <tr><td><code>line = line + (row * column) + " ";</code></td><td>hängt das Produkt und ein Leerzeichen an. In Reihe 2 wächst <code>line</code> so bis „2 4 6 8 “.</td></tr>
+        <tr><td><code>System.out.println(line.trim());</code></td><td>steht hinter der inneren, aber noch in der äußeren Schleife: einmal je Reihe. <code>trim()</code> schneidet das letzte Leerzeichen ab.</td></tr>
+      </table>
+    </div>
+
+ <p>Die Zähler heißen absichtlich <code>row</code> und <code>column</code>, nicht <code>i</code>
+ und <code>j</code>. Bei zwei Schleifen ineinander entscheidet ein sprechender Name zwischen
+ „lesbar“ und „raten“.</p>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Die Runden <strong>multiplizieren</strong> sich: 3 außen mal 4 innen sind <strong>twelve</strong>
+ Durchläufe des inneren Rumpfs, nicht sieben. Bei je 1000 Einträgen sind es eine Million Schritte,
+ und das merkt man.</p>
+ </div>
+  </section>
+
+
+  <section class="block">
+    <h2 id="break-und-continue"><span class="nr">7.6</span> Sprunganweisungen: break und continue</h2>
+    <p class="wozu">Manchmal will man nicht bis zum Ende zählen: Das Gesuchte ist gefunden, oder eine Runde soll ausfallen. Dafür gibt es zwei Wörter.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="break">break</span><span data-teil="semi">;</span>       Schleife sofort verlassen
+<span data-teil="continue">continue</span><span data-teil="semi">;</span>    diese Runde überspringen</code></pre>
+      <p class="aufbau-info">Nach <code>break</code> geht es hinter der schließenden Klammer der Schleife weiter, nach <code>continue</code> mit der nächsten Runde. Beide stehen im Rumpf, meist in einem <code>if</code>.</p>
+      <div hidden data-erkl="break"><strong><code>break</code></strong> beendet die ganze Schleife, auch wenn ihre Bedingung noch <code>true</code> ergibt. In verschachtelten Schleifen betrifft es nur die innerste, in der es steht. Typisch ist <code>break</code> nach einem Treffer: <code>if (number == searchValue) { break; }</code></div>
+      <div hidden data-erkl="continue"><strong><code>continue</code></strong> überspringt den Rest des Rumpfs. In einer for-Schleife folgt danach der Schritt, etwa <code>i++</code>, dann die Prüfung. Vorsicht in einer while-Schleife: Steht das <code>i++</code> hinter dem <code>continue</code>, wird es übersprungen, und die Schleife läuft endlos.</div>
+      <div hidden data-erkl="semi"><strong>Das Semikolon:</strong> <code>break</code> und <code>continue</code> sind eigene Anweisungen und enden wie jede Anweisung mit <code>;</code>. Steht dahinter im selben Block noch eine Anweisung, meldet der Compiler <code>unreachable statement</code>, denn sie könnte nie laufen.</div>
+    </div>
+
+ <div class="codebox runner" data-trace data-out="1\n2\n4">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>EmergencyExit.java</p>
+<pre><code class="java">public class EmergencyExit {
+
+    public static void main(String[] args) {
+        for (int i = 1; i &lt;= 6; i++) {
+            if (i == 3) {
+                continue;
+            }
+            if (i == 5) {
+                break;
+            }
+            System.out.println(i);
+        }
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">SCHREIBTISCHTEST · RUNDE FÜR RUNDE</p>
+      <table>
+        <tr><td><strong><code>i</code></strong></td><td><strong><code>i == 3</code> ?</strong></td><td><strong><code>i == 5</code> ?</strong></td><td><strong>Ausgabe</strong></td></tr>
+        <tr><td><code>1</code></td><td><code>false</code></td><td><code>false</code></td><td><code>1</code></td></tr>
+        <tr><td><code>2</code></td><td><code>false</code></td><td><code>false</code></td><td><code>2</code></td></tr>
+        <tr><td><code>3</code></td><td><code>true</code>: <code>continue</code></td><td>nicht mehr geprüft</td><td>keine: <code>continue</code> überspringt den Rest <em>dieser</em> Runde, weiter mit <code>i++</code></td></tr>
+        <tr><td><code>4</code></td><td><code>false</code></td><td><code>false</code></td><td><code>4</code></td></tr>
+        <tr><td><code>5</code></td><td><code>false</code></td><td><code>true</code>: <code>break</code></td><td>keine: <code>break</code> beendet die ganze Schleife, die <code>6</code> wird nie geprüft</td></tr>
+      </table>
+    </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <ul>
+ <li><code>break</code> heißt „hier raus“, <code>continue</code> heißt „diese Runde überspringen“.</li>
+ <li>In verschachtelten Schleifen wirkt <code>break</code> nur auf die <strong>innerste</strong> Schleife,
+ in der es steht.</li>
+ </ul>
+ </div>
+ <div class="oaky">
+ <img class="figur" src="../img/kapitel/oaky-finger.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p>Beides sparsam benutzen: Steht die Abbruchbedingung oben in der Klammer, liest man die
+ Schleife in einem Zug. Faustregel: <code>break</code>, wenn du das Gesuchte gefunden hast,
+ sonst lieber die Bedingung anpassen.</p>
+ </div>
+ </div>
+  </section>
+
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Das reicht für jetzt</p>
+ <ul>
+ <li><code>while</code> prüft <strong>vorher</strong>, läuft also vielleicht nie. <code>do-while</code> prüft <strong>nachher</strong>, läuft mindestens einmal.</li>
+ <li><code>for</code> zählt: Start / Bedingung / Schritt in einer Zeile. Anzahl bekannt: <code>for</code>. Unbekannt: <code>while</code>.</li>
+ <li>Etwas im Rumpf muss die Bedingung Richtung <code>false</code> bewegen, sonst läuft die Schleife ewig.</li>
+ <li>Das <code>i</code> aus der for-Zeile gilt nur in der Schleife. Summen und Zähler davor deklarieren.</li>
+ <li>Struktogramm: L-Rahmen, Bedingungsbalken oben (<code>while</code>) oder unten (<code>do-while</code>).</li>
+ <li>Verschachtelt multiplizieren sich die Runden. <code>break</code> verlässt die Schleife, <code>continue</code> überspringt eine Runde.</li>
+ </ul>
+ </div>
+ </section>
+ <section class="baustein uebung quiz">
+ <h3>Checkpoint</h3>
+ <p class="widget-hinweis">6 Fragen: bei Nummer 3 hilft der Stepper von oben.</p>
+
+ <div class="qq">
+ <p class="qq-text">1. Was gehört in die Klammern eines if?</p>
+ <div class="qq-opt">
+ <button data-why="Eine Zahl allein ist keine Bedingung. In die Klammer gehört ein Ausdruck, der true oder false ergibt (z. B. zahl > 10).">Eine beliebige Zahl</button>
+ <button data-ok>Ein Ausdruck, der true oder false ergibt</button>
+ <button data-why='"alter > 18" in Anführungszeichen wäre nur Text, Java würde ihn nicht auswerten. Die Bedingung steht ohne Anführungszeichen da.'>Ein String mit der Bedingung als Text</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Die Bedingung is immer ein boolean-Ausdruck: Vergleiche, verknüpft mit &amp;&amp;, ||, !.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">2. Welche Schleife läuft garantiert mindestens einmal?</p>
+ <div class="qq-opt">
+ <button data-why="while prüft VOR dem Rumpf: Ist die Bedingung sofort false, läuft der Rumpf null-mal.">while</button>
+ <button data-ok>do-while</button>
+ <button data-why="Auch for prüft VOR jeder Runde, bei for (int i = 5; i < 3; …) passiert exakt nichts.">for</button>
+ </div>
+ <p class="qq-erklaerung" hidden>do-while prüft die Bedingung erst NACH dem ersten Durchlauf. Der Rumpf läuft also immer mindestens einmal.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">3. Wie oft druckt diese Schleife? <code>for (int i = 0; i &lt; 4; i++) { System.out.println(i); }</code></p>
+ <div class="qq-opt">
+ <button data-why="Du hast bei 1 angefangen zu zählen, aber i startet bei 0! Die 0 ist ein vollwertiger Durchlauf.">3-mal (1, 2, 3)</button>
+ <button data-why="Bei i = 4 ist die Bedingung i < 4 FALSE, die 4 wird nie gedruckt. Das < ist kein <=.">5-mal (0, 1, 2, 3, 4)</button>
+ <button data-ok>4-mal (0, 1, 2, 3)</button>
+ </div>
+ <p class="qq-erklaerung" hidden>i startet bei 0 und läuft, solange i &lt; 4: also 0, 1, 2, 3. Bei i = 4 is die Bedingung false, Schluss. Das „ab 0 zählen“ wird in Kapitel 8 wichtig.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">4. Was ist der Unterschied zwischen <code>=</code> und <code>==</code>?</p>
+ <div class="qq-opt">
+ <button data-ok>= weist einen Wert zu, == vergleicht zwei Werte</button>
+ <button data-why="Es sind zwei völlig verschiedene Operatoren: = weist einen Wert zu, == vergleicht und liefert true oder false.">Kein Unterschied, == is nur betontes =</button>
+ <button data-why="Verführerisch, aber Strings vergleicht man mit .equals(), nicht mit ==. Und = weist bei ALLEN Typen zu.">== is für Strings, = für Zahlen</button>
+ </div>
+ <p class="qq-erklaerung" hidden>= speichert einen Wert in der Variable, == prüft, ob zwei Werte gleich sind. Die Verwechslung ist DER Klassiker.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">5. Wann ist <code>(age >= 18 &amp;&amp; hasTicket)</code> wahr?</p>
+ <div class="qq-opt">
+ <button data-why="„Eins reicht“ wäre || (ODER). && ist strenger: BEIDE Bedingungen müssen true sein.">Wenn mindestens eins von beiden stimmt</button>
+ <button data-ok>Nur wenn BEIDES stimmt: volljährig UND Ticket dabei</button>
+ <button data-why="„Genau eins“ (entweder-oder) gibt es auch, das wäre != aus Kapitel 6 (oder ^). && heißt schlicht: beides.">Nur wenn genau eins von beiden stimmt</button>
+ </div>
+ <p class="qq-erklaerung" hidden>&amp;&amp; = UND: beide Bedingungen müssen true sein. Für „eins reicht“ gäbe es || (ODER).</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">6. <code>input</code> is ein String mit Inhalt "yes". Wie prüfst du das correct?</p>
+ <div class="qq-opt">
+ <button data-why='== prüft bei Strings nicht den Inhalt, sondern ob es exakt dasselbe Objekt im Speicher ist (warum, klärt Kapitel 9). Ergebnis: mal true, mal false. Grusel.'>if (input == "yes")</button>
+ <button data-ok>if (input.equals("yes"))</button>
+ <button data-why="Ein einzelnes = in der Bedingung weist zu statt zu vergleichen, bei Strings gibt das direkt einen Compiler-Fehler.">if (input = "yes")</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Texte (und alle Objekte) vergleicht man mit .equals(), das prüft den INHALT. == prüft nur, ob es dasselbe Objekt ist.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+  <div class="kapitel-ende">
+    <div class="blaettern">
+      <a class="btn" href="06-verzweigungen.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Kapitel 6</a>
+      <a class="btn btn-haupt" href="08-arrays.html">Kapitel 8: Arrays<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </div>
+  </div>
+
+</main>
+
+<footer class="seitenfuss">
+  <div class="seitenfuss-innen">
+    <p><strong>Cheat Sheet: Java</strong> ·
+      Java-Grundlagen für Lernfeld 5,
+      „Software zur Verwaltung von Daten anpassen“, IT-Berufe, Jahrgangsstufe 10.</p>
+  </div>
+</footer>
+
+<script src="../js/app.js"></script>
+<script>
+(function () {
+  var $ = CC.$, $$ = CC.$$;
+
+  /* ---------- Schleifen-Stepper ---------- */
+
+ var stI = null, stPhase = 'start', stAuto = null;
+
+ function stHighlight(id) {
+ ['st-init', 'st-cond', 'st-body', 'st-inc', 'st-end'].forEach(function (x) {
+ var el = $('#' + x);
+ el.style.background = x === id ? 'var(--blau-ink)' : 'transparent';
+ el.style.color = x === id ? '#fff' : '';
+ el.style.borderRadius = '6px';
+ el.style.padding = '1px 4px';
+ });
+ }
+
+ function stStep() {
+ var status = $('#st-status'), iBox = $('#st-i'), out = $('#st-out');
+ if (stPhase === 'start') {
+ stI = 0; stPhase = 'cond';
+ stHighlight('st-init');
+ iBox.textContent = '0';
+
+ status.textContent = '1 Start: Die Variable i wird deklariert und mit 0 initialisiert. (Passiert nur EINMAL!)';
+ } else if (stPhase === 'cond') {
+ stHighlight('st-cond');
+ if (stI < 3) {
+ status.textContent = '2 Prüfung: Ist ' + stI + ' < 3? Ergibt true. Also: Rumpf ausführen!';
+ stPhase = 'body';
+ } else {
+ status.textContent = '2 Prüfung: Ist ' + stI + ' < 3? Ergibt false! Die Schleife ist FERTIG.';
+ stPhase = 'done';
+ }
+ } else if (stPhase === 'body') {
+ stHighlight('st-body');
+ out.textContent += 'Round ' + stI + '\n';
+ status.textContent = '3 Rumpf: println läuft, mit dem aktuellen i (' + stI + ').';
+ stPhase = 'inc';
+ } else if (stPhase === 'inc') {
+ stHighlight('st-inc');
+ stI++;
+ iBox.textContent = String(stI);
+
+ status.textContent = '4 Schritt: i++ erhöht i auf ' + stI + '. Zurück zur Prüfung!';
+ stPhase = 'cond';
+ } else if (stPhase === 'done') {
+ stHighlight('st-end');
+ status.textContent = ' Vorbei. i hat 3 erreicht, die Bedingung war false, es geht nach der Schleife weiter.';
+ if (stAuto) { clearInterval(stAuto); stAuto = null; $('#st-auto').textContent = 'Auto '; }
+ }
+ }
+
+ function stReset() {
+ stI = null; stPhase = 'start';
+ if (stAuto) { clearInterval(stAuto); stAuto = null; $('#st-auto').textContent = 'Auto '; }
+ stHighlight('');
+ $('#st-i').textContent = ', ';
+ $('#st-out').textContent = '';
+ $('#st-status').textContent = 'Bereit. Drück „Schritt“.';
+ }
+
+ $('#st-step').addEventListener('click', stStep);
+ $('#st-reset').addEventListener('click', stReset);
+ $('#st-auto').addEventListener('click', function () {
+ if (stAuto) { clearInterval(stAuto); stAuto = null; this.textContent = 'Auto '; return; }
+ if (stPhase === 'done') stReset();
+ var b = this; b.textContent = ' Pause';
+ stAuto = setInterval(function () { stStep(); }, 900);
+ });
+
+
+  /* ---------- while vs do-while ---------- */
+
+ $('#wd-while').addEventListener('click', function () {
+ var out = $('#wd-while-out');
+ out.textContent = '';
+ setTimeout(function () {
+ out.textContent = '(nichts passiert)\n// Die Bedingung war schon vor der ersten Runde false.\n// Der Rumpf lief null-mal.';
+ }, 300);
+ });
+ $('#wd-do').addEventListener('click', function () {
+ var out = $('#wd-do-out');
+ out.textContent = '';
+ setTimeout(function () { out.textContent = ' eine Station gefahren!'; }, 300);
+ setTimeout(function () {
+ out.textContent += '\n// Erst DANACH die Prüfung: false, die Schleife endet.\n// Der Rumpf lief trotzdem genau EINMAL.';
+ }, 1000);
+ });
+
+
+  /* ---------- Endlosschleifen-Simulator ---------- */
+
+ var infTimer = null, infCount = 0;
+ $('#inf-run').addEventListener('click', function () {
+ if (infTimer) return;
+ infCount = 0;
+ var out = $('#inf-out');
+ out.textContent = '';
+ $('#inf-status').textContent = ' Läuft … und läuft … und läuft … (dein Lüfter: wrrrRRRR)';
+ infTimer = setInterval(function () {
+ for (var i = 0; i < 4; i++) {
+ infCount++;
+ out.textContent += 'Help, I can\'t get out of here! (' + infCount + ')\n';
+ }
+ var lines = out.textContent.split('\n');
+ if (lines.length > 50) out.textContent = lines.slice(lines.length - 50).join('\n');
+ out.scrollTop = out.scrollHeight;
+ }, 80);
+ });
+ $('#inf-stop').addEventListener('click', function () {
+ if (!infTimer) {
+ $('#inf-status').textContent = 'Da läuft (noch) nichts. Erst starten, dann heldenhaft stoppen.';
+ return;
+ }
+ clearInterval(infTimer);
+ infTimer = null;
+ $('#inf-out').textContent += '\n Prozess beendet.';
+ $('#inf-status').innerHTML = '‍ Gestoppt, nach <strong>' + infCount + '</strong> Zeilen. Ein echter Rechner hätte MILLIONEN pro Sekunde geschafft. Merke: Irgendetwas im Rumpf muss die Bedingung Richtung false bewegen, sonst hilft nur der rote Knopf.';
+  });
+})();
+</script>
+</body>
+</html>

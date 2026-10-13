@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 5 · Strings &amp; input · Cheat Sheet: Java</title>
+<meta name="description" content="Ready-made String methods and the Scanner: What comes from the keyboard is raw.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../../img/favicon.svg"><link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Remember this: bookmark</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Quick think: question for you</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Exercise: pencil</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>ZombieApocalypse project task: zombie head</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Scenario task: stopwatch</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: flag</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Explained differently: repeat</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Answer: key</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>The key points: page with dog-eared corner</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Learning goals: target</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Console: prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>IDE: editor window with sidebar</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Error message: bug</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Correct: check mark</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Wrong: cross</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Duration: clock</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Chapter: open notebook</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Table of contents</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Next</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Back</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Down</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Expandable</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Opens a window</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Night shift</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Day view</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Clear progress</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Print</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Skip to content</a>
+
+<nav class="topbar" aria-label="Main navigation">
+ <div class="topbar-innen">
+ <a class="marke" href="../index.html"> <img class="oakymarke" src="../../img/kapitel/oaky.svg" alt="" width="128" height="148"> Cheat Sheet: Java </a> <span class="topbar-titel">Chapter 5 · Other people's methods and the Scanner</span> <span class="topbar-rechts"><a class="btn btn-klein" href="../index.html">Learning path</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Choose language"><span>EN</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="../../kapitel/05-strings-eingabe.html" lang="de" hreflang="de">Deutsch</a></li><li><a href="05-strings-eingabe.html" lang="en" hreflang="en" aria-current="true">English</a></li></ul></details><!--/sprache--></span>
+ </div>
+ <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+ <header class="kapitel-kopf">
+ <p class="kicker">Chapter 5 of 11 · Other people's methods and the Scanner</p>
+ <h1>Strings &amp; input</h1>
+ <p class="vorspann">Up to here you have built methods. Now you use ready-made ones and, for the first time, bring a value from outside into the program.</p>
+ <p class="kapitel-meta"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>approx. 40 min</span></p>
+ </header>
+
+ <section class="einstieg" aria-label="Intro: the problem">
+ <p class="einstieg-kopf">THE PROBLEM</p>
+ <p class="einstieg-frage">The program is supposed to greet everyone sitting in front of it. Who does it greet?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox runner" data-out="Hello Aylin!">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Greeting.java</p>
+<pre><code class="java">String name = "Aylin";
+System.out.println("Hello " + name + "!");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>It always greets Aylin, no matter who is sitting in front of it. The name is fixed in the code.</p>
+ <button class="btn einstieg-knopf" type="button">With input from the keyboard</button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-in="Mia" data-out="What is your name?\nHello Mia!">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Greeting.java</p>
+<pre><code class="java">import java.util.Scanner;
+
+public class Greeting {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("What is your name?");
+        String name = keyboard.nextLine();
+        System.out.println("Hello " + name + "!");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">Now the program asks, and the name comes from the keyboard (“Mia” was typed here). This chapter shows how input works and how you prepare texts.</p>
+ </div>
+ </section>
+
+
+
+ <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Contents of this chapter">
+ <h2 id="in-diesem-kapitel">In this chapter</h2>
+ </nav>
+
+ <details class="baustein ziele">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>After this chapter you can<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+   <div class="inhalt">
+     <ul>
+ <li>use ready-made methods of <code>String</code>: <code>trim</code>, <code>toUpperCase</code>, <code>charAt</code>, <code>replace</code></li>
+ <li>explain why <code>input.trim();</code> on its own does nothing at all</li>
+ <li>read a value from the keyboard with <code>Scanner</code></li>
+ <li>tell casting and parsing apart and use <code>parseInt</code> &amp; Co. correctly</li>
+ </ul>
+   </div>
+ </details>
+
+
+ <section class="block">
+ <h2 id="methoden-die-es-schon-gibt"><span class="nr">5.1</span> Methods of the String class</h2>
+ <p class="wozu">Most methods you will ever use were written by someone else. A few are built into every <code>String</code>: They count characters, remove spaces, and replace text, without you writing a single line of it yourself.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><var data-teil="text">text</var><span data-teil="punkt">.</span><var data-teil="methode">method</var>(<var data-teil="arg">arguments</var>)
+<var data-teil="text">text</var><span data-teil="punkt">.</span><var data-teil="methode">method</var>()<span data-teil="punkt">.</span><var data-teil="naechste">next method</var>()</code></pre>
+ <p class="aufbau-info">They are called differently from yours, namely <span class="hl">on a value</span>: first the value, then a dot, then the name. If a method returns a String again, you call the next one right on it, read from left to right.</p>
+ <div hidden data-erkl="text"><strong>text:</strong> the String on which the method is called, usually a variable like <code>raw</code> or <code>name</code>. It never changes itself: <code>raw.trim();</code> alone on a line leaves <code>raw</code> unchanged. You store the result in a variable: <code>String clean = raw.trim();</code></div>
+ <div hidden data-erkl="punkt"><strong>The dot</strong> is the dot operator: It calls the method on exactly this value. When you type the dot in the IDE, it suggests all the methods a String has.</div>
+ <div hidden data-erkl="methode"><strong>method:</strong> the name of the method, such as <code>trim</code>, <code>length</code>, or <code>toUpperCase</code>, spelled exactly like this, including uppercase and lowercase letters. The parentheses always belong to it, even if they stay empty: the compiler reports <code>raw.length</code> without parentheses as an error.</div>
+ <div hidden data-erkl="arg"><strong>Arguments:</strong> the values the method needs to work, separated by commas: <code>charAt(0)</code>, <code>replace("felix", "franz")</code>. If it needs none, the parentheses stay empty: <code>trim()</code>.</div>
+ <div hidden data-erkl="naechste"><strong>next method:</strong> It runs on the return value of the method before it. This is called method chaining: In <code>raw.trim().toUpperCase()</code>, <code>toUpperCase()</code> runs on the String without spaces at the edges. If the method before it returns a number like <code>length()</code>, there are no String methods on it: the compiler reports <code>raw.length().trim()</code> as an error.</div>
+ </div>
+
+ <div class="codebox runner" data-out="15\nZombiefelix\n11\nZOMBIEFELIX\nZ\nZombiefranz">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>TextTool.java</p>
+<pre><code class="java">public class TextTool {
+
+    public static void main(String[] args) {
+        String raw = "  Zombiefelix  ";
+
+        System.out.println(raw.length());
+        System.out.println(raw.trim());
+        System.out.println(raw.trim().length());
+        System.out.println(raw.trim().toUpperCase());
+        System.out.println(raw.trim().charAt(0));
+        System.out.println(raw.trim().replace("felix", "franz"));
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">LINE BY LINE</p>
+ <table>
+ <tr><td><code>raw.length()</code></td><td>counts the characters: 11 letters and the four spaces at the edges, 15 in total.</td></tr>
+ <tr><td><code>raw.trim()</code></td><td>returns the same text without the spaces at the beginning and end. Nothing changes in <code>raw</code> itself.</td></tr>
+ <tr><td><code>raw.trim().toUpperCase()</code></td><td>a method chain: <code>toUpperCase()</code> runs right away on the String that <code>trim()</code> returns.</td></tr>
+ <tr><td><code>raw.trim().charAt(0)</code></td><td>the character at position 0, so the first one: <code>Z</code>.</td></tr>
+ <tr><td><code>replace("felix", "franz")</code></td><td>replaces every occurrence of “felix” with “franz”.</td></tr>
+ </table>
+ </div>
+
+ <p>These six are enough for the start:</p>
+ <ul>
+ <li><code>length()</code>: how many characters? (Spaces count, too.)</li>
+ <li><code>trim()</code>: cuts off spaces at the beginning and end.</li>
+ <li><code>toLowerCase()</code> / <code>toUpperCase()</code>: all lowercase, all uppercase.</li>
+ <li><code>charAt(i)</code>: the character at position <code>i</code>. Counting starts at 0.</li>
+ <li><code>replace(old, replacement)</code>: replaces every occurrence.</li>
+ <li><code>equals(other)</code>: compare contents (Chapter 6).</li>
+ </ul>
+ <div class="baustein selbst">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>You first, then Java</p>
+ <p>The spot that catches most people: Below, <code>input.trim();</code> stands alone on a line, without an assignment. What is in <code>input</code> afterwards? The box asks you for the output before it shows it.</p>
+ </div>
+
+ <div class="codebox runner" data-trace data-out="[  YES  ]\n[YES]">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Immutable.java</p>
+<pre><code class="java">public class Immutable {
+
+    public static void main(String[] args) {
+        String input = "  YES  ";
+
+        input.trim();
+        System.out.println("[" + input + "]");
+
+        String clean = input.trim();
+        System.out.println("[" + clean + "]");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE: the square brackets show where the text ends</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <ul>
+ <li><strong>A String never changes.</strong> <code>trim()</code> does not cut anything off, it <em>returns a new String</em>.</li>
+ <li>If you do not assign this return value to a variable, you calculated for nothing. Just like with your own methods: <span class="hl">The return value has to go somewhere.</span></li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="werte-von-aussen-scanner"><span class="nr">5.2</span> User input with Scanner</h2>
+ <p class="wozu">So far, all values were in the code. A program that <em>asks</em> something must also be able to read the answer. The <code>Scanner</code> takes care of that: It reads what someone types on the keyboard.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="import">import java.util.Scanner;</span>
+
+<span data-teil="tastatur">Scanner</span> <var data-teil="tastatur">keyboard</var> = <span data-teil="new">new Scanner(System.in)</span>;
+<span data-teil="text">String</span> <var data-teil="text">text</var> = <var data-teil="tastatur">keyboard</var>.<span data-teil="nextline">nextLine()</span>;</code></pre>
+ <p class="aufbau-info">The import goes at the very top, above the class, the other two lines in <code>main</code>. Three lines, and only the third one you have to understand today.</p>
+ <div hidden data-erkl="import"><strong>The import statement</strong> tells the compiler the package in which the class <code>Scanner</code> lives: <code>java.util</code>. If it is missing, at <code>Scanner</code> the compiler reports the error <em>cannot find symbol</em>. The IDE adds the line for you on request.</div>
+ <div hidden data-erkl="tastatur"><strong>Scanner keyboard</strong> declares a variable of type <code>Scanner</code>. The name is freely chosen, such as <code>keyboard</code> or <code>sc</code>, but must appear exactly the same again in front of <code>.nextLine()</code>. One Scanner is enough for all input of the program.</div>
+ <div hidden data-erkl="new"><strong><code>new Scanner(System.in)</code></strong> creates a Scanner object and connects it to <code>System.in</code>, the standard input, that is, the keyboard. <code>System.in</code> is the counterpart to <code>System.out</code>. What <code>new</code> does exactly is covered in <a href="09-objekte-klassen.html">Chapter 9</a>.</div>
+ <div hidden data-erkl="text"><strong>String text</strong> declares the variable in which the input is stored. Its type is <code>String</code>, because <code>nextLine()</code> always returns text, even if someone types <code>17</code>. To calculate with it, you first have to convert it to a number; parsing comes in 5.3.</div>
+ <div hidden data-erkl="nextline"><strong><code>nextLine()</code></strong> reads the whole typed line up to the Enter key and returns it as a String. Until then, the program waits at this point. Spaces at the edges are kept, which is why <code>.trim()</code> often follows right away.</div>
+ </div>
+
+ <div class="codebox runner" data-in="  Mia  " data-out="What is your name?\nHello Mia.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Greeting.java</p>
+<pre><code class="java">import java.util.Scanner;
+
+public class Greeting {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("What is your name?");
+        String name = keyboard.nextLine();
+
+        System.out.println("Hello " + name.trim() + ".");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE: typed was “&nbsp;&nbsp;Mia&nbsp;&nbsp;”, with spaces</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">LINE BY LINE</p>
+ <table>
+ <tr><td><code>import java.util.Scanner;</code></td><td>tells the compiler where to find the class <code>Scanner</code>. Without this line, it reports <em>cannot find symbol</em>.</td></tr>
+ <tr><td><code>new Scanner(System.in)</code></td><td>creates the Scanner and connects it to the keyboard (<code>System.in</code> is the standard input, the counterpart to <code>System.out</code>). What <code>new</code> does: <a href="09-objekte-klassen.html">Chapter 9</a>. Until then, just write it down, like the <code>main</code> line.</td></tr>
+ <tr><td><code>keyboard.nextLine()</code></td><td><strong>the interesting part</strong>: a method that returns the typed line as a String. You store this return value in a variable, here in <code>name</code>.</td></tr>
+ <tr><td><code>name.trim()</code></td><td>removes the spaces at the edges of the input: Whoever types “&nbsp;&nbsp;Mia&nbsp;&nbsp;” still gets to read “Hello Mia.”</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p>What comes from the keyboard is <strong>raw</strong>: spaces at the edges, any mix of uppercase and lowercase. With the String methods, you prepare everything that comes from outside before you keep working with it.</p>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-up: The trap that catches everyone once</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>There is <code>nextInt()</code> for numbers. If you mix it with <code>nextLine()</code>, things get strange: <code>nextInt()</code> reads the number, but the line break from the Enter key stays unread in the input buffer. The next <code>nextLine()</code> reads this empty line and is finished immediately, without waiting.</p>
+ <p>The fix: a single <code>keyboard.nextLine();</code> directly after the <code>nextInt()</code>. The return value is <em>deliberately</em> not used here:</p>
+ <div class="codebox runner" data-in="3\nZombiefelix" data-out="How many zombies?\nWhat is the first one called?\n3 zombies, the first one is called Zombiefelix.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Counter.java</p>
+<pre><code class="java">import java.util.Scanner;
+
+public class Counter {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("How many zombies?");
+        int count = keyboard.nextInt();
+        keyboard.nextLine();
+
+        System.out.println("What is the first one called?");
+        String name = keyboard.nextLine();
+
+        System.out.println(count + " zombies, the first one is called " + name.trim() + ".");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE: typed was 3, then Zombiefelix</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p>Try leaving out <code>keyboard.nextLine();</code> in your IDE: The program asks for the name and is finished in the same moment.</p>
+ </div>
+ </details>
+
+ <div class="oaky">
+ <img class="figur" src="../../img/kapitel/oaky-zeigt.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p>Two lines to memorize, one to understand. That is how it is with libraries: You use them long before you see through them. That is the only way anyone ever gets finished.</p>
+ </div>
+ </div>
+ </section>
+
+
+ <section class="block">
+ <h2 id="casten-oder-parsen"><span class="nr">5.3</span> Casting and parsing</h2>
+ <p class="wozu">With <code>nextLine()</code>, you always get <strong>text</strong>. Even if someone types <code>17</code>, the variable holds a <code>String</code>. You cannot calculate with it: <code>raw + 1</code> just appends a <code>1</code> to the text. Two ways turn a value into another type, and they only look alike at first glance.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="cast">(</span><var data-teil="zieltyp">target type</var><span data-teil="cast">)</span> <var data-teil="zahl">number</var>                 Casting: number to number
+<var data-teil="wrapper">Wrapper</var>.<span data-teil="parsetyp">parse</span><var data-teil="parsetyp">type</var>(<var data-teil="text">Text</var>)      Parsing: text to number</code></pre>
+ <p class="aufbau-info">The four parse methods are all built the same way: <strong>wrapper class</strong>, dot, <code>parse</code> plus type, such as <code>Integer.parseInt(text)</code>.</p>
+ <div hidden data-erkl="cast"><strong>The parentheses around the type</strong> are the cast operator. It stands directly in front of the value and converts it to the type in the parentheses. It is needed when something can get lost, for example from <code>double</code> to <code>int</code>; from <code>int</code> to <code>double</code> it works without a cast.</div>
+ <div hidden data-erkl="zieltyp"><strong>Target type:</strong> the type the value should get, such as <code>int</code>, <code>long</code>, or <code>double</code>. From <code>double</code> to <code>int</code>, the decimal places are dropped, truncated, not rounded: <code>(int) 7.9</code> gives 7.</div>
+ <div hidden data-erkl="zahl"><strong>Number:</strong> the value that is converted, a number or a variable like <code>number</code>. The cast applies only to the value directly after it: <code>(int) 7.9 * 2</code> gives 14, <code>(int) (7.9 * 2)</code> gives 15.</div>
+ <div hidden data-erkl="wrapper"><strong>Wrapper class:</strong> the class for the target type, always with a capital first letter: <code>Integer</code> for <code>int</code>, <code>Double</code> for <code>double</code>, <code>Long</code> for <code>long</code>, <code>Boolean</code> for <code>boolean</code>.</div>
+ <div hidden data-erkl="parsetyp"><strong>Method name:</strong> <code>parse</code>, followed by the target type with a capital first letter. <code>int</code> becomes <code>parseInt</code>, <code>double</code> becomes <code>parseDouble</code>. So it is <code>Integer.parseInt</code>, not <code>parseInteger</code>.</div>
+ <div hidden data-erkl="text"><strong>Text:</strong> the String from which the number is read, such as the input from <code>nextLine()</code>. It may contain only the number, decimal numbers with a decimal point: <code>"4.99"</code>. With <code>Integer.parseInt("abc")</code> or <code>Integer.parseInt(" 17")</code>, the program aborts with a <code>NumberFormatException</code>.</div>
+ </div>
+ <table>
+ <thead><tr><th></th><th>Casting</th><th>Parsing</th></tr></thead>
+ <tbody>
+ <tr><td>Notation</td><td><code>(int) number</code></td><td><code>Integer.parseInt(text)</code></td></tr>
+ <tr><td>converts</td><td>number to number</td><td><strong>Text</strong> to number</td></tr>
+ <tr><td>what happens</td><td>the number changes its type, decimal places are dropped</td>
+ <td>the digits in the text are read as a number</td></tr>
+ <tr><td>goes wrong if</td><td>the number does not fit into the target type: Then a wrong one comes out <em>silently</em>, <code>(int) 3000000000L</code> gives −1,294,967,296 (overflow, Chapter 3)</td>
+ <td>there is no number in the text: The program crashes</td></tr>
+ </tbody>
+ </table>
+ <table>
+ <thead><tr><th>Call</th><th>yields</th></tr></thead>
+ <tbody>
+ <tr><td><code>Integer.parseInt("42")</code></td><td>the <code>int</code> 42</td></tr>
+ <tr><td><code>Double.parseDouble("4.99")</code></td><td>the <code>double</code> 4.99</td></tr>
+ <tr><td><code>Long.parseLong("8000000000")</code></td><td>the <code>long</code> 8,000,000,000</td></tr>
+ <tr><td><code>Boolean.parseBoolean("true")</code></td><td>the <code>boolean</code> true</td></tr>
+ </tbody>
+ </table>
+ <p>Both in one program: parsed at the top, cast at the bottom. The typed input is <code>17</code>:</p>
+ <div class="codebox runner" data-in="17" data-out="How old are you?\nNext year: 18\nCast: 7">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Input.java</p>
+<pre><code class="java">import java.util.Scanner;
+
+public class Input {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("How old are you?");
+        String raw = keyboard.nextLine();
+        int age = Integer.parseInt(raw);
+        System.out.println("Next year: " + (age + 1));
+
+        double number = 7.9;
+        System.out.println("Cast: " + (int) number);
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">LINE BY LINE</p>
+ <table>
+ <tr><td><code>String raw = keyboard.nextLine();</code></td><td>reads the typed line. <code>17</code>, too, arrives here as text.</td></tr>
+ <tr><td><code>Integer.parseInt(raw)</code></td><td>parses: The digits in the text are read as a number. Afterwards, <code>age</code> holds the <code>int</code> 17.</td></tr>
+ <tr><td><code>(age + 1)</code></td><td>calculates 17 + 1 = 18. The parentheses make sure the calculation happens first and the result is appended to the text afterwards.</td></tr>
+ <tr><td><code>(int) number</code></td><td>casts: The <code>double</code> 7.9 becomes an <code>int</code>, the decimal places are dropped. The result is 7, truncated, not rounded.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p><code>(int) "42"</code> does <strong>not</strong> compile. A cast only converts between number types, it cannot turn a text into a number. Parsing exists for that.</p>
+ </div>
+
+ <section class="baustein selbst quiz">
+ <h3>Exercise 5.3.1: Casting or parsing?</h3>
+ <div class="qq">
+ <p class="qq-text"><code>int b = (int) "7";</code></p>
+ <div class="qq-opt">
+ <button data-ok>Does not compile, parsing is needed here</button>
+ <button data-why="A cast only converts between number types. It cannot turn a String into a number, that is what Integer.parseInt is for.">Runs, b is 7</button>
+ </div>
+ <p class="qq-erklaerung" hidden><code>incompatible types: String cannot be converted to int</code>. Correct: <code>Integer.parseInt("7")</code>.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text"><code>int d = Integer.parseInt("four");</code></p>
+ <div class="qq-opt">
+ <button data-why="The compiler only sees a String in the parentheses. Whether it contains digits, it does not know, that only shows when running.">Does not compile</button>
+ <button data-ok>Compiles, and crashes when running</button>
+ </div>
+ <p class="qq-erklaerung" hidden><code>NumberFormatException</code>, a runtime error. You can catch it: Chapter 11.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text"><code>int e = (int) 'A';</code></p>
+ <div class="qq-opt">
+ <button data-ok>Runs, e is 65</button>
+ <button data-why="Actually, a char IS a number, namely the Unicode value. 'A' is 65.">Does not compile, char is not an int</button>
+ </div>
+ <p class="qq-erklaerung" hidden>A <code>char</code> is a number internally. That is why you may cast, and why <code>'A' + 1</code> gives 66.</p>
+ </div>
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+ <div class="oaky">
+ <img class="figur" src="../../img/kapitel/oaky-zeigt.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p><code>nextInt()</code> takes the parsing off your hands: reading and converting in one step. With <code>nextLine()</code> plus <code>parseInt</code>, however, <strong>you</strong> keep control. And what if it says <code>twelve</code> there? <a href="11-ausnahmen.html">Chapter 11</a>.</p>
+ </div>
+ </div>
+ </section>
+
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>That's enough for now</p>
+ <ul>
+ <li>Ready-made methods are called <strong>on a value</strong>: value, dot, name, such as <code>raw.trim()</code>.</li>
+ <li>For the start: <code>length()</code>, <code>trim()</code>, <code>toUpperCase()</code> / <code>toLowerCase()</code>, <code>charAt(i)</code> (from 0), <code>replace(old, replacement)</code>.</li>
+ <li>A String never changes. The methods <em>return a new one</em>: Assign the return value to a variable, otherwise it is lost.</li>
+ <li><code>Scanner</code>: import it, create it with <code>new Scanner(System.in)</code>, read with <code>nextLine()</code>.</li>
+ <li>What comes from outside is raw: first prepare it with <code>trim()</code> and the like, then keep using it.</li>
+ <li>Casting converts number to number, parsing converts text to number: <code>Integer.parseInt(raw)</code>.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="baustein uebung quiz">
+ <h3>Checkpoint</h3>
+ <p class="widget-hinweis">2 questions. Both are traps that almost everyone falls into once.</p>
+
+ <div class="qq">
+ <p class="qq-text">5. <code>String input = " YES ";</code>, then the line <code>input.trim();</code> stands alone. What is in <code>input</code> now?</p>
+ <div class="qq-opt">
+ <button data-why="That would be the case if trim() changed the String. But it does not: A String never changes. trim() RETURNS a new String without the spaces, and that one was not assigned to any variable here.">“YES”, the spaces are gone</button>
+ <button data-ok>Unchanged “&nbsp;&nbsp;YES&nbsp;&nbsp;”, the return value was lost</button>
+ <button data-why="The line is perfectly correct and compiles. It just does nothing, that is the nasty part: The compiler does not warn you.">The compiler reports an error</button>
+ </div>
+ <p class="qq-erklaerung" hidden><strong>The return value has to go somewhere</strong>, as with your own methods. The correct version would be <code>input = input.trim();</code>. Otherwise it is lost.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">6. A program reads from the keyboard with <code>Scanner</code>. The line <code>import java.util.Scanner;</code> is missing. What happens?</p>
+ <div class="qq-opt">
+ <button data-why="Scanner is not a special case. Without the import, the compiler does not know the name Scanner.">Nothing, Java knows Scanner anyway</button>
+ <button data-ok>The compiler reports <code>cannot find symbol</code></button>
+ <button data-why="It does not even get that far. The compiler reports the error when compiling, the program never starts.">The program starts and crashes while typing</button>
+ </div>
+ <p class="qq-erklaerung" hidden>The import tells the compiler <em>where</em> to find the class <code>Scanner</code>. If it is missing, the compiler does not know the name <code>Scanner</code>, just like with <code>system</code> instead of <code>System</code>. It is also in the Panic glossary.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+
+ <div class="kapitel-ende">
+ <div class="blaettern">
+      <a class="btn" href="04-methoden.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Chapter 4</a> <a class="btn btn-haupt" href="06-verzweigungen.html">Chapter 6: Conditionals<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </div>
+ </div>
+
+</main>
+
+<footer class="seitenfuss">
+ <div class="seitenfuss-innen">
+ <p><strong>Cheat Sheet: Java</strong> · Java basics for Learning Field 5, “Adapting software for data management”, IT professions, grade 10.</p>
+ </div>
+</footer>
+
+<script src="../../js/app.js"></script>
+</body>
+</html>

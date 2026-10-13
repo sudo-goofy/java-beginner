@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" role="img">
+  <rect width="640" height="360" fill="none"/>
+  <rect x="150" y="54" width="340" height="62" fill="#FBF7EE" stroke="#14110C" stroke-width="4" stroke-linejoin="round"/>
+  <text x="212" y="96" font-family="JetBrains Mono, monospace" font-size="34" font-weight="700" fill="#14110C" text-anchor="start">"</text>
+  <text x="320" y="96" font-family="JetBrains Mono, monospace" font-size="34" font-weight="700" fill="#14110C" text-anchor="middle">mia</text>
+  <text x="410" y="96" font-family="JetBrains Mono, monospace" font-size="34" font-weight="700" fill="#14110C" text-anchor="start">"</text>
+  <path d="M252 88 v-0.1" fill="none" stroke="#14110C" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M274 88 v-0.1" fill="none" stroke="#14110C" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M366 88 v-0.1" fill="none" stroke="#14110C" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M388 88 v-0.1" fill="none" stroke="#14110C" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="320" y="40" font-family="Bricolage Grotesque, sans-serif" font-size="20" font-weight="700" fill="#5D2745" text-anchor="middle">getippt</text>
+  <path d="M320 116 v34" fill="none" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M310 140 l10 12 10 -12" fill="none" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M170 158 h300 l-84 66 v52 h-132 v-52 z" fill="#637EB9" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="320" y="202" font-family="JetBrains Mono, monospace" font-size="32" font-weight="700" fill="#14110C" text-anchor="middle">trim</text>
+  <path d="M320 276 v32" fill="none" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M310 298 l10 12 10 -12" fill="none" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="320" y="350" font-family="JetBrains Mono, monospace" font-size="44" font-weight="700" fill="#F15060" text-anchor="middle">"mia"</text>
+</svg>

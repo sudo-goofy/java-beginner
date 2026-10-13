@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 2 · Your first program · Cheat Sheet: Java</title>
+<meta name="description" content="The parts of a Java program: class, main method, and output with System.out.println.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../../img/favicon.svg"><link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Remember this: bookmark</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Quick think: question for you</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Exercise: pencil</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>ZombieApocalypse project task: zombie head</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Scenario task: stopwatch</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: flag</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Explained differently: repeat</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Answer: key</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>The key points: page with dog-eared corner</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Learning goals: target</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Console: prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>IDE: editor window with sidebar</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Error message: bug</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Correct: check mark</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Wrong: cross</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Duration: clock</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Chapter: open notebook</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Table of contents</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Next</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Back</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Down</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Expandable</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Opens a window</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Night shift</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Day view</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Clear progress</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Print</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Skip to content</a>
+
+<nav class="topbar" aria-label="Main navigation">
+ <div class="topbar-innen">
+ <a class="marke" href="../index.html"> <img class="oakymarke" src="../../img/kapitel/oaky.svg" alt="" width="128" height="148"> Cheat Sheet: Java </a> <span class="topbar-titel">Chapter 2 · Class, main, println</span> <span class="topbar-rechts"><a class="btn btn-klein" href="../index.html">Learning path</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Choose language"><span>EN</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="../../kapitel/02-erstes-programm.html" lang="de" hreflang="de">Deutsch</a></li><li><a href="02-erstes-programm.html" lang="en" hreflang="en" aria-current="true">English</a></li></ul></details><!--/sprache--></span>
+ </div>
+ <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+ <header class="kapitel-kopf">
+ <p class="kicker">Chapter 2 of 11 · Class, main, println</p>
+ <h1>Your first program</h1>
+ <p class="vorspann">Every programming journey starts with the same sentence on the screen. Yours too.</p>
+ <p class="kapitel-meta"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>approx. 45 min</span></p>
+ </header>
+
+ <section class="einstieg" aria-label="Intro: the problem">
+ <p class="einstieg-kopf">THE PROBLEM</p>
+ <p class="einstieg-frage">One sentence should appear on the screen. Is one line enough?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>HelloWorld.java</p>
+<pre><code class="java">System.out.println("Hello World!");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein einstieg-zeige" type="button">Compile</button>
+ </div>
+ <div class="konsole einstieg-ausgabe"><span class="absturz">HelloWorld.java:1: error: class, interface, annotation type, enum, record, method or field expected</span></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>The compiler reports an error: In Java, a statement must not stand alone in the file.</p>
+ <button class="btn einstieg-knopf" type="button">With class and main</button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-out="Hello World!">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>HelloWorld.java</p>
+<pre><code class="java">public class HelloWorld {
+
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">The class on the outside, inside it the main method, inside that the statement. You will learn this skeleton in this chapter, and it is the same in every program.</p>
+ </div>
+ </section>
+
+
+ <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Contents of this chapter">
+ <h2 id="in-diesem-kapitel">In this chapter</h2>
+ </nav>
+
+ <details class="baustein ziele">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>After this chapter you can<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+   <div class="inhalt">
+     <ul>
+ <li>name the parts of a Java program: <strong>class</strong>, <strong>main method</strong>, statements</li>
+ <li>spot the three most common beginner mistakes before the compiler does</li>
+ <li>name classes, variables, and constants the way everyone does</li>
+ <li>print text to the console with <code>System.out.println()</code></li>
+ </ul>
+   </div>
+ </details>
+
+
+ <section class="block">
+ <h2 id="hier-ist-es-das-beruehmteste-programm-der-welt"><span class="nr">2.1</span> Structure of a Java program</h2>
+ <p class="wozu">Every Java program has the same skeleton: a <strong>class</strong> on the outside, inside it the <strong>main method</strong>, where the program starts. What it should do is written as a statement in main.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="klasse">public class</span> <var data-teil="name">{ClassName}</var> <span data-teil="kl-klasse">{</span>
+
+    <span data-teil="main">public static void main(String[] args)</span> <span data-teil="kl-main">{</span>
+        <var data-teil="anw">{statements}</var>
+    <span data-teil="kl-main">}</span>
+
+<span data-teil="kl-klasse">}</span></code></pre>
+ <p class="aufbau-info">The file is named exactly like the class, so for <code>HelloWorld</code> it is <code>HelloWorld.java</code>. The rest of the skeleton is the same every time.</p>
+ <div hidden data-erkl="klasse"><strong><code>public class</code></strong> introduces the class. Every Java program lives in a class. <code>public</code> means: reachable from anywhere, including the JVM.</div>
+ <div hidden data-erkl="name"><strong>Class name:</strong> freely chosen, starts with an uppercase letter, no spaces, for example <code>HelloWorld</code>. The file must have exactly the same name: <code>HelloWorld.java</code>, otherwise the compiler reports an error.</div>
+ <div hidden data-erkl="kl-klasse"><strong>The outer braces</strong> mark the beginning and end of the class. Curly braces always come in pairs: every <code>{</code> has a matching <code>}</code>.</div>
+ <div hidden data-erkl="main"><strong>The main method:</strong> This is where the JVM starts the program. The line is the same every time, memorize it or let the IDE fill it in. What the individual words mean is explained in the Level-up further down.</div>
+ <div hidden data-erkl="kl-main"><strong>The inner braces</strong> mark the beginning and end of the main method. Everything in between runs at startup.</div>
+ <div hidden data-erkl="anw"><strong>Statements:</strong> what the program should do, from top to bottom, each with <code>;</code> at the end. For example <code>System.out.println("Hello World!");</code></div>
+ </div>
+
+ <div class="codebox runner" data-out="Hello World!">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>HelloWorld.java</p>
+<pre><code class="java">public class HelloWorld {
+
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <p>Seven lines for one sentence? Yes. Java is formal, like an email that begins with “Dear Sir or Madam” just to say “ok”. But every line has a job:</p>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">LINE BY LINE</p>
+ <table>
+ <tr><td><code>public class HelloWorld</code></td><td>Every Java program lives in a <strong>class</strong>, here named <code>HelloWorld</code>. The file <strong>must</strong> then be called <code>HelloWorld.java</code>.</td></tr>
+ <tr><td><code>public static void main(…)</code></td><td>The <strong>main method</strong>, the entry point: The JVM looks for exactly this method and starts execution there. Just write it down from memory, the pros do that too.</td></tr>
+ <tr><td><code>System.out.println("…")</code></td><td>The output: “System, print a line (println) on the output channel (out).” Text is <strong>always in double quotes</strong>.</td></tr>
+ <tr><td><code>;</code></td><td>The semicolon ends every statement, like the period at the end of a sentence.</td></tr>
+ <tr><td><code>{ }</code></td><td>Curly braces mark the beginning and end of a <strong>block</strong>, here of the class and the main method. <strong>Always in pairs</strong>.</td></tr>
+ </table>
+ </div>
+ </section>
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p>A Java program lives in a <strong>class</strong> and starts in the <strong>main method</strong>. The file is named like the class: <code>HelloWorld.java</code>.</p>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-up: What does “public static void main” actually mean?</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Every word has a fixed meaning:</p>
+ <ul>
+ <li><code>public</code>: callable from anywhere, including by the JVM at startup</li>
+ <li><code>static</code>: belongs to the class itself, no object needed (Chapter 4 &amp; 9)</li>
+ <li><code>void</code>: the method returns nothing (Chapter 4)</li>
+ <li><code>main</code>: the fixed name the JVM looks for at startup</li>
+ <li><code>String[] args</code>: texts you can pass in at startup, as an array (Chapter 8)</li>
+ </ul>
+ <p>Just write it down from memory. Pros let the IDE complete it automatically.</p>
+ </div>
+ </details>
+
+ <div class="parsons">
+ <p class="parsons-titel"><strong>Code puzzle:</strong> A valid Java program, just shuffled. Sort the lines with the arrows. (The indentation helps!)</p>
+ <div class="parsons-zeilen">
+ <div class="p-zeile">public class Greeting {</div>
+ <div class="p-zeile"> public static void main(String[] args) {</div>
+ <div class="p-zeile"> System.out.println("Moin!");</div>
+ <div class="p-zeile"> }</div>
+ <div class="p-zeile">}</div>
+ </div>
+ <button class="btn btn-klein parsons-check">Compile </button>
+ <p class="parsons-meldung"></p>
+ </div>
+
+ <p>To try things out, you need a project in your IDE and a class in it:</p>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg> Create a project and class: step by step<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+<!--ide:projekt-->
+<div class="handgriff" id="h-projekt">
+  <h4>Create a project</h4>
+  <p class="handgriff-warum">A project is just a folder with a label: Java code lives in here, namely in <code>src</code>. For this guide, one is enough, for example named <code>ZombieApocalypse</code>: in it, every program gets its own class.</p>
+  <div class="ide-tafel" data-ide-tafel>
+    <div class="ide-blatt" data-ide="vscode">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>VS Code</p>
+      <ol>
+        <li>Command palette: <code>Java: Create Java Project</code>.</li>
+        <li>Choose <em>No build tools</em> as the build tool. Maven and Gradle come later on the job, right now they would only be in the way.</li>
+        <li>Pick a folder, name it <code>ZombieApocalypse</code>. VS Code creates <code>src</code> for you right away.</li>
+      </ol>
+    </div>
+    <div class="ide-blatt" data-ide="intellij">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>IntelliJ IDEA</p>
+      <ol>
+        <li><em>File &rarr; New &rarr; Project</em>, select <em>Java</em> on the left.</li>
+        <li>Leave the <em>Build system</em> setting at <em>IntelliJ</em>; Maven and Gradle come later on the job.</li>
+        <li>Name it <code>ZombieApocalypse</code>, select a JDK, create the project. The code belongs in <code>src</code>.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+<!--/ide:projekt-->
+<!--ide:klasse-->
+<div class="handgriff" id="h-klasse">
+  <h4>Create a class</h4>
+  <p class="handgriff-warum">Every class lives in its own file, and the file is named exactly like the class: <code>Zombie</code> goes in <code>Zombie.java</code>. Otherwise the compiler reports an error; the message is in the Panic glossary.</p>
+  <div class="ide-tafel" data-ide-tafel>
+    <div class="ide-blatt" data-ide="vscode">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>VS Code</p>
+      <ol>
+        <li>Right-click the <code>src</code> folder, then <em>New File</em>.</li>
+        <li>Type the name with the extension: <code>Zombie.java</code>. You forget the extension exactly once.</li>
+        <li>In the empty file, type <code>class</code> and press <kbd>Tab</kbd>; the IDE fills in the skeleton.</li>
+      </ol>
+    </div>
+    <div class="ide-blatt" data-ide="intellij">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>IntelliJ IDEA</p>
+      <ol>
+        <li>Right-click the <code>src</code> folder, then <em>New &rarr; Java Class</em>.</li>
+        <li>Type the name without the extension: <code>Zombie</code>. IntelliJ creates the matching file.</li>
+        <li>In the class body, type <code>main</code> and press <kbd>Tab</kbd>; the IDE fills in the main method.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+<!--/ide:klasse-->
+ <p>All eight procedures (start, stop, rename …) are on the <a href="../einrichten.html">Tools page</a>.</p>
+ </div>
+ </details>
+
+ </section>
+
+ <section class="block">
+ <h2 id="die-drei-regeln-die-dich-vor-90-aller-fehler-ret"><span class="nr">2.2</span> Syntax rules: semicolon, braces, capitalization</h2>
+ <p class="wozu">At the beginning, almost all error messages have the same three causes. If you know these three rules, you recognize most errors before the compiler reports them.</p>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <ol>
+ <li><strong>Every statement ends with a semicolon <code>;</code></strong>, forget it = error.</li>
+ <li><strong>Capitalization matters.</strong> <code>System</code> works, <code>system</code> is unknown to Java.</li>
+ <li><strong>Curly braces <code>{ }</code> always come in pairs.</strong> Every opened brace wants to be closed again.</li>
+ </ol>
+ </div>
+ </section>
+
+ <section class="widget">
+ <h3>Exercise 2.2.1: Bug hunt</h3>
+ <p class="widget-hinweis">This program does not compile. Click on the wrong spots. (Wrong clicks only cost pride.)</p>
+ <div class="codebox flach">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Broken.java</p>
+<pre class="bugcode"><code class="nohl" style="background:none;border:none;padding:0;white-space:pre;color:#f0eef7;font-size:0.9rem;line-height:1.9">public <span class="tok-click" data-bug="1">Class</span> Broken {
+
+    public static void <span class="tok-click">main</span>(String[] args) {
+        <span class="tok-click" data-bug="2">system</span>.out.<span class="tok-click">println</span>("Works on my machine!")<span class="tok-click" data-bug="3">   </span>
+        System.out.println(<span class="tok-click">"Or maybe not?"</span>);
+    <span class="tok-click" data-bug="4"> </span>
+
+}</code></pre>
+ </div>
+ <p class="statuszeile" id="bug-status">Errors found: 0 of 4</p>
+ <div class="feld" id="bug-info" style="margin-top:10px">
+ <p style="margin:0;color:var(--ink-2)">Hint: Four errors, but only three rules from above: one is broken twice.</p>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="namen-die-man-wiedererkennt"><span class="nr">2.3</span> Identifiers and naming conventions</h2>
+ <p class="wozu">The compiler translates every permitted name. For people who read the code, that is not enough. That is why there are <strong>conventions</strong>: rules without an error message, but binding all the same.</p>
+ <table>
+ <thead><tr><th>What</th><th>How</th><th>Example</th></tr></thead>
+ <tbody>
+ <tr><td>Class</td><td>first letter uppercase, every further word too (<strong>PascalCase</strong>)</td>
+ <td><code>HelloWorld</code>, <code>ZombieApocalypse</code></td></tr>
+ <tr><td>Variable, method</td><td>first letter lowercase, every further word uppercase (<strong>camelCase</strong>)</td>
+ <td><code>age</code>, <code>maxWeight</code>, <code>makeSound()</code></td></tr>
+ <tr><td>Constant</td><td>all uppercase, words separated by underscores</td>
+ <td><code>MAX_RESIDENTS</code>, <code>VAT</code></td></tr>
+ </tbody>
+ </table>
+ <p>A <strong>constant</strong> must never change again, recognizable by the <code>final</code> in front: <code>static final double VAT = 0.19;</code>. More on <code>static</code> and <code>final</code> in Chapter 4, the uppercase spelling applies from now on.</p>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p>For classes it is <strong>more</strong> than a convention: The file is named exactly like the public class in it. <code>HelloWorld</code> lives in <code>HelloWorld.java</code>, uppercase and lowercase included. Renamed the class, forgot the file? Then the error message sounds like something completely different.</p>
+ </div>
+ <p>And: <strong>The name says what is inside.</strong> <code>int a</code> is allowed and still wrong as soon as someone else reads the code, your future self included.</p>
+ <section class="baustein selbst quiz">
+ <h3>Exercise 2.3.1: Straightening out names</h3>
+ <div class="qq">
+ <p class="qq-text">What is the correct name of the class: <code>public class zombieList</code>?</p>
+ <div class="qq-opt">
+ <button data-ok>ZombieListe</button>
+ <button data-why="camelCase is for variables and methods. Classes always start with an uppercase letter.">zombieListe</button>
+ </div>
+ <p class="qq-erklaerung" hidden>And the file must then be called Zombieliste.java too.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text">What is the correct name of the constant: <code>static final double vat = 0.19;</code>?</p>
+ <div class="qq-opt">
+ <button data-why="That would be camelCase, correct for normal variables, not for constants.">mwSt</button>
+ <button data-ok>VAT</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Constants are written entirely in uppercase, several words with an underscore: MAX_RESIDENTS.</p>
+ </div>
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+ </section>
+
+ <section class="block">
+ <h2 id="mehrere-ausgaben-hintereinander"><span class="nr">2.4</span> Output, comments, and escape sequences</h2>
+ <p class="wozu"><code>println</code> prints a whole line. With <code>print</code> you assemble a line from several pieces, with special characters you bring line breaks and quotation marks into the middle of a text, and comments are notes that Java skips.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="system">System.out</span>.<span data-teil="println">println</span>(<var data-teil="was">what gets printed</var>)<span data-teil="semi">;</span>
+<span data-teil="system">System.out</span>.<span data-teil="print">print</span>(<var data-teil="was">what gets printed</var>)<span data-teil="semi">;</span></code></pre>
+ <p class="aufbau-info"><strong>println stands for “print line”</strong>: print, then line break. <code>print()</code> without the “ln” leaves out the line break, the next output follows directly after it.</p>
+ <div hidden data-erkl="system"><strong><code>System.out</code></strong> is the standard output channel: the console. Uppercase <code>S</code>, otherwise the compiler does not know the name.</div>
+ <div hidden data-erkl="println"><strong><code>println</code></strong> (“print line”) prints and ends the line. The next output starts on a new line.</div>
+ <div hidden data-erkl="print"><strong><code>print</code></strong> prints without ending the line. The next output follows directly after it.</div>
+ <div hidden data-erkl="was"><strong>What gets printed:</strong> a text in double quotes like <code>"Hello"</code>, a number like <code>42</code>, or a calculation like <code>1 + 1</code>. Text appears exactly as it stands between the quotes.</div>
+ <div hidden data-erkl="semi"><strong>The semicolon</strong> ends the statement. If it is missing, the compiler reports <code>';' expected</code>.</div>
+ </div>
+
+ <p>The computer works stubbornly from top to bottom. The outputs come exactly in this order:</p>
+
+ <div class="codebox runner" data-out="Line 1: Make coffee\nLine 2: Write code\nLine 3: Be puzzled\nLine 4: Refill coffee">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>DayPlan.java</p>
+<pre><code class="java">public class DayPlan {
+
+    public static void main(String[] args) {
+        System.out.println("Line 1: Make coffee");
+        System.out.println("Line 2: Write code");
+        System.out.println("Line 3: Be puzzled");
+        System.out.println("Line 4: Refill coffee");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="baustein selbst">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>You first, then Java</p>
+ <p>Your turn: <code>print</code> <em>and</em> <code>println</code> mixed. Predict the output <em>before</em> you see it. This kind of thing often comes up in tests.</p>
+ </div>
+
+ <div class="codebox runner" data-trace data-out="JavaScript?\nNo.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Verwirrung.java</p>
+<pre><code class="java">System.out.print("Java");
+System.out.print("Script?");
+System.out.println();
+System.out.println("No.");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">LINE BY LINE</p>
+ <table>
+ <tr><td><code>System.out.print("Java");</code></td><td>prints <code>Java</code>. No line break: the next output lands on the same line.</td></tr>
+ <tr><td><code>System.out.print("Script?");</code></td><td>sticks directly behind it. Now the line contains <code>JavaScript?</code>.</td></tr>
+ <tr><td><code>System.out.println();</code></td><td>prints no text, only the line break.</td></tr>
+ <tr><td><code>System.out.println("No.");</code></td><td>therefore appears on the second line and then breaks the line itself.</td></tr>
+ </table>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-up: Special characters in texts (escape sequences)</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Some characters do not fit directly into a String. That is what the backslash <code>\</code> is for:</p>
+ <ul>
+ <li><code>\n</code>: line break in the middle of the text</li>
+ <li><code>\"</code>: a quotation mark <em>in</em> the text (otherwise the compiler thinks the String ends there)</li>
+ <li><code>\\</code>: a real backslash</li>
+ </ul>
+ <div class='codebox runner flach' data-out='Er sagte: "Java macht Spaß"&#10;Ehrlich.&#10;Pfad: C:\Programme\Java'>
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Escape.java (excerpt)</p>
+<pre><code class="java">System.out.println("He said: \"Java is fun\"\nHonestly.");
+System.out.println("Path: C:\\Program Files\\Java");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ </details>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-up: Comments: notes that Java skips</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>With <code>//</code> you write notes for humans only. Java ignores them <strong>completely</strong>:</p>
+ <div class="codebox runner flach" data-out="I am code.\nMe too.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Kommentare.java (excerpt)</p>
+<pre><code class="java">// This is a comment. Java acts as if it were air.
+System.out.println("I am code.");    // works after a statement too
+
+/* And this is how you comment
+   several lines at once. */
+System.out.println("Me too.");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE: what appears, what does not?</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p>Few but good comments: they explain the <em>why</em>, not the obvious.</p>
+ </div>
+ </details>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p><code>print</code> sticks, <code>println</code> breaks the line. Comments (<code>//</code>) are skipped by the compiler. Special characters in text start with a backslash: <code>\n</code> for a line break, <code>\"</code> for a quotation mark.</p>
+ </div>
+
+ <h3 id="ausgabe-werkstatt">Exercise 2.4.1: Output workshop</h3>
+ <p>Nine statements one below the other in <em>one</em> main. Write down the complete console output <strong>before</strong> you run it. Where does a line break occur, where not?</p>
+ <div class="codebox runner" data-trace data-out="Hello\nHelloAB\n3\n12\nLine1\nLine2\nHe said &quot;Hello&quot;.\n\nEnd">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Output.java</p>
+<pre><code class="java">public class Output {
+
+    public static void main(String[] args) {
+        System.out.println("Hello");
+        System.out.print("Hello");
+        System.out.println("A" + "B");
+        System.out.println(1 + 2);
+        System.out.println("1" + 2);
+        System.out.println("Line1\nLine2");
+        System.out.println("He said \"Hello\".");
+        System.out.println();
+        System.out.println("End");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> The three spots where it gets stuck<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <ul>
+ <li><strong>Line 2 makes no line break.</strong> <code>print</code> without the “ln”, so the <code>AB</code> from line 3 sits directly behind it: <code>HelloAB</code>.</li>
+ <li><strong><code>1 + 2</code> calculates, <code>"1" + 2</code> concatenates.</strong> As soon as a String is involved, <code>+</code> no longer adds, it concatenates.</li>
+ <li><strong><code>\n</code> and <code>\"</code> are escape sequences.</strong> One makes a line break, the other a quotation mark, both <em>in</em> the text.</li>
+ </ul>
+ <p>The second-to-last line really is empty: <code>println()</code> without text only prints the line break.</p>
+ </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>That's enough for now</p>
+ <ul>
+ <li>A Java program lives in a <strong>class</strong> and starts in the <strong>main method</strong>.</li>
+ <li><code>System.out.println("…")</code> prints text. <code>print</code> sticks, <code>println</code> breaks the line.</li>
+ <li>90% of beginner mistakes: forgot a semicolon, mixed up uppercase and lowercase, left a brace unclosed.</li>
+ <li>Classes in <strong>PascalCase</strong>, variables in <strong>camelCase</strong>, constants all uppercase (<code>VAT</code>).</li>
+ <li>The file is named like the class: <code>HelloWorld.java</code>.</li>
+ <li>Comments (<code>//</code>) are skipped by the compiler. Special characters in text: <code>\n</code>, <code>\"</code>.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="baustein uebung quiz">
+ <h3>Checkpoint</h3>
+ <p class="widget-hinweis">4 questions about class, main, and output.</p>
+
+ <div class="qq">
+ <p class="qq-text">1. Where does every Java program start?</p>
+ <div class="qq-opt">
+ <button data-why="Sounds logical, but the first line usually only contains the class definition. The JVM jumps straight to the main method, no matter where it is in the file.">In the first line of the file</button>
+ <button data-ok>In the main method</button>
+ <button data-why="The length of the name does not matter. At startup, the JVM only looks for one method: main.">In the method with the shortest name</button>
+ </div>
+ <p class="qq-erklaerung" hidden>At startup, the JVM always looks for exactly <code>public static void main(String[] args)</code>. No main, no start.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">2. What is wrong with this line? <code>system.out.println("Hi");</code></p>
+ <div class="qq-opt">
+ <button data-why="Look at the first word: lowercase s. To Java, system and System are two completely different names, and it only knows one of them.">Nothing, it runs like that</button>
+ <button data-why="The other way around: text MUST be in double quotes. Without them the compiler takes Hi for a name, such as a variable, and reports an error.">“Hi” would have to be without quotes</button>
+ <button data-ok>system would have to be capitalized: System</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Java strictly distinguishes between uppercase and lowercase. <code>System</code> is a class, Java does not know <code>system</code>.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">3. What does the <code>;</code> at the end of the line do?</p>
+ <div class="qq-opt">
+ <button data-ok>It ends a statement, like a period at the end of a sentence</button>
+ <button data-why="Tempting, but no: without a semicolon the compiler does not know where the statement ends. Error guaranteed.">It is pure decoration and can be left out</button>
+ <button data-why="Comments start with // (until the end of the line) or /* … */. The semicolon does the opposite: it ends something.">It starts a comment</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Without a semicolon the compiler does not know where the statement ends. The caret <code>^</code> in the message points directly behind the last character of the line where it is missing.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">4. What is the difference between <code>print()</code> and <code>println()</code>?</p>
+ <div class="qq-opt">
+ <button data-why="Both print everything you give them. Text, numbers, mixed. The difference lies elsewhere: in the line break afterwards.">println can only print numbers</button>
+ <button data-ok>println makes a line break after the output, print does not</button>
+ <button data-why="print is neither old nor forbidden, it is there on purpose, to assemble outputs in ONE line (you saw that in the trace exercise!).">print is the old version and forbidden</button>
+ </div>
+ <p class="qq-erklaerung" hidden>“ln” = line. println jumps to the next line afterwards, print stays on the same line.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+ <div class="kapitel-ende">
+ <div class="blaettern">
+      <a class="btn" href="01-grundbegriffe.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Chapter 1</a> <a class="btn btn-haupt" href="03-variablen.html">Chapter 3: Variables & data types<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </div>
+ </div>
+
+</main>
+
+<footer class="seitenfuss">
+ <div class="seitenfuss-innen">
+ <p><strong>Cheat Sheet: Java</strong> · Java basics for Learning Field 5, “Adapting software for data management”, IT professions, grade 10.</p>
+
+ </div>
+</footer>
+
+<script src="../../js/app.js"></script>
+<script>
+(function () {
+ var $ = CC.$, $$ = CC.$$;
+
+ /* ---------- Fehler-Finder ---------- */
+
+ var found = 0;
+ var BUGS = {
+ '1': { fix: 'class', why: '<strong>Bug 1: <code>Class</code> &rarr; <code>class</code>.</strong> The keyword is written in lowercase. Capitalization in Java is not a matter of style but a rule the compiler checks.' },
+ '2': { fix: 'System', why: '<strong>Bug 2: <code>system</code> &rarr; <code>System</code>.</strong> The class System starts with a capital S. To Java, <code>system</code> and <code>System</code> are two completely different things.' },
+ '3': { fix: ' ; ', why: '<strong>Bug 3: The semicolon was missing!</strong> Every statement needs its <code>;</code> at the end. Otherwise the compiler reports <code>&#39;;&#39; expected</code> at the end of exactly this line.' },
+ '4': { fix: '}', why: '<strong>Bug 4: The closing brace of main was missing.</strong> Two <code>{</code> opened, only one <code>}</code> closed. Braces come in pairs, and this error is the nastiest because the compiler only notices it at the end of the file and reports it where nothing is wrong.' }
+ };
+
+ $$('.bugcode .tok-click').forEach(function (t) {
+ t.addEventListener('click', function () {
+ var info = $('#bug-info');
+ var bug = t.getAttribute('data-bug');
+ if (bug && !t.classList.contains('fixed')) {
+ t.classList.add('fixed');
+ t.textContent = BUGS[bug].fix;
+ found++;
+ $('#bug-status').textContent = 'Errors found: ' + found + ' of 4';
+ info.innerHTML = '<p style="margin:0">' + BUGS[bug].why + '</p>';
+
+ if (found === 4) {
+ $('#bug-status').textContent = ' All 4 errors found! The code compiles now.';
+ }
+ } else if (!bug) {
+
+ setTimeout(function () { }, 450);
+ info.innerHTML = '<p style="margin:0">Everything is fine here, the compiler translates this spot without errors. Keep looking!</p>';
+ }
+ });
+ });
+})();
+</script>
+</body>
+</html>

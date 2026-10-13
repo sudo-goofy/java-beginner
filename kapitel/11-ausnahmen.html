@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 11 · Ausnahmebehandlung · Cheat Sheet: Java</title>
+<meta name="description" content="try, catch und finally, was du tust, wenn sich ein Fehler nicht wegmachen lässt, weil nicht dein Code schuld ist.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../img/favicon.svg"><link rel="stylesheet" href="../css/style.css"></head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Merksatz: Lesezeichen</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kurz nachgedacht: Frage an dich</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufgabe: Stift</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Projektaufgabe ZombieApocalypse: Zombiekopf</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Handlungsorientierte Aufgabe: Stoppuhr</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: Fahne</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nochmal anders erklärt: Wiederholung</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Auflösung: Schlüssel</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Das Wichtigste in Kürze: Seite mit Eselsohr</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Lernziele: Zielscheibe</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Konsole: Prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Entwicklungsumgebung: Editorfenster mit Seitenleiste</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fehlermeldung: Käfer</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Richtig: Haken</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Falsch: Kreuz</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Dauer: Uhr</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kapitel: aufgeschlagenes Heft</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Inhaltsverzeichnis</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Weiter</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Zurück</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nach unten</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufklappbar</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Öffnet ein Fenster</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nachtschicht</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Tagesansicht</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fortschritt löschen</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Drucken</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Zum Inhalt springen</a>
+
+<nav class="topbar" aria-label="Hauptnavigation">
+ <div class="topbar-innen">
+ <a class="marke" href="../index.html">
+ <img class="oakymarke" src="../img/kapitel/oaky.svg" alt="" width="128" height="148">
+ Cheat Sheet: Java
+ </a>
+ <span class="topbar-titel">Kapitel 11 · try, catch, finally</span>
+ <span class="topbar-rechts"><a class="btn btn-klein" href="../index.html">Lernpfad</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Sprache wählen"><span>DE</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="11-ausnahmen.html" lang="de" hreflang="de" aria-current="true">Deutsch</a></li><li><a href="../en/kapitel/11-ausnahmen.html" lang="en" hreflang="en">English</a></li></ul></details><!--/sprache--></span>
+ </div>
+ <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+ <header class="kapitel-kopf">
+ <p class="kicker">Kapitel 11 von 11 · try, catch, finally</p>
+ <h1>Ausnahmebehandlung</h1>
+ <p class="vorspann">Zehn Kapitel lang hast du Abstürze weggemacht.
+ Hier werden sie zu einem Ereignis, auf das ein Programm antworten kann.</p>
+ <p class="kapitel-meta"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>ca. 35 min</span></p>
+ </header>
+
+ <section class="einstieg" aria-label="Einstieg: das Problem">
+ <p class="einstieg-kopf">DAS PROBLEM</p>
+ <p class="einstieg-frage">Jemand tippt beim Alter „twelve“ statt „12“. Was macht das Programm?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox runner" data-out="" data-crash="Exception in thread &quot;main&quot; java.lang.NumberFormatException: For input string: &quot;twelve&quot;">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Age.java</p>
+<pre><code class="java">String input = "twelve";
+int age = Integer.parseInt(input);
+System.out.println("Next year you will be " + (age + 1) + ".");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>Das Programm stürzt ab, nur weil sich jemand vertippt hat. Und die Meldung versteht nur, wer Java kennt.</p>
+ <button class="btn einstieg-knopf" type="button">Mit <code>try</code> und <code>catch</code></button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-out="That was not a number. Please enter your age in digits.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Age.java</p>
+<pre><code class="java">String input = "twelve";
+try {
+    int age = Integer.parseInt(input);
+    System.out.println("Next year you will be " + (age + 1) + ".");
+} catch (NumberFormatException e) {
+    System.out.println("That was not a number. Please enter your age in digits.");
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">Das Programm fängt die Ausnahme ab und läuft weiter. Wie das geht, zeigt dieses Kapitel.</p>
+ </div>
+ </section>
+
+
+
+ <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Inhalt dieses Kapitels">
+ <h2 id="in-diesem-kapitel">In diesem Kapitel</h2>
+ </nav>
+
+ <div class="baustein anders">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-anders"></use></svg>Warum das Kapitel ganz hinten steht</p>
+ <p>Weil es nichts Neues über Java erzählt, sondern über das, was schiefgeht. Du kennst es
+ längst, nur von der falschen Seite:</p>
+ <ul>
+ <li><code>ArrayIndexOutOfBoundsException</code> in Kapitel 8</li>
+ <li><code>NullPointerException</code> in Kapitel 9</li>
+ <li>der <code>Scanner</code> aus Kapitel 5, der abbricht, sobald jemand <code>twelve</code> tippt statt <code>12</code></li>
+ </ul>
+ <p>Vor Kapitel 8 wäre es eine Antwort ohne Frage.</p>
+ </div>
+
+ <details class="baustein ziele">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>Danach kannst du<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+   <div class="inhalt">
+     <ul>
+ <li>eine Absturzmeldung lesen: welche Ausnahme, welche Zeile</li>
+ <li>gefährdeten Code mit <code>try</code> und <code>catch</code> absichern</li>
+ <li>entscheiden, wann <code>finally</code> gebraucht wird und wann nicht</li>
+ </ul>
+   </div>
+ </details>
+
+
+ <section class="block">
+ <h2 id="was-beim-absturz-wirklich-passiert"><span class="nr">11.1</span> Ausnahmen und Stacktrace</h2>
+ <p class="wozu">Bevor du einen Absturz auffängst, musst du ihn lesen können. Die Meldung sagt dir, <strong>was</strong> passiert ist, <strong>wo</strong>, und <strong>wie weit</strong> das Programm noch kam.</p>
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="kopf">Exception in thread "main"</span> <var data-teil="paket">Paket</var>.<var data-teil="sorte">Sorte der Ausnahme</var>: <var data-teil="grund">Grund im Klartext</var>
+   <span data-teil="wo">at</span> <var data-teil="wo">Klasse</var>.<var data-teil="wo">Methode</var>(<var data-teil="zeile">Datei</var>:<var data-teil="zeile">Zeile</var>)</code></pre>
+ <p class="aufbau-info">Darüber steht auf der Konsole, was das Programm vor dem Absturz noch ausgegeben hat.</p>
+ <div hidden data-erkl="kopf"><strong><code>Exception in thread "main"</code></strong> leitet die Meldung ein: Im Hauptablauf des Programms wurde eine Ausnahme geworfen und von keinem <code>catch</code> gefangen. Deshalb hat die JVM das Programm beendet.</div>
+ <div hidden data-erkl="paket"><strong>Paket:</strong> wo die Klasse der Ausnahme liegt, etwa <code>java.lang</code> oder <code>java.util</code>. Bei <code>java.lang</code> brauchst du für ein <code>catch</code> keinen Import, bei <code>java.util</code> schon.</div>
+ <div hidden data-erkl="sorte"><strong>Sorte der Ausnahme:</strong> der Name ihrer Klasse, etwa <code>ArrayIndexOutOfBoundsException</code>. Der Name beschreibt das Problem: ein Index außerhalb der Grenzen des Arrays. Genau diesen Namen schreibst du später in die Klammer hinter <code>catch</code>.</div>
+ <div hidden data-erkl="grund"><strong>Grund im Klartext:</strong> die Nachricht der Ausnahme, etwa <code>Index 5 out of bounds for length 3</code>. Sie nennt oft die Werte, die nicht gepasst haben. Im Programm liefert sie <code>e.getMessage()</code>.</div>
+ <div hidden data-erkl="wo"><strong>Klasse und Methode:</strong> wo die Ausnahme geworfen wurde, etwa <code>at Crash.main</code>: in der Methode <code>main</code> der Klasse <code>Crash</code>. Stehen mehrere <code>at</code>-Zeilen untereinander, such die oberste, die eine deiner eigenen Klassen nennt.</div>
+ <div hidden data-erkl="zeile"><strong>Datei und Zeile:</strong> die Quelldatei und die Zeilennummer darin, etwa <code>Crash.java:7</code>. Dort steht die Anweisung, die die Ausnahme ausgelöst hat, hier <code>temperatures[5]</code>.</div>
+ </div>
+ <p>Drei Elemente im Array, ein Zugriff auf Index 5. Führ aus und achte darauf, was auf der
+ Konsole landet, und vor allem, was nicht.</p>
+ <div class="codebox runner" data-out="All good so far." data-crash="Exception in thread &quot;main&quot; java.lang.ArrayIndexOutOfBoundsException: Index 5 out of bounds for length 3&#10;   at Crash.main(Crash.java:7)">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Crash.java</p>
+<pre><code class="java">public class Crash {
+
+    public static void main(String[] args) {
+        int[] temperatures = {18, 23, 19};
+
+        System.out.println("All good so far.");
+        System.out.println(temperatures[5]);
+        System.out.println("This line is never reached.");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>ArrayIndexOutOfBoundsException</code></td><td><strong>Was:</strong> die Sorte der Ausnahme. Davor steht ihr Paket <code>java.lang</code>.</td></tr>
+ <tr><td><code>Index 5 out of bounds for length 3</code></td><td>der Grund im Klartext: Index 5 gibt es bei drei Elementen nicht.</td></tr>
+ <tr><td><code>at Crash.main(Crash.java:7)</code></td><td><strong>Wo:</strong> in der Methode <code>main</code> der Klasse <code>Crash</code>, Datei <code>Crash.java</code>, Zeile 7. Dort steht <code>temperatures[5]</code>.</td></tr>
+ <tr><td><code>All good so far.</code></td><td><strong>Wie weit</strong> (leicht übersehen): Diese Zeile steht noch da. Alles <strong>vor</strong> der Zeile mit der Ausnahme ist gelaufen, alles danach nicht.</td></tr>
+ </table>
+ </div>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Eine <strong>Ausnahme</strong> („Exception“) ist kein Syntaxfehler. Das Programm läuft,
+ und mitten im Lauf lässt sich eine Zeile nicht ausführen. Java wirft eine Ausnahme und
+ beendet das Programm. Das ist nur das Standardverhalten, und das kannst du ändern.</p>
+ </div>
+ <div class="oaky">
+ <img class="figur" src="../img/kapitel/oaky-zeigt.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p>Das <a href="../panik.html">Panik-Wörterbuch</a> zeigt, wie du die zehn häufigsten Fehler
+ <strong>wegmachst</strong>. Hier geht es um die, die sich nicht wegmachen lassen: Schuld ist
+ nicht dein Code, sondern die Eingabe.</p>
+ </div>
+ </div>
+
+ <p class="aufgabenmarke">Aufgabe 11.1.1</p>
+ <h3>Aufgabe 11.1.1: Welche Ausnahme wird geworfen?</h3>
+ <p class="pfad-meta"><span class="etikett">Wiedererkennen</span><span class="etikett">~5 min</span></p>
+ <section class="baustein selbst quiz">
+ <h4>Fünf Zeilen, fünf Abstürze</h4>
+ <div class="qq">
+ <p class="qq-text"><code>int[] a = new int[3]; a[3] = 1;</code></p>
+ <div class="qq-opt">
+ <button data-ok>ArrayIndexOutOfBoundsException</button>
+ <button data-why="Das Array ist angelegt, in a steckt also eine Referenz auf ein Objekt. Das Problem ist der Index: Bei length 3 gibt es nur 0, 1 und 2.">NullPointerException</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Drei Elemente haben die Indizes 0, 1 und 2, einen Index 3 gibt es nicht.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text"><code>String s = null; s.length();</code></p>
+ <div class="qq-opt">
+ <button data-ok>NullPointerException</button>
+ <button data-why="Kein Index weit und breit. Das Problem ist, dass in s gar kein Objekt steckt, an dem man length() aufrufen könnte.">ArrayIndexOutOfBoundsException</button>
+ </div>
+ <p class="qq-erklaerung" hidden>In s steht keine Referenz auf ein Objekt, und ohne Objekt kann man keine Methode aufrufen.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text"><code>int x = 7 / (3 - 3);</code></p>
+ <div class="qq-opt">
+ <button data-why="InputMismatch kommt vom Scanner und hat mit Rechnen nichts zu tun. Hier wird durch 0 geteilt.">InputMismatchException</button>
+ <button data-ok>ArithmeticException</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Nur bei GANZEN Zahlen: <code>7.0 / 0.0</code> stürzt nicht ab, sondern ergibt <code>Infinity</code>.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text"><code>keyboard.nextInt();</code>, getippt wird <code>eight</code></p>
+ <div class="qq-opt">
+ <button data-ok>InputMismatchException</button>
+ <button data-why="NumberFormatException wirft Integer.parseInt. Der Scanner hat seine eigene Ausnahme, sie liegt im selben Paket.">NumberFormatException</button>
+ </div>
+ <p class="qq-erklaerung" hidden><code>nextInt()</code> verlangt eine ganze Zahl und bekommt Buchstaben.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text"><code>int n = Integer.parseInt("twelve");</code></p>
+ <div class="qq-opt">
+ <button data-why="InputMismatchException gehört zum Scanner und seinem nextInt(). Hier parst Integer.parseInt selbst, und hat seine eigene Ausnahme.">InputMismatchException</button>
+ <button data-ok>NumberFormatException</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Im Text steht keine Zahl, das kennst du aus Aufgabe 5.3.1.</p>
+ </div>
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+ </section>
+
+ <section class="block">
+ <h2 id="das-netz-try-und-catch"><span class="nr">11.2</span> Ausnahmebehandlung mit try und catch</h2>
+ <p class="wozu"><code>try</code> heißt „versuch es“, <code>catch</code> „fang es auf“.
+ Zusammen wirken sie wie ein Sprungnetz: Der Code, der eine Ausnahme werfen kann, kommt in den <code>try</code>-Block.
+ Wird dort eine Ausnahme geworfen, landet sie im <code>catch</code>-Block.</p>
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="try">try</span> {
+    <var data-teil="code">Code, der schiefgehen kann</var>
+} <span data-teil="catch">catch</span> (<var data-teil="sorte">Sorte der Ausnahme</var> <span data-teil="e">e</span>) {
+    <var data-teil="reaktion">was dann passieren soll</var>
+}</code></pre>
+ <p class="aufbau-info">Nach dem <code>catch</code> läuft das Programm normal weiter, mit der ersten Zeile hinter seiner schließenden Klammer.</p>
+ <div hidden data-erkl="try"><strong><code>try</code></strong> leitet den <code>try</code>-Block ein. Wird darin eine Ausnahme geworfen, bricht Java den Block an dieser Stelle ab und sucht einen passenden <code>catch</code>-Block. Die restlichen Zeilen im <code>try</code>-Block werden übersprungen, nicht nachgeholt.</div>
+ <div hidden data-erkl="code"><strong>Code, der schiefgehen kann:</strong> die Anweisung, die eine Ausnahme werfen kann, etwa <code>System.out.println(temperatures[5]);</code>, und was direkt von ihr abhängt. Mehr gehört nicht hinein, denn bei einer Ausnahme fällt alles danach aus.</div>
+ <div hidden data-erkl="catch"><strong><code>catch</code></strong> steht direkt hinter der schließenden Klammer des <code>try</code>-Blocks. Sein Block läuft nur, wenn im <code>try</code>-Block eine Ausnahme der genannten Sorte geworfen wurde. Läuft alles glatt, wird er übersprungen.</div>
+ <div hidden data-erkl="sorte"><strong>Sorte der Ausnahme:</strong> der Klassenname der Ausnahme, etwa <code>ArrayIndexOutOfBoundsException</code>. Der <code>catch</code>-Block fängt nur diese Sorte: Wird eine andere geworfen, bricht das Programm trotzdem ab.</div>
+ <div hidden data-erkl="e"><strong><code>e</code></strong> ist eine Variable, die das Ausnahme-Objekt aufnimmt. Ihr Name ist frei wählbar, <code>e</code> ist üblich. Was du damit anfangen kannst, zeigt 11.3.</div>
+ <div hidden data-erkl="reaktion"><strong>Was dann passieren soll:</strong> die Anweisungen im <code>catch</code>-Block, etwa <code>System.out.println("That slot does not exist.");</code>. Lass den Block nicht leer: Sonst läuft das Programm weiter, und niemand erfährt von der Ausnahme.</div>
+ </div>
+ <div class="codebox runner" data-out="All good so far.\nThat slot does not exist.\nAnd on we go.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>SafetyNet.java</p>
+<pre><code class="java">public class SafetyNet {
+
+    public static void main(String[] args) {
+        int[] temperatures = {18, 23, 19};
+
+        try {
+            System.out.println("All good so far.");
+            System.out.println(temperatures[5]);
+            System.out.println("This line is never reached.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("That slot does not exist.");
+        }
+
+        System.out.println("And on we go.");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>try {</code></td><td>beginnt den <code>try</code>-Block. Abgesichert ist alles bis zur schließenden Klammer.</td></tr>
+ <tr><td><code>temperatures[5]</code></td><td>wirft die Ausnahme. Java bricht den <code>try</code>-Block an dieser Stelle ab und sucht einen passenden <code>catch</code>.</td></tr>
+ <tr><td><code>catch (ArrayIndexOutOfBoundsException e)</code></td><td>Die Sorte passt, also läuft dieser Block: „That slot does not exist.“</td></tr>
+ <tr><td><code>System.out.println("And on we go.");</code></td><td>steht hinter dem <code>catch</code>-Block. Die Ausnahme ist gefangen, das Programm läuft normal weiter.</td></tr>
+ </table>
+ </div>
+ <p>Dasselbe Programm wie <code>Crash</code>, nur mit <code>try</code> und <code>catch</code> drumherum. Darum geht es im ganzen Kapitel:</p>
+ <table>
+ <thead><tr><th>ohne <code>try</code>/<code>catch</code></th><th>mit <code>try</code>/<code>catch</code></th></tr></thead>
+ <tbody>
+ <tr><td>Java beendet das Programm.</td><td>Java springt ins <code>catch</code>.</td></tr>
+ <tr><td>Die Meldung geht an die Konsole.</td><td>Du bestimmst, was dort steht.</td></tr>
+ <tr><td>Alles danach fällt aus.</td><td>Nach dem <code>catch</code> läuft es weiter.</td></tr>
+ </tbody>
+ </table>
+ <p>Und <code>This line is never reached.</code> fehlt: Der <code>try</code>-Block läuft bis zur
+ Ausnahme, der Rest wird übersprungen, <em>nicht nachgeholt</em>. Deshalb gehört in einen
+ <code>try</code>-Block so wenig wie möglich: Je mehr darin steht, desto mehr wird übersprungen.</p>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p><code>catch</code> fängt <strong>nur</strong> die Sorte in seiner Klammer.
+ <code>catch (ArithmeticException e)</code> fängt keinen Index-Fehler:
+ Das Programm stürzt dann trotz <code>try</code> ab.</p>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="das-e-ist-ein-objekt"><span class="nr">11.3</span> Das Ausnahmeobjekt</h2>
+ <p class="wozu">Das <code>e</code> in <code>catch (… e)</code> ist eine normale Variable mit dem
+ Ausnahme-Objekt. Objekte haben Methoden (Kapitel 9), die wichtigste hier ist
+ <code>getMessage()</code>.</p>
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code>catch (<var data-teil="sorte">Sorte der Ausnahme</var> <span data-teil="e">e</span>) {
+    System.out.println(<var data-teil="text">Text</var> <span data-teil="plus">+</span> <span data-teil="e">e</span>.<span data-teil="getmessage">getMessage()</span>);
+}</code></pre>
+ <p class="aufbau-info"><code>e</code> hat als Typ die Sorte aus der Klammer. <code>getMessage()</code> liefert den Grund als <code>String</code>.</p>
+ <div hidden data-erkl="sorte"><strong>Sorte der Ausnahme:</strong> etwa <code>ArithmeticException</code>. Sie steht vor <code>e</code> wie der Typ vor einem Parameter: erst der Typ, dann der Name.</div>
+ <div hidden data-erkl="e"><strong><code>e</code></strong> enthält die Referenz auf das Ausnahme-Objekt und gilt nur innerhalb des <code>catch</code>-Blocks. Über den Punkt rufst du Methoden dieses Objekts auf, wie bei jedem anderen Objekt.</div>
+ <div hidden data-erkl="text"><strong>Text:</strong> ein eigener Hinweis vor der Nachricht, etwa <code>"Message: "</code>. Denk an das Leerzeichen vor dem schließenden Anführungszeichen, sonst steht die Nachricht direkt am Doppelpunkt.</div>
+ <div hidden data-erkl="plus"><strong>Das <code>+</code></strong> verkettet die beiden Strings: Aus <code>"Message: "</code> und <code>"/ by zero"</code> wird <code>Message: / by zero</code>.</div>
+ <div hidden data-erkl="getmessage"><strong><code>getMessage()</code></strong> ist eine Methode des Ausnahme-Objekts. Sie liefert dieselbe Nachricht, die ohne <code>catch</code> in der Absturzmeldung hinter dem Doppelpunkt stünde, etwa <code>/ by zero</code>. Die leeren Klammern gehören dazu.</div>
+ </div>
+ <div class="codebox runner" data-out="Message: / by zero">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Ausschnitt</p>
+<pre><code class="java">try {
+    int result = 10 / 0;
+    System.out.println(result);
+} catch (ArithmeticException e) {
+    System.out.println("Message: " + e.getMessage());
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>int result = 10 / 0;</code></td><td>teilt eine ganze Zahl durch 0. Java wirft eine <code>ArithmeticException</code>, das <code>println</code> darunter fällt aus.</td></tr>
+ <tr><td><code>catch (ArithmeticException e)</code></td><td>fängt sie und legt das Ausnahme-Objekt in die Variable <code>e</code>.</td></tr>
+ <tr><td><code>e.getMessage()</code></td><td>ruft eine Methode dieses Objekts auf. Sie liefert den Grund als Text: „/ by zero“.</td></tr>
+ </table>
+ </div>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p><code>e.getMessage()</code> liefert den Grund, den die JVM sonst hinter den Doppelpunkt geschrieben hätte, nur jetzt da, wo du ihn haben willst.</p>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="mehrere-catch"><span class="nr">11.4</span> Mehrere catch-Blöcke</h2>
+ <p class="wozu">Ein <code>try</code> darf mehrere <code>catch</code>-Blöcke haben. Java nimmt von oben
+ nach unten den ersten, dessen Sorte passt: wie ein <code>else if</code> für Ausnahmen.</p>
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="try">try</span> {
+    <var data-teil="code">Code, der schiefgehen kann</var>
+} <span data-teil="catch">catch</span> (<var data-teil="erste">erste Sorte</var> e) {
+    <var data-teil="antwort">Antwort auf die erste Sorte</var>
+} <span data-teil="catch">catch</span> (<var data-teil="zweite">zweite Sorte</var> e) {
+    <var data-teil="antwort">Antwort auf die zweite Sorte</var>
+}</code></pre>
+ <p class="aufbau-info">Die Reihenfolge zählt: Java prüft die <code>catch</code>-Blöcke von oben nach unten.</p>
+ <div hidden data-erkl="try"><strong><code>try</code>:</strong> ein einziger <code>try</code>-Block, dahinter beliebig viele <code>catch</code>-Blöcke. Wird darin eine Ausnahme geworfen, bricht der Block an dieser Stelle ab, wie bei nur einem <code>catch</code>.</div>
+ <div hidden data-erkl="code"><strong>Code, der schiefgehen kann:</strong> Er kann verschiedene Sorten von Ausnahmen werfen. <code>names[2].toUpperCase()</code> etwa wirft bei einem Index außerhalb des Arrays eine <code>ArrayIndexOutOfBoundsException</code> und, wenn das Element <code>null</code> ist, eine <code>NullPointerException</code>. Geworfen wird aber höchstens eine, denn der Block bricht bei der ersten ab.</div>
+ <div hidden data-erkl="catch"><strong><code>catch</code>:</strong> Jeder Block nennt seine eigene Sorte und hat seine eigene Antwort. Hat einer gepasst, werden alle übrigen übersprungen, auch wenn ihre Sorte ebenfalls passen würde.</div>
+ <div hidden data-erkl="erste"><strong>Erste Sorte:</strong> wird zuerst geprüft, etwa <code>ArrayIndexOutOfBoundsException</code>. Steht hier <code>Exception</code>, fängt dieser Block jede Ausnahme, und die Blöcke darunter kämen nie dran. Dann meldet der Compiler einen Fehler.</div>
+ <div hidden data-erkl="zweite"><strong>Zweite Sorte:</strong> wird nur geprüft, wenn die erste nicht gepasst hat, etwa <code>NullPointerException</code>. Passt keine der Sorten, bricht das Programm ab wie ganz ohne <code>try</code>.</div>
+ <div hidden data-erkl="antwort"><strong>Antwort:</strong> Jede Sorte bekommt ihre eigene Reaktion, etwa „Index is off.“ für den Index-Fehler und „There was nothing.“ für <code>null</code>. Genau dafür lohnen sich mehrere <code>catch</code>-Blöcke.</div>
+ </div>
+ <div class="codebox runner" data-out="Index is off.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Ausschnitt</p>
+<pre><code class="java">String[] names = {"Mia", "Paul"};
+
+try {
+    System.out.println(names[2].toUpperCase());
+} catch (ArrayIndexOutOfBoundsException e) {
+    System.out.println("Index is off.");
+} catch (NullPointerException e) {
+    System.out.println("There was nothing.");
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>names[2].toUpperCase()</code></td><td><code>names</code> hat nur die Indizes 0 und 1. Schon der Zugriff auf Index 2 wirft die Ausnahme, <code>toUpperCase()</code> wird gar nicht mehr aufgerufen.</td></tr>
+ <tr><td><code>catch (ArrayIndexOutOfBoundsException e)</code></td><td>der erste <code>catch</code>. Die Sorte passt, also erscheint „Index is off.“</td></tr>
+ <tr><td><code>catch (NullPointerException e)</code></td><td>wird übersprungen: Es läuft nur der erste <code>catch</code>, der passt.</td></tr>
+ </table>
+ </div>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Von mehreren <code>catch</code>-Blöcken läuft höchstens einer: der erste von oben, dessen Sorte passt.</p>
+ </div>
+ <div class="oaky">
+ <img class="figur" src="../img/kapitel/oaky-finger.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p><code>catch (Exception e)</code> fängt <strong>alles</strong>. Bequem, aber selten
+ richtig: Wer alles gleich behandelt, kann nicht unterschiedlich reagieren. Eine falsche
+ Eingabe wiederholt man, einen Index-Fehler repariert man.</p>
+ </div>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="finally"><span class="nr">11.5</span> Der finally-Block</h2>
+ <p class="wozu">Hinter die <code>catch</code>-Blöcke darf ein <code>finally</code>. Es läuft
+ <strong>immer</strong>: nach glattem Durchlauf genauso wie nach einer gefangenen Ausnahme.</p>
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="try">try</span> {
+    <var data-teil="code">Code, der schiefgehen kann</var>
+} <span data-teil="catch">catch</span> (<var data-teil="catch">Sorte der Ausnahme</var> e) {
+    <var data-teil="antwort">Antwort auf die Ausnahme</var>
+} <span data-teil="finally">finally</span> {
+    <var data-teil="aufraeumen">Aufräumen</var>
+}</code></pre>
+ <p class="aufbau-info">Wofür? Zum <strong>Aufräumen</strong>: Datei schließen, Verbindung trennen,
+ <code>Scanner</code> zumachen. Das muss auch passieren, wenn es schiefging, gerade dann.</p>
+ <div hidden data-erkl="try"><strong><code>try</code>:</strong> läuft bis zur Anweisung, die eine Ausnahme wirft. Danach geht es im passenden <code>catch</code>-Block weiter und anschließend im <code>finally</code>-Block.</div>
+ <div hidden data-erkl="code"><strong>Code, der schiefgehen kann:</strong> etwa <code>System.out.println("Per person: " + sum / people);</code>, das bei <code>people</code> gleich <code>0</code> eine <code>ArithmeticException</code> wirft. Zeilen dahinter im <code>try</code>-Block fallen aus.</div>
+ <div hidden data-erkl="catch"><strong><code>catch</code> mit Sorte:</strong> Der Block läuft nur, wenn im <code>try</code>-Block eine Ausnahme dieser Sorte geworfen wurde. Läuft alles glatt, wird er übersprungen, der <code>finally</code>-Block aber nicht.</div>
+ <div hidden data-erkl="antwort"><strong>Antwort auf die Ausnahme:</strong> die Reaktion darauf, etwa <code>System.out.println("Cannot divide by 0 people.");</code>. Erst danach läuft der <code>finally</code>-Block.</div>
+ <div hidden data-erkl="finally"><strong><code>finally</code></strong> steht hinter dem letzten <code>catch</code>-Block. Sein Block läuft in jedem Fall: nach glattem Durchlauf, nach einer gefangenen Ausnahme und auch dann, wenn keine Sorte passt und das Programm danach abbricht.</div>
+ <div hidden data-erkl="aufraeumen"><strong>Aufräumen:</strong> Anweisungen, die immer nötig sind, etwa <code>keyboard.close();</code> für den <code>Scanner</code>. Was nur bei Erfolg laufen soll, gehört nicht hierher, sondern in den <code>try</code>-Block.</div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>try { … }</code></td><td>läuft bis zur Zeile mit der Ausnahme, der Rest fällt aus.</td></tr>
+ <tr><td><code>catch (…) { … }</code></td><td>läuft nur, wenn eine passende Ausnahme geworfen wurde.</td></tr>
+ <tr><td><code>finally { … }</code></td><td>läuft so oder so.</td></tr>
+ </table>
+ </div>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p><code>finally</code> läuft in jedem Fall. Dort wird aufgeräumt.</p>
+ </div>
+
+ <p class="aufgabenmarke">Aufgabe 11.5.1</p>
+ <h3>Aufgabe 11.5.1: Schreibtischtest mit finally</h3>
+ <p class="pfad-meta"><span class="etikett">Lesen statt tippen</span><span class="etikett">~10 min</span></p>
+ <p>Sag die <strong>exakte</strong> Ausgabe voraus, bevor du ausführst.
+ Vorsicht bei <code>Done.</code>: Schau dir an, wo die Ausnahme geworfen wird.
+ Danach: Wäre <code>Register closing.</code> auch ohne <code>finally</code> erschienen?</p>
+ <div class="codebox runner" data-trace data-out="The bill is being split.\nCannot divide by 0 people.\nRegister closing.\nGoodbye.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Receipt.java</p>
+<pre><code class="java">public class Receipt {
+
+    public static void main(String[] args) {
+        int sum = 12;
+        int people = 0;
+
+        try {
+            System.out.println("The bill is being split.");
+            System.out.println("Per person: " + sum / people);
+            System.out.println("Done.");
+        } catch (ArithmeticException e) {
+            System.out.println("Cannot divide by 0 people.");
+        } finally {
+            System.out.println("Register closing.");
+        }
+
+        System.out.println("Goodbye.");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Warum das so ist<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <ul>
+ <li><code>Done.</code> fehlt, darum geht es: Die Ausnahme wird eine Zeile darüber geworfen, der
+ Rest des <code>try</code>-Blocks wird übersprungen.</li>
+ <li><code>Register closing.</code> kommt trotzdem, dafür ist <code>finally</code> da.</li>
+ <li><code>Goodbye.</code> steht hinter dem <code>finally</code>-Block: Das Programm läuft normal zu Ende.</li>
+ </ul>
+ <p><strong>Und ohne <code>finally</code>?</strong> Hier wäre <code>Register closing.</code> auch
+ als Zeile hinter dem <code>catch</code> erschienen, denn die Ausnahme ist gefangen. Einen
+ Unterschied macht <code>finally</code>, wenn der <code>catch</code> <em>nicht</em> passt: Dann
+ bricht das Programm ab, alles hinter dem <code>finally</code>-Block fällt aus, aber der <code>finally</code>-Block
+ läuft noch. Deshalb gehört das Aufräumen dorthin.</p>
+ </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <h2 id="die-tastatur"><span class="nr">11.6</span> Fehlerhafte Benutzereingaben abfangen</h2>
+ <p class="wozu">Ein Index-Fehler ist <strong>dein</strong> Fehler: Den reparierst du. Eine falsche
+ Tastatureingabe ist <strong>niemandes</strong> Fehler: Menschen vertippen sich. Stürzt ein Programm
+ deswegen ab, ist es schlecht gebaut, und genau hier zahlt sich <code>try</code>/<code>catch</code> aus.</p>
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="try">try</span> {
+    <var data-teil="lesen">Zahl lesen und damit weiterarbeiten</var>
+} <span data-teil="catch">catch</span> (<var data-teil="sorte">InputMismatchException oder NumberFormatException</var> e) {
+    <var data-teil="bitten">freundlich um eine neue Eingabe bitten</var>
+}</code></pre>
+ <p class="aufbau-info">Welche Sorte geworfen wird, hängt davon ab, wie du liest. Das klären die beiden Wege unten.</p>
+ <div hidden data-erkl="try"><strong><code>try</code>:</strong> Wirft das Lesen eine Ausnahme, wird der Rest des Blocks übersprungen. So rechnet das Programm nie mit einer Zahl weiter, die gar nicht gelesen wurde.</div>
+ <div hidden data-erkl="lesen"><strong>Zahl lesen und damit weiterarbeiten:</strong> etwa <code>int age = Integer.parseInt(raw);</code> und danach die Ausgabe mit <code>age + 1</code>. Beides gehört in den <code>try</code>-Block, denn eine dort deklarierte Variable wie <code>age</code> gibt es außerhalb nicht.</div>
+ <div hidden data-erkl="catch"><strong><code>catch</code></strong> fängt nur Ausnahmen aus seinem eigenen <code>try</code>-Block. Steht das Lesen außerhalb, etwa davor, sichert er es nicht ab.</div>
+ <div hidden data-erkl="sorte"><strong>Sorte:</strong> <code>nextInt()</code> wirft eine <code>InputMismatchException</code> (Import aus <code>java.util</code> nötig), <code>Integer.parseInt</code> eine <code>NumberFormatException</code> (kein Import nötig). Mit der falschen Type im <code>catch</code> bricht das Programm trotzdem ab.</div>
+ <div hidden data-erkl="bitten"><strong>Freundlich um eine neue Eingabe bitten:</strong> eine Meldung, die sagt, was erwartet wird, etwa <code>System.out.println("That was not a whole number.");</code>. Danach läuft das Programm hinter dem <code>catch</code>-Block normal weiter.</div>
+ </div>
+ <p>Bekommt <code>nextInt()</code>
+ keine ganze Zahl, wirft der <code>Scanner</code> eine <code>InputMismatchException</code>.
+ Sie liegt im selben Paket, braucht aber eine eigene Zeile, denn ein <code>import</code> holt
+ genau eine Klasse (<code>import java.util.*;</code> holt das ganze Paket, verrät aber nicht,
+ was du wirklich brauchst):</p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>ganz oben in der Datei</p>
+<pre><code class="java">import java.util.InputMismatchException;
+import java.util.Scanner;</code></pre>
+ </div>
+
+ <p>Liest du wie in Kapitel 5 mit <code>nextLine()</code> und parst selbst, wirft
+ <code>Integer.parseInt</code> bei <code>twelve</code> eine <code>NumberFormatException</code>.
+ Sie liegt in <code>java.lang</code> wie <code>String</code>, braucht also keinen Import:</p>
+ <div class="codebox runner" data-in="twelve" data-out="How old are you?\nThat was not a whole number.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Input.java</p>
+<pre><code class="java">import java.util.Scanner;
+
+public class Input {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("How old are you?");
+        String raw = keyboard.nextLine().trim();
+
+        try {
+            int age = Integer.parseInt(raw);
+            System.out.println("Next year: " + (age + 1));
+        } catch (NumberFormatException e) {
+            System.out.println("That was not a whole number.");
+        }
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>keyboard.nextLine().trim()</code></td><td>liest die Eingabe als Text und entfernt Leerzeichen am Anfang und Ende, wie in Kapitel 5.</td></tr>
+ <tr><td><code>Integer.parseInt(raw)</code></td><td>macht aus dem Text eine ganze Zahl. Bei „twelve“ geht das nicht: Java wirft eine <code>NumberFormatException</code>, die Zeile darunter fällt aus.</td></tr>
+ <tr><td><code>catch (NumberFormatException e)</code></td><td>fängt genau diese Sorte und gibt einen Hinweis aus, statt das Programm abstürzen zu lassen.</td></tr>
+ </table>
+ </div>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Der <code>catch</code> muss zur Sorte passen, und die hängt davon ab, wie du liest:</p>
+ <ul>
+ <li><code>nextInt()</code> wirft eine <code>InputMismatchException</code>.</li>
+ <li><code>Integer.parseInt</code> wirft eine <code>NumberFormatException</code>.</li>
+ </ul>
+ </div>
+
+ <p class="aufgabenmarke">Aufgabe 11.6.1</p>
+ <h3>Aufgabe 11.6.1: Der Rechner, der nicht mehr abstürzt</h3>
+ <p class="pfad-meta"><span class="etikett">Grundlagen</span><span class="etikett">~15 min</span><span class="etikett">IDE</span></p>
+ <p>Schreib ein Programm, das zwei ganze Zahlen von der Tastatur liest und sie teilt.
+ Zwei Dinge können schiefgehen: Als zweite Zahl kommt eine <code>0</code>, oder statt einer Zahl
+ kommen Buchstaben. In beiden Fällen soll das Programm <strong>nicht</strong> abstürzen, sondern selbst
+ eine Meldung ausgeben: <code>Nobody divides by zero.</code> bzw. <code>Please enter whole numbers.</code></p>
+ <p>Die beiden Fälle brauchen <strong>verschiedene Werkzeuge</strong>. Überleg vorher: Welcher
+ gehört in einen <code>catch</code>, welcher nicht?</p>
+ <p>Zum Ausprobieren eingeben: <code>12</code>, dann <code>0</code>. Danach noch einmal mit
+ <code>twelve</code>.</p>
+ <p><strong>Erwartete Ausgabe:</strong></p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Konsole</p>
+<pre><code class="nohl ausgabe">Numerator?
+Denominator?
+Nobody divides by zero.</code></pre>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Lösung (erst selbst probieren)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <div class="codebox runner" data-in="12\n0" data-out="Numerator?\nDenominator?\nNobody divides by zero.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Calculator.java</p>
+<pre><code class="java">import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class Calculator {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        try {
+            System.out.println("Numerator?");
+            int numerator = keyboard.nextInt();
+            System.out.println("Denominator?");
+            int denominator = keyboard.nextInt();
+
+            if (denominator == 0) {
+                System.out.println("Nobody divides by zero.");
+            } else {
+                System.out.println("Result: " + numerator / denominator);
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Please enter whole numbers.");
+        }
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p><strong>Zwei Probleme, zwei Werkzeuge:</strong></p>
+ <ul>
+ <li>Die <code>0</code> siehst du kommen: Ein <code>if</code> prüft sie, bevor geteilt wird.
+ Was du selbst verhindern kannst, fängst du nicht, du verhinderst es.</li>
+ <li>Buchstaben statt einer Zahl merkt erst <code>nextInt()</code> beim Lesen: Dafür sind <code>try</code> und <code>catch</code> da.</li>
+ </ul>
+ <p>Das <code>if</code> steht mit im <code>try</code>, weil <code>numerator</code> und
+ <code>denominator</code> nur dort gelten (Kapitel 4).</p>
+ </div>
+ </details>
+
+ <details class="baustein optional" id="legendaer">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Legendär 11.6.2: Die Ausnahme, die du selbst wirfst</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+   <div class="inhalt">
+ <p class="pfad-meta"><span class="etikett">Neu</span><span class="etikett">~20 min</span><span class="etikett">IDE</span></p>
+ <p>Bisher hast du gefangen, was Java geworfen hat. Werfen darfst du auch selbst, mit
+ <code>throw</code>:</p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Ausschnitt</p>
+<pre><code class="java">throw new IllegalArgumentException("negative quantity: " + quantity);</code></pre>
+ </div>
+ <p>Die Zeile beendet die Methode sofort wie ein <code>return</code>, gibt aber keinen Wert zurück,
+ sondern die Ausnahme an den <strong>Aufrufer</strong> weiter. Der fängt sie mit <code>catch</code>, sonst stürzt das Programm ab.
+ So lehnt eine Methode einen ungültigen Wert ab, ohne einen Ersatzwert zu erfinden, den
+ niemand von einem Fehler unterscheiden kann.</p>
+ <p>Bau eine Methode <code>validate(int quantity)</code>, die die Menge zurückgibt, aber bei einer
+ negativen Zahl wirft statt zurückgibt. Die main ruft sie für <code>5</code> und
+ <code>-3</code> auf; der zweite Aufruf landet im <code>catch</code>, das
+ <code>e.getMessage()</code> ausgibt.</p>
+ <p><strong>Erwartete Ausgabe:</strong></p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Konsole</p>
+<pre><code class="nohl ausgabe">Ammo: 5
+Rejected: negative quantity: -3</code></pre>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Lösung (erst selbst probieren)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <div class="codebox runner" data-out="Ammo: 5\nRejected: negative quantity: -3">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Guard.java</p>
+<pre><code class="java">public class Guard {
+
+    public static void main(String[] args) {
+        int[] attempts = {5, -3};
+
+        for (int v : attempts) {
+            try {
+                System.out.println("Ammo: " + validate(v));
+            } catch (IllegalArgumentException e) {
+                System.out.println("Rejected: " + e.getMessage());
+            }
+        }
+    }
+
+    static int validate(int quantity) {
+        if (quantity &lt; 0) {
+            throw new IllegalArgumentException(
+                    "negative quantity: " + quantity);
+        }
+        return quantity;
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p>Zwei Dinge sind neu:</p>
+ <ul>
+ <li>Hinter <code>throw</code> steht kein <code>return</code>: Die Methode ist danach zu Ende,
+ und der Compiler weiß das.</li>
+ <li>Das <code>try</code> steht <em>in</em> der Schleife, nicht darum herum. Stünde es außen,
+ wäre nach dem ersten abgelehnten Versuch Schluss.</li>
+ </ul>
+ <p>Der Text in der Klammer ist genau das, was <code>getMessage()</code> später liefert. Also
+ gehört dort hinein, was der Aufrufer wissen muss, nicht „Fehler!“.</p>
+ </div>
+ </details>
+   </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <p class="aufgabenmarke handlung">Handlungsorientierte Aufgabe · 12 min</p>
+ <h3>Das Lagerprogramm</h3>
+ <p><strong>Situation:</strong> Ein Lagerprogramm liest die Stückzahl von der Tastatur und
+ rechnet den Gesamtpreis aus (2,50 € je Stück). Bei der Abnahme tippt die Kundin
+ <code>twelve</code> statt <code>12</code>, das Programm bricht ab.</p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Ausschnitt</p>
+<pre><code class="java">System.out.println("Quantity?");
+int quantity = keyboard.nextInt();
+System.out.println("Total price: " + quantity * 2.5 + " euros");</code></pre>
+ </div>
+ <ol>
+ <li>Benenne die Ausnahme, die hier geworfen wird, und die Zeile, in der es passiert.</li>
+ <li>Schreib die drei Zeilen so um, dass das Programm bei einer falschen Eingabe
+ <code>Please enter a whole number.</code> ausgibt und danach normal weiterläuft.</li>
+ <li>Ein Kollege schlägt <code>catch (Exception e)</code> vor, „dann sind wir auf alles
+ vorbereitet“. Nenne einen Nachteil.</li>
+ </ol>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Lösung (erst selbst probieren)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <p><strong>a)</strong> Eine <code>InputMismatchException</code>, geworfen von
+ <code>keyboard.nextInt()</code> in Zeile 2. <code>nextInt()</code> verlangt eine ganze Zahl
+ und bekommt Buchstaben.</p>
+ <p><strong>b)</strong></p>
+ <div class="codebox runner" data-in="twelve" data-out="Quantity?\nPlease enter a whole number.\nNext item.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>CampOk.java</p>
+<pre><code class="java">import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class CampOk {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("Quantity?");
+
+        try {
+            int quantity = keyboard.nextInt();
+            System.out.println("Total price: " + quantity * 2.5 + " euros");
+        } catch (InputMismatchException e) {
+            System.out.println("Please enter a whole number.");
+        }
+
+        System.out.println("Next item.");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p>Die Ausgabezeile muss <em>mit</em> in den <code>try</code>-Block: <code>quantity</code> wird
+ <em>im</em> <code>try</code> deklariert und gilt nur dort
+ (<a href="04-methoden.html#wo-eine-variable-gilt">Kapitel 4</a>). Oben braucht es außerdem
+ <code>import java.util.InputMismatchException;</code>.</p>
+ <p><strong>c)</strong> Zwei mögliche Nachteile von <code>catch (Exception e)</code>:</p>
+ <ul>
+ <li>Es fängt auch, was nicht gemeint war: Index-Fehler, <code>NullPointerException</code>,
+ jeden Programmierfehler. Das Programm läuft scheinbar weiter, und der Fehler fällt erst viel später auf.</li>
+ <li>Wer alles gleich behandelt, kann nicht mehr unterschiedlich reagieren.</li>
+ </ul>
+ </div>
+ </details>
+ </section>
+
+
+ <section class="baustein selbst quiz">
+ <h3>Checkpoint</h3>
+ <div class="qq">
+ <p class="qq-text">Im <code>try</code>-Block stehen drei <code>println</code>. Beim zweiten wird eine Ausnahme geworfen. Wie viele Zeilen aus dem <code>try</code>-Block erscheinen?</p>
+ <div class="qq-opt">
+ <button data-ok>Eine</button>
+ <button data-why="Der Rest des try-Blocks wird übersprungen, nicht nachgeholt. Nach dem catch geht es HINTER dem try weiter.">Zwei</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Deshalb gehört in einen try-Block so wenig wie möglich.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text">Wann läuft ein <code>finally</code>-Block?</p>
+ <div class="qq-opt">
+ <button data-why="Dann bräuchte man es nicht, dafür genügt das Ende des catch.">Nur wenn eine Ausnahme gefangen wurde</button>
+ <button data-ok>Immer, mit und ohne Ausnahme</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Deshalb räumt man dort auf: Datei schließen, Scanner zumachen.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text"><code>catch (ArithmeticException e)</code> steht um einen Array-Zugriff. Was passiert beim Index-Fehler?</p>
+ <div class="qq-opt">
+ <button data-ok>Das Programm stürzt ab, die Sorte passt nicht</button>
+ <button data-why="Ein catch fängt nur die Sorte in seiner Klammer. Jede andere Sorte bleibt ungefangen, als gäbe es kein try.">Der catch fängt ihn trotzdem</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Trotz try stürzt das Programm ab. Die Sorte muss passen.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text">Welchen Fehler fängst du mit catch, welchen reparierst du?</p>
+ <div class="qq-opt">
+ <button data-why="Umgekehrt. Ein Index-Fehler ist dein Programmierfehler, den fängt man nicht ab, den behebt man.">Index-Fehler fangen, Tippfehler reparieren</button>
+ <button data-ok>Tippfehler fangen, Index-Fehler reparieren</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Was von draußen kommt (Tastatur, Datei, Netzwerk), fängt man auf. Den eigenen Fehler repariert man.</p>
+ </div>
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zusammenfassung"></use></svg>Das Wichtigste in Kürze</p>
+ <ul>
+ <li>Eine Ausnahme ist kein Syntaxfehler, sondern ein Ereignis zur Laufzeit.</li>
+ <li><code>try</code> umschließt den gefährdeten Code, <code>catch (Type e)</code> fängt genau diese Sorte.</li>
+ <li>Im <code>try</code> fällt alles nach der Zeile mit der Ausnahme aus: so wenig wie möglich hineinpacken.</li>
+ <li><code>finally</code> läuft in jedem Fall. Dort wird aufgeräumt.</li>
+ <li><code>e.getMessage()</code> liefert den Klartext, den sonst die JVM ausgegeben hätte.</li>
+ <li>Faustregel: Eigene Fehler reparierst du. Fehler von draußen (Tastatur, File, Netzwerk) fängst du.</li>
+ </ul>
+ </div>
+
+ <section class="baustein uebung quiz" style="background:var(--ueber-flaeche)">
+ <h3>Das Alles-Quiz: 11 Fragen, 11 Kapitel</h3>
+ <p class="widget-hinweis">Eine Frage pro Kapitel, bunt gemischt. Am besten ein paar Tage nach dem Durcharbeiten: Dein Gehirn liebt verspätete Wiederholung.</p>
+
+ <div class="qq">
+ <p class="qq-text">1. (Kap. 1) Java-Code wird ausgeführt, indem …</p>
+ <div class="qq-opt">
+ <button data-why="Direkt versteht der Prozessor nur Maschinencode. Java geht den Umweg: Compiler &rarr; Bytecode &rarr; JVM.">… der Prozessor ihn direkt liest</button>
+ <button data-ok>… der Compiler Bytecode erzeugt, den die JVM ausführt</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Wie in Kapitel 1: Java wird erst kompiliert, dann interpretiert.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">2. (Kap. 2) Welche File gehört zur Klasse <code>public class TrafficLight</code>?</p>
+ <div class="qq-opt">
+ <button data-ok>TrafficLight.java, exakt gleicher Name, große Anfangsbuchstaben inklusive</button>
+ <button data-why="Java besteht auf Übereinstimmung inklusive Groß-/Kleinschreibung, trafficLight.java gibt einen Compiler-Fehler.">trafficLight.java, Hauptsache klein</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Klassenname = Dateiname. Eine der ersten Fehlermeldungen, die alle mal sehen.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">3. (Kap. 3) <code>int x = 7; x = x + 3;</code>: was ist x?</p>
+ <div class="qq-opt">
+ <button data-ok>10</button>
+ <button data-why="Kein Fehler! = ist eine Zuweisung, keine Gleichung: rechts ausrechnen (7+3), das Ergebnis in x speichern.">Compiler-Fehler, x kann nicht x + 3 sein</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Alten Wert von x lesen, 3 addieren, das Ergebnis wieder in x speichern.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">4. (Kap. 4) <code>static double calculatePrice(int quantity)</code>: was stimmt?</p>
+ <div class="qq-opt">
+ <button data-ok>Sie bekommt einen int und gibt einen double zurück</button>
+ <button data-why="Andersrum gelesen: Der Typ VOR dem Namen (double) ist der Rückgabetyp, in der Klammer steht der Parameter (int menge).">Sie bekommt einen double und gibt einen int zurück</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Signatur lesen: Rückgabetyp vorne, Parameter in den Klammern.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">5. (Kap. 5) <code>String s = "  Mia  "; s.trim(); System.out.println(s.length());</code>: was steht auf der Konsole?</p>
+ <div class="qq-opt">
+ <button data-why="trim() liefert einen neuen String zurück, aber er wird nirgends gespeichert. s selbst ändert sich nie.">3</button>
+ <button data-ok>7</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Ein String ändert sich nie. Wer den Rückgabewert will, schreibt <code>s = s.trim();</code></p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">6. (Kap. 6) In <code>answer</code> steht, was getippt wurde. Wie prüfst du, ob es „yes“ war?</p>
+ <div class="qq-opt">
+ <button data-why="== prüft bei Strings nicht den Inhalt und liefert bei gleich aussehenden Texten gern false. Warum, klärt Kapitel 9.">answer == "yes"</button>
+ <button data-ok>answer.equals("yes")</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Die eiserne Regel: Zahlen mit <code>==</code>, Texte mit <code>equals()</code>.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">7. (Kap. 7) Eine Schleife soll SO LANGE nach einem Passwort fragen, bis es stimmt, mindestens einmal. Welche passt perfekt?</p>
+ <div class="qq-opt">
+ <button data-why="for glänzt, wenn die ANZAHL vorher bekannt ist. Hier weiß niemand, wie oft getippt wird, und einmal fragen ist Pflicht: do-while.">for</button>
+ <button data-ok>do-while</button>
+ </div>
+ <p class="qq-erklaerung" hidden>„Erst ausführen, dann prüfen“: Der Schleifenrumpf läuft mindestens einmal. Genau dafür gibt es do-while.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">8. (Kap. 8) <code>for (int i = 0; i &lt;= arr.length; i++)</code>: wo ist der Fehler?</p>
+ <div class="qq-opt">
+ <button data-ok>Das &lt;= läuft einen Index zu weit, beim letzten i wird eine ArrayIndexOutOfBoundsException geworfen</button>
+ <button data-why="i = 0 ist genau richtig. Arrays starten bei 0. Das Problem sitzt am anderen Ende: <= statt < läuft bis length, und DIESEN Index gibt es nicht.">Der Start bei i = 0, Arrays starten doch bei 1</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Gültige Indizes: 0 bis length − 1. Die Bedingung muss i &lt; length heißen.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">9. (Kap. 9) <code>Zombie a = new Zombie("Mo", …); Zombie b = a;</code>: wie viele Zombie-Objekte existieren?</p>
+ <div class="qq-opt">
+ <button data-why="new wurde nur EINMAL aufgerufen, nur new erzeugt Objekte. b = a kopiert bloß die Referenz.">Zwei, a und b</button>
+ <button data-ok>Eins, mit zwei Referenzen darauf</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Das Zwillings-Experiment: Objekte entstehen nur durch new.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">10. (Kap. 10) Neue Zombie-Art „Beisser“ einbauen, without die Fütterungs-Schleife anzufassen: welches Konzept macht's möglich?</p>
+ <div class="qq-opt">
+ <button data-why="Kapselung schützt Attribute vor wildem Zugriff. Dass die Schleife mit JEDER Unterklasse von Zombie klarkommt, ist Vererbung + Polymorphie.">Datenkapselung</button>
+ <button data-ok>Vererbung + Polymorphie</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Beisser extends Zombie, eigene groan(), die Schleife ruft polymorph auf und muss nichts davon wissen.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">11. (Kap. 11) Getippt wird „twelve“ statt einer Zahl, <code>Integer.parseInt</code> wirft eine <code>NumberFormatException</code>. Was ist richtig?</p>
+ <div class="qq-opt">
+ <button data-why="Was getippt wird, bestimmt nicht dein Code. Eine Eingabe von draußen kannst du nicht verhindern, nur abfangen.">Den Code so lange ändern, bis keine Ausnahme mehr kommen kann</button>
+ <button data-ok>Mit try und catch auffangen und freundlich nachfragen</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Fehler von draußen (Tastatur, File, Netzwerk) fängt man auf. Den eigenen Fehler repariert man.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+ <section class="block" id="finale">
+ <div class="feld" style="text-align:center;background:var(--rot-flaeche)">
+ <h2 id="das-war-s-wirklich">Das Fundament steht.</h2>
+ <p style="margin:0 0 1em">Programme, Variablen, Methoden, Strings und Eingabe, Verzweigungen, Schleifen, Arrays, Objekte, Vererbung, Ausnahmen: Das komplette Java-Fundament hast du durchgespielt. Alles, was noch kommt,
+ baut darauf auf.</p>
+ <p style="margin:0 0 1em">Zum Nachschlagen bleibt das
+ <a href="../panik.html">Panik-Wörterbuch</a>: die häufigsten Fehlermeldungen im Klartext.</p>
+ <p><button class="btn" id="finale-btn"> Abschluss feiern</button></p>
+ <p class="statuszeile" id="finale-msg"></p>
+ </div>
+ </section>
+
+ <div class="kapitel-ende">
+ <div class="blaettern">
+ <a class="btn" href="10-vererbung.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Kapitel 10</a>
+ <a class="btn btn-haupt" href="../panik.html">Panik-Wörterbuch<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+ </div>
+ </div>
+
+</main>
+
+<footer class="seitenfuss">
+ <div class="seitenfuss-innen">
+ <p><strong>Cheat Sheet: Java</strong> ·
+      Java-Grundlagen für Lernfeld 5,
+ „Software zur Verwaltung von Daten anpassen“, IT-Berufe, Jahrgangsstufe 10.</p>
+ </div>
+</footer>
+
+<script src="../js/app.js"></script>
+<script>
+(function () {
+ var $ = CC.$;
+
+ /* ---------- Finale ---------- */
+
+ var MSGS = [
+ 'Konfetti verdient. ',
+ 'Nochmal? Gerne. ',
+ 'Ok, jetzt aber wirklich genug gefeiert. (Einmal geht noch.)',
+ 'Du kannst jetzt offiziell „objektorientiert“ in dein Vokabular aufnehmen.'
+ ];
+ var clicks = 0;
+ $('#finale-btn').addEventListener('click', function () {
+ $('#finale-msg').textContent = MSGS[Math.min(clicks, MSGS.length - 1)];
+ clicks++;
+ });
+})();
+</script>
+</body>
+</html>

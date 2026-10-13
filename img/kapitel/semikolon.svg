@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" role="img">
+  <rect width="640" height="360" fill="none"/>
+  <path d="M40 300 H600" fill="none" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="300" y="292" font-family="Bricolage Grotesque Display, Bricolage Grotesque, sans-serif" font-size="260" font-weight="800" fill="#F15060" text-anchor="middle">;</text>
+  <g transform="rotate(22 452 296)">  <g transform="translate(384,122) scale(1.28)">
+  <path d="M52 90 l-12 42" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M36 132 h10" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M76 90 l13 40" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M85 130 h10" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M28.8 63.5 c-12 -10 -17 -24 -17 -38" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M99.2 63.5 c12 -10 17 -24 17 -38" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="64" cy="56" r="36.0" fill="none" stroke="#14110C" stroke-width="4.2"/>
+  <circle cx="48.16" cy="48.8" r="6.6000000000000005" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="79.84" cy="48.8" r="6.6000000000000005" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="64" cy="68.36" r="5.6" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  </g></g>
+  <path d="M120 262 q40 -34 78 -6" fill="none" stroke="#14110C" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 14"/>
+  <text x="120" y="224" font-family="JetBrains Mono, monospace" font-size="22" font-weight="400" fill="#14110C" text-anchor="start">läuft …</text>
+</svg>

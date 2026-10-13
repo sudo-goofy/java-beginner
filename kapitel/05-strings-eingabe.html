@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 5 · Strings &amp; Eingabe · Cheat Sheet: Java</title>
+<meta name="description" content="Fertige String-Methoden und der Scanner: Was von der Tastatur kommt, ist roh.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../img/favicon.svg"><link rel="stylesheet" href="../css/style.css"></head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Merksatz: Lesezeichen</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kurz nachgedacht: Frage an dich</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufgabe: Stift</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Projektaufgabe ZombieApocalypse: Zombiekopf</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Handlungsorientierte Aufgabe: Stoppuhr</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: Fahne</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nochmal anders erklärt: Wiederholung</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Auflösung: Schlüssel</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Das Wichtigste in Kürze: Seite mit Eselsohr</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Lernziele: Zielscheibe</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Konsole: Prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Entwicklungsumgebung: Editorfenster mit Seitenleiste</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fehlermeldung: Käfer</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Richtig: Haken</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Falsch: Kreuz</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Dauer: Uhr</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kapitel: aufgeschlagenes Heft</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Inhaltsverzeichnis</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Weiter</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Zurück</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nach unten</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufklappbar</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Öffnet ein Fenster</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nachtschicht</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Tagesansicht</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fortschritt löschen</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Drucken</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Zum Inhalt springen</a>
+
+<nav class="topbar" aria-label="Hauptnavigation">
+ <div class="topbar-innen">
+ <a class="marke" href="../index.html">
+ <img class="oakymarke" src="../img/kapitel/oaky.svg" alt="" width="128" height="148">
+ Cheat Sheet: Java
+ </a>
+ <span class="topbar-titel">Kapitel 5 · Fremde Methoden und der Scanner</span>
+ <span class="topbar-rechts"><a class="btn btn-klein" href="../index.html">Lernpfad</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Sprache wählen"><span>DE</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="05-strings-eingabe.html" lang="de" hreflang="de" aria-current="true">Deutsch</a></li><li><a href="../en/kapitel/05-strings-eingabe.html" lang="en" hreflang="en">English</a></li></ul></details><!--/sprache--></span>
+ </div>
+ <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+ <header class="kapitel-kopf">
+ <p class="kicker">Kapitel 5 von 11 · Fremde Methoden und der Scanner</p>
+ <h1>Strings &amp; Input</h1>
+ <p class="vorspann">Bis hierher hast du Methoden gebaut. Jetzt benutzt du fertige und holst zum ersten Mal einen Wert von außen ins Programm.</p>
+ <p class="kapitel-meta"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>ca. 40 min</span></p>
+ </header>
+
+ <section class="einstieg" aria-label="Einstieg: das Problem">
+ <p class="einstieg-kopf">DAS PROBLEM</p>
+ <p class="einstieg-frage">Das Programm soll jeden begrüßen, der davorsitzt. Wen begrüßt es?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox runner" data-out="Hello Aylin!">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Greeting.java</p>
+<pre><code class="java">String name = "Aylin";
+System.out.println("Hello " + name + "!");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>Es begrüßt immer Aylin, egal wer davorsitzt. Der Name steht fest im Code.</p>
+ <button class="btn einstieg-knopf" type="button">Mit Eingabe über die Tastatur</button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-in="Mia" data-out="What is your name?\nHello Mia!">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Greeting.java</p>
+<pre><code class="java">import java.util.Scanner;
+
+public class Greeting {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("What is your name?");
+        String name = keyboard.nextLine();
+        System.out.println("Hello " + name + "!");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">Jetzt fragt das Programm, und der Name kommt von der Tastatur (hier wurde „Mia“ getippt). Wie Eingaben funktionieren und wie du Texte aufbereitest, zeigt dieses Kapitel.</p>
+ </div>
+ </section>
+
+
+
+ <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Inhalt dieses Kapitels">
+ <h2 id="in-diesem-kapitel">In diesem Kapitel</h2>
+ </nav>
+
+ <details class="baustein ziele">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>Danach kannst du<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+   <div class="inhalt">
+     <ul>
+ <li>fertige Methoden von <code>String</code> benutzen: <code>trim</code>, <code>toUpperCase</code>, <code>charAt</code>, <code>replace</code></li>
+ <li>erklären, warum <code>input.trim();</code> allein gar nichts bewirkt</li>
+ <li>mit <code>Scanner</code> einen Wert von der Tastatur einlesen</li>
+ <li>Casten und Parsen auseinanderhalten und <code>parseInt</code> &amp; Co. richtig einsetzen</li>
+ </ul>
+   </div>
+ </details>
+
+
+ <section class="block">
+ <h2 id="methoden-die-es-schon-gibt"><span class="nr">5.1</span> Methoden der Klasse String</h2>
+ <p class="wozu">Die meisten Methoden, die du je benutzt, hat jemand anderes geschrieben. Ein paar stecken in jedem <code>String</code>: Sie zählen Zeichen, entfernen Leerzeichen und ersetzen Text, ohne dass du eine Zeile davon selbst schreibst.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><var data-teil="text">text</var><span data-teil="punkt">.</span><var data-teil="methode">methode</var>(<var data-teil="arg">Argumente</var>)
+<var data-teil="text">text</var><span data-teil="punkt">.</span><var data-teil="methode">methode</var>()<span data-teil="punkt">.</span><var data-teil="naechste">nächste Methode</var>()</code></pre>
+ <p class="aufbau-info">Aufgerufen werden sie anders als deine, nämlich <span class="hl">auf einem Wert</span>: erst der Wert, dann ein Punkt, dann der Name. Liefert eine Methode wieder einen String, ruft man auf dem gleich die nächste auf, von links nach rechts gelesen.</p>
+ <div hidden data-erkl="text"><strong>text:</strong> der String, auf dem die Methode aufgerufen wird, meist eine Variable wie <code>raw</code> oder <code>name</code>. Er selbst ändert sich dabei nie: <code>raw.trim();</code> allein in einer Zeile lässt <code>raw</code> unverändert. Das Ergebnis speicherst du in einer Variablen: <code>String clean = raw.trim();</code></div>
+ <div hidden data-erkl="punkt"><strong>Der Punkt</strong> ist der Punktoperator: Er ruft die Methode auf genau diesem Wert auf. Tippst du in der IDE den Punkt, schlägt sie dir alle Methoden vor, die ein String hat.</div>
+ <div hidden data-erkl="methode"><strong>methode:</strong> der Name der Methode, etwa <code>trim</code>, <code>length</code> oder <code>toUpperCase</code>, genau so geschrieben, Groß- und Kleinbuchstaben eingeschlossen. Die runden Klammern gehören immer dazu, auch wenn sie leer bleiben: <code>raw.length</code> ohne Klammern meldet der Compiler als Fehler.</div>
+ <div hidden data-erkl="arg"><strong>Argumente:</strong> die Werte, die die Methode zum Arbeiten braucht, durch Komma getrennt: <code>charAt(0)</code>, <code>replace("felix", "franz")</code>. Braucht sie keine, bleiben die Klammern leer: <code>trim()</code>.</div>
+ <div hidden data-erkl="naechste"><strong>nächste Methode:</strong> Sie läuft auf dem Rückgabewert der Methode davor. Das heißt Methodenverkettung: Bei <code>raw.trim().toUpperCase()</code> läuft <code>toUpperCase()</code> auf dem String ohne Leerzeichen am Rand. Liefert die Methode davor eine Zahl wie <code>length()</code>, gibt es darauf keine String-Methoden: <code>raw.length().trim()</code> meldet der Compiler als Fehler.</div>
+ </div>
+
+ <div class="codebox runner" data-out="15\nZombiefelix\n11\nZOMBIEFELIX\nZ\nZombiefranz">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>TextTool.java</p>
+<pre><code class="java">public class TextTool {
+
+    public static void main(String[] args) {
+        String raw = "  Zombiefelix  ";
+
+        System.out.println(raw.length());
+        System.out.println(raw.trim());
+        System.out.println(raw.trim().length());
+        System.out.println(raw.trim().toUpperCase());
+        System.out.println(raw.trim().charAt(0));
+        System.out.println(raw.trim().replace("felix", "franz"));
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>raw.length()</code></td><td>zählt die Zeichen: 11 Buchstaben und die vier Leerzeichen am Rand, zusammen 15.</td></tr>
+ <tr><td><code>raw.trim()</code></td><td>liefert denselben Text ohne die Leerzeichen am Anfang und Ende. In <code>raw</code> selbst ändert sich nichts.</td></tr>
+ <tr><td><code>raw.trim().toUpperCase()</code></td><td>eine Methodenverkettung: Auf dem String, den <code>trim()</code> liefert, läuft gleich <code>toUpperCase()</code>.</td></tr>
+ <tr><td><code>raw.trim().charAt(0)</code></td><td>das Zeichen an Stelle 0, also das erste: <code>Z</code>.</td></tr>
+ <tr><td><code>replace("felix", "franz")</code></td><td>ersetzt jedes Vorkommen von „felix“ durch „franz“.</td></tr>
+ </table>
+ </div>
+
+ <p>Diese sechs reichen für den Anfang:</p>
+ <ul>
+ <li><code>length()</code>: as viele Zeichen? (Leerzeichen zählen mit.)</li>
+ <li><code>trim()</code>: schneidet Leerzeichen am Anfang und Ende ab.</li>
+ <li><code>toLowerCase()</code> / <code>toUpperCase()</code>: alles klein, alles groß.</li>
+ <li><code>charAt(i)</code>: das Zeichen an Stelle <code>i</code>. Gezählt wird ab 0.</li>
+ <li><code>replace(old, replacement)</code>: ersetzt jedes Vorkommen.</li>
+ <li><code>equals(other)</code>: Inhalte vergleichen (Kapitel 6).</li>
+ </ul>
+ <div class="baustein selbst">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>Erst du, dann Java</p>
+ <p>Die Stelle, an der es die meisten erwischt: Unten steht <code>input.trim();</code>
+ allein in einer Zeile, ohne Zuweisung. Was steht danach in <code>input</code>? Der Kasten fragt dich nach der Ausgabe, bevor er sie zeigt.</p>
+ </div>
+
+ <div class="codebox runner" data-trace data-out="[  YES  ]\n[YES]">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Immutable.java</p>
+<pre><code class="java">public class Immutable {
+
+    public static void main(String[] args) {
+        String input = "  YES  ";
+
+        input.trim();
+        System.out.println("[" + input + "]");
+
+        String clean = input.trim();
+        System.out.println("[" + clean + "]");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE: die eckigen Klammern zeigen, wo der Text aufhört</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <ul>
+ <li><strong>Ein String ändert sich nie.</strong> <code>trim()</code> schneidet nichts ab, es <em>liefert einen neuen String zurück</em>.</li>
+ <li>Wer diesen Rückgabewert keiner Variablen zuweist, hat umsonst gerechnet. Wie bei deinen eigenen Methoden:
+ <span class="hl">Der Rückgabewert muss irgendwo hin.</span></li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="werte-von-aussen-scanner"><span class="nr">5.2</span> Benutzereingabe mit Scanner</h2>
+ <p class="wozu">Bisher standen alle Werte im Code. Ein Programm, das etwas <em>fragt</em>, muss die Antwort
+ auch lesen können. Das übernimmt der <code>Scanner</code>: Er liest, was jemand auf der Tastatur tippt.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="import">import java.util.Scanner;</span>
+
+<span data-teil="tastatur">Scanner</span> <var data-teil="tastatur">tastatur</var> = <span data-teil="new">new Scanner(System.in)</span>;
+<span data-teil="text">String</span> <var data-teil="text">text</var> = <var data-teil="tastatur">tastatur</var>.<span data-teil="nextline">nextLine()</span>;</code></pre>
+ <p class="aufbau-info">Der Import steht ganz oben, über der Klasse, die beiden anderen Zeilen in der <code>main</code>. Drei Zeilen, nur die dritte musst du heute verstehen.</p>
+ <div hidden data-erkl="import"><strong>Die Import-Anweisung</strong> nennt dem Compiler das Paket, in dem die Klasse <code>Scanner</code> liegt: <code>java.util</code>. Fehlt sie, meldet er bei <code>Scanner</code> den Fehler <em>cannot find symbol</em>. Die IDE fügt die Zeile auf Wunsch selbst ein.</div>
+ <div hidden data-erkl="tastatur"><strong>Scanner keyboard</strong> deklariert eine Variable vom Typ <code>Scanner</code>. Der Name ist frei wählbar, etwa <code>keyboard</code> oder <code>sc</code>, muss aber vor <code>.nextLine()</code> genauso wieder stehen. Ein Scanner reicht für alle Eingaben des Programms.</div>
+ <div hidden data-erkl="new"><strong><code>new Scanner(System.in)</code></strong> erzeugt ein Scanner-Objekt und verbindet es mit <code>System.in</code>, der Standardeingabe, also der Tastatur. <code>System.in</code> ist das Gegenstück zu <code>System.out</code>. Was <code>new</code> genau tut, kommt in <a href="09-objekte-klassen.html">Kapitel 9</a>.</div>
+ <div hidden data-erkl="text"><strong>String text</strong> deklariert die Variable, in der die Eingabe gespeichert wird. Ihr Typ ist <code>String</code>, denn <code>nextLine()</code> liefert immer Text, auch wenn jemand <code>17</code> tippt. Zum Rechnen musst du ihn erst in eine Zahl umwandeln, das Parsen kommt in 5.3.</div>
+ <div hidden data-erkl="nextline"><strong><code>nextLine()</code></strong> liest die ganze getippte Zeile bis zur Eingabetaste und gibt sie als String zurück. Bis dahin hält das Programm an dieser Stelle an. Leerzeichen am Rand bleiben erhalten, deshalb folgt oft gleich <code>.trim()</code>.</div>
+ </div>
+
+ <div class="codebox runner" data-in="  Mia  " data-out="What is your name?\nHello Mia.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Greeting.java</p>
+<pre><code class="java">import java.util.Scanner;
+
+public class Greeting {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("What is your name?");
+        String name = keyboard.nextLine();
+
+        System.out.println("Hello " + name.trim() + ".");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE: getippt wurde „&nbsp;&nbsp;Mia&nbsp;&nbsp;“, mit Leerzeichen</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>import java.util.Scanner;</code></td><td>sagt dem Compiler, wo er die Klasse <code>Scanner</code> findet. Ohne diese Zeile meldet er <em>cannot find symbol</em>.</td></tr>
+ <tr><td><code>new Scanner(System.in)</code></td><td>erzeugt den Scanner und verbindet ihn mit der Tastatur (<code>System.in</code> ist die Standardeingabe, das Gegenstück zu <code>System.out</code>). Was <code>new</code> tut: <a href="09-objekte-klassen.html">Kapitel 9</a>. Bis dahin einfach hinschreiben, wie die <code>main</code>-Zeile.</td></tr>
+ <tr><td><code>keyboard.nextLine()</code></td><td><strong>der interessante Teil</strong>: eine Methode, die die getippte Zeile als String zurückgibt. Diesen Rückgabewert speicherst du in einer Variablen, hier in <code>name</code>.</td></tr>
+ <tr><td><code>name.trim()</code></td><td>entfernt die Leerzeichen am Rand der Eingabe: Wer „&nbsp;&nbsp;Mia&nbsp;&nbsp;“ tippt, bekommt trotzdem „Hello Mia.“ zu lesen.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Was von der Tastatur kommt, ist <strong>roh</strong>: Leerzeichen am Rand, Groß- und
+ Kleinschreibung beliebig. Mit den String-Methoden bereitest du alles auf, was von außen kommt, bevor du damit weiterarbeitest.</p>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Die Falle, die jeden einmal erwischt</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Für Zahlen gibt es <code>nextInt()</code>. Mischt man es mit <code>nextLine()</code>, wird
+ es seltsam: <code>nextInt()</code> liest die Zahl, aber die Zeilenschaltung vom Enter bleibt
+ ungelesen im Eingabepuffer. Das nächste <code>nextLine()</code> liest diese leere Zeile und ist sofort fertig,
+ ohne zu warten.</p>
+ <p>Abhilfe: ein einzelnes <code>keyboard.nextLine();</code> direkt nach dem
+ <code>nextInt()</code>. Den Rückgabewert verwendet man hier <em>absichtlich</em> nicht:</p>
+ <div class="codebox runner" data-in="3\nZombiefelix" data-out="How many zombies?\nWhat is the first one called?\n3 zombies, the first one is called Zombiefelix.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Counter.java</p>
+<pre><code class="java">import java.util.Scanner;
+
+public class Counter {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("How many zombies?");
+        int count = keyboard.nextInt();
+        keyboard.nextLine();
+
+        System.out.println("What is the first one called?");
+        String name = keyboard.nextLine();
+
+        System.out.println(count + " zombies, the first one is called " + name.trim() + ".");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE: getippt wurde 3, dann Zombiefelix</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p>Lass <code>keyboard.nextLine();</code> in deiner IDE versuchsweise weg: Das Programm fragt
+ nach dem Namen und ist im selben Moment fertig.</p>
+ </div>
+ </details>
+
+ <div class="oaky">
+ <img class="figur" src="../img/kapitel/oaky-zeigt.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p>Zwei Zeilen zum Auswendiglernen, eine zum Verstehen. So ist das mit Bibliotheken: Man
+ benutzt sie, lange bevor man sie durchschaut. Nur so wird überhaupt jemand fertig.</p>
+ </div>
+ </div>
+ </section>
+
+
+ <section class="block">
+ <h2 id="casten-oder-parsen"><span class="nr">5.3</span> Casten und Parsen</h2>
+ <p class="wozu">Mit <code>nextLine()</code> kommt immer <strong>Text</strong>. Auch wenn jemand <code>17</code> tippt,
+ liegt in der Variablen ein <code>String</code>. Rechnen geht damit nicht:
+ <code>raw + 1</code> hängt nur eine <code>1</code> an den Text an. Zwei Wege bringen einen Wert in einen anderen Typ, ähnlich sehen sie sich nur auf den ersten Blick.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="cast">(</span><var data-teil="zieltyp">Zieltyp</var><span data-teil="cast">)</span> <var data-teil="zahl">Zahl</var>                 Casten: Zahl in Zahl
+<var data-teil="wrapper">Wrapper</var>.<span data-teil="parsetyp">parse</span><var data-teil="parsetyp">Typ</var>(<var data-teil="text">Text</var>)      Parsen: Text in Zahl</code></pre>
+ <p class="aufbau-info">Die vier Parse-Methoden sind alle gleich gebaut: <strong>Wrapper-Klasse</strong>, Punkt,
+ <code>parse</code> plus Typ, etwa <code>Integer.parseInt(text)</code>.</p>
+ <div hidden data-erkl="cast"><strong>Die runden Klammern um den Typ</strong> sind der Cast-Operator. Er steht direkt vor dem Wert und wandelt ihn in den Typ in der Klammer um. Nötig ist er, wenn dabei etwas verloren gehen kann, etwa von <code>double</code> nach <code>int</code>; von <code>int</code> nach <code>double</code> geht es ohne Cast.</div>
+ <div hidden data-erkl="zieltyp"><strong>Zieltyp:</strong> der Typ, den der Wert bekommen soll, etwa <code>int</code>, <code>long</code> oder <code>double</code>. Von <code>double</code> nach <code>int</code> fallen die Nachkommastellen weg, abgeschnitten, nicht gerundet: <code>(int) 7.9</code> ergibt 7.</div>
+ <div hidden data-erkl="zahl"><strong>Zahl:</strong> der Wert, der umgewandelt wird, eine Zahl oder eine Variable wie <code>number</code>. Der Cast gilt nur für den Wert direkt dahinter: <code>(int) 7.9 * 2</code> ergibt 14, <code>(int) (7.9 * 2)</code> ergibt 15.</div>
+ <div hidden data-erkl="wrapper"><strong>Wrapper-Klasse:</strong> die Klasse zum Zieltyp, immer mit großem Anfangsbuchstaben: <code>Integer</code> für <code>int</code>, <code>Double</code> für <code>double</code>, <code>Long</code> für <code>long</code>, <code>Boolean</code> für <code>boolean</code>.</div>
+ <div hidden data-erkl="parsetyp"><strong>Methodenname:</strong> <code>parse</code>, dahinter der Zieltyp mit großem Anfangsbuchstaben. Aus <code>int</code> wird <code>parseInt</code>, aus <code>double</code> wird <code>parseDouble</code>. Es heißt also <code>Integer.parseInt</code>, nicht <code>parseInteger</code>.</div>
+ <div hidden data-erkl="text"><strong>Text:</strong> der String, aus dem die Zahl gelesen wird, etwa die Eingabe aus <code>nextLine()</code>. Er darf nur die Zahl enthalten, Kommazahlen mit Punkt: <code>"4.99"</code>. Bei <code>Integer.parseInt("abc")</code> oder <code>Integer.parseInt(" 17")</code> bricht das Programm mit einer <code>NumberFormatException</code> ab.</div>
+ </div>
+ <table>
+ <thead><tr><th></th><th>Casten</th><th>Parsen</th></tr></thead>
+ <tbody>
+ <tr><td>Schreibweise</td><td><code>(int) number</code></td><td><code>Integer.parseInt(text)</code></td></tr>
+ <tr><td>wandelt</td><td>Zahl in Zahl</td><td><strong>Text</strong> in Zahl</td></tr>
+ <tr><td>was passiert</td><td>die Zahl wechselt den Typ, Nachkommastellen fallen weg</td>
+ <td>die Ziffern im Text werden als Zahl gelesen</td></tr>
+ <tr><td>geht schief, wenn</td><td>die Zahl nicht in den Zieltyp passt: Dann kommt <em>still</em> eine falsche
+ heraus, <code>(int) 3000000000L</code> ergibt −1294967296 (Überlauf, Kapitel 3)</td>
+ <td>im Text keine Zahl steht: Das Programm stürzt ab</td></tr>
+ </tbody>
+ </table>
+ <table>
+ <thead><tr><th>Aufruf</th><th>ergibt</th></tr></thead>
+ <tbody>
+ <tr><td><code>Integer.parseInt("42")</code></td><td>den <code>int</code> 42</td></tr>
+ <tr><td><code>Double.parseDouble("4.99")</code></td><td>den <code>double</code> 4.99</td></tr>
+ <tr><td><code>Long.parseLong("8000000000")</code></td><td>den <code>long</code> 8 000 000 000</td></tr>
+ <tr><td><code>Boolean.parseBoolean("true")</code></td><td>den <code>boolean</code> true</td></tr>
+ </tbody>
+ </table>
+ <p>Beides in einem Programm: oben geparst, unten gecastet. Getippt wird <code>17</code>:</p>
+ <div class="codebox runner" data-in="17" data-out="How old are you?\nNext year: 18\nCast: 7">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Input.java</p>
+<pre><code class="java">import java.util.Scanner;
+
+public class Input {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("How old are you?");
+        String raw = keyboard.nextLine();
+        int age = Integer.parseInt(raw);
+        System.out.println("Next year: " + (age + 1));
+
+        double number = 7.9;
+        System.out.println("Cast: " + (int) number);
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>String raw = keyboard.nextLine();</code></td><td>liest die getippte Zeile. Auch <code>17</code> kommt hier als Text an.</td></tr>
+ <tr><td><code>Integer.parseInt(raw)</code></td><td>parst: Die Ziffern im Text werden als Zahl gelesen. In <code>age</code> steht danach der <code>int</code> 17.</td></tr>
+ <tr><td><code>(age + 1)</code></td><td>rechnet 17 + 1 = 18. Die Klammern sorgen dafür, dass erst gerechnet und dann an den Text gehängt wird.</td></tr>
+ <tr><td><code>(int) number</code></td><td>castet: Der <code>double</code> 7.9 wird zum <code>int</code>, die Nachkommastellen fallen weg. Heraus kommt 7, abgeschnitten, nicht gerundet.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p><code>(int) "42"</code> übersetzt <strong>nicht</strong>. Ein Cast wandelt nur zwischen
+ Zahlentypen um, einen Text kann er nicht in eine Zahl umwandeln. Dafür gibt es das Parsen.</p>
+ </div>
+
+ <section class="baustein selbst quiz">
+ <h3>Aufgabe 5.3.1: Casten oder Parsen?</h3>
+ <div class="qq">
+ <p class="qq-text"><code>int b = (int) "7";</code></p>
+ <div class="qq-opt">
+ <button data-ok>Übersetzt nicht, hier muss geparst werden</button>
+ <button data-why="Ein Cast wandelt nur zwischen Zahlentypen um. Einen String kann er nicht in eine Zahl umwandeln, dafür ist Integer.parseInt da.">Läuft, b ist 7</button>
+ </div>
+ <p class="qq-erklaerung" hidden><code>incompatible types: String cannot be converted to int</code>. Richtig: <code>Integer.parseInt("7")</code>.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text"><code>int d = Integer.parseInt("four");</code></p>
+ <div class="qq-opt">
+ <button data-why="Der Compiler sieht nur einen String in der Klammer. Ob darin Ziffern stehen, weiß er nicht, das zeigt sich erst beim Ausführen.">Übersetzt nicht</button>
+ <button data-ok>Übersetzt, und stürzt beim Ausführen ab</button>
+ </div>
+ <p class="qq-erklaerung" hidden><code>NumberFormatException</code>, ein Laufzeitfehler. Abfangen kannst du ihn: Kapitel 11.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text"><code>int e = (int) 'A';</code></p>
+ <div class="qq-opt">
+ <button data-ok>Läuft, e ist 65</button>
+ <button data-why="Doch: Ein char IST eine Zahl, nämlich der Unicode-Wert. 'A' ist die 65.">Übersetzt nicht, char ist kein int</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Ein <code>char</code> ist intern eine Zahl. Deshalb darf man casten, und deshalb ergibt <code>'A' + 1</code> die 66.</p>
+ </div>
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+ <div class="oaky">
+ <img class="figur" src="../img/kapitel/oaky-zeigt.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p><code>nextInt()</code> nimmt dir das Parsen ab: lesen und wandeln in einem Schritt.
+ Mit <code>nextLine()</code> plus <code>parseInt</code> behältst aber <strong>du</strong> die
+ Kontrolle. Und wenn dort <code>twelve</code> steht? <a href="11-ausnahmen.html">Kapitel 11</a>.</p>
+ </div>
+ </div>
+ </section>
+
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Das reicht für jetzt</p>
+ <ul>
+ <li>Fertige Methoden ruft man <strong>auf einem Wert</strong> auf: Wert, Punkt, Name, etwa <code>raw.trim()</code>.</li>
+ <li>Für den Anfang: <code>length()</code>, <code>trim()</code>, <code>toUpperCase()</code> / <code>toLowerCase()</code>, <code>charAt(i)</code> (ab 0), <code>replace(old, replacement)</code>.</li>
+ <li>Ein String ändert sich nie. Die Methoden <em>liefern einen neuen zurück</em>: Rückgabewert einer Variablen zuweisen, sonst geht er verloren.</li>
+ <li><code>Scanner</code>: importieren, mit <code>new Scanner(System.in)</code> erzeugen, mit <code>nextLine()</code> lesen.</li>
+ <li>Was von außen kommt, ist roh: erst mit <code>trim()</code> und Co. aufbereiten, dann weiterverwenden.</li>
+ <li>Casten wandelt Zahl in Zahl, Parsen Text in Zahl: <code>Integer.parseInt(raw)</code>.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="baustein uebung quiz">
+ <h3>Checkpoint</h3>
+ <p class="widget-hinweis">2 Fragen. Beide sind Fallen, in die fast alle einmal tappen.</p>
+
+ <div class="qq">
+ <p class="qq-text">5. <code>String input = "  YES  ";</code>, danach steht allein die Zeile <code>input.trim();</code>. Was steht jetzt in <code>input</code>?</p>
+ <div class="qq-opt">
+ <button data-why="Das wäre so, wenn trim() den String verändern würde. Tut es aber nicht: Ein String ändert sich nie. trim() LIEFERT einen neuen String ohne die Leerzeichen zurück, und der wurde hier keiner Variablen zugewiesen.">&bdquo;YES&ldquo;, die Leerzeichen sind weg</button>
+ <button data-ok>Unverändert „&nbsp;&nbsp;JA&nbsp;&nbsp;“, der Rückgabewert ging verloren</button>
+ <button data-why="Die Zeile ist völlig korrekt und kompiliert. Sie bewirkt nur nichts, das ist der fiese Teil: Der Compiler warnt dich nicht.">Der Compiler meldet einen Fehler</button>
+ </div>
+ <p class="qq-erklaerung" hidden><strong>Der Rückgabewert muss irgendwo hin</strong>, wie bei deinen eigenen Methoden. Richtig wäre <code>input = input.trim();</code>. Sonst geht er verloren.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">6. Ein Programm liest mit <code>Scanner</code> von der Tastatur. Die Zeile <code>import java.util.Scanner;</code> fehlt. Was passiert?</p>
+ <div class="qq-opt">
+ <button data-why="Der Scanner ist kein Sonderfall. Ohne den Import kennt der Compiler den Namen Scanner nicht.">Nichts, Scanner kennt Java sowieso</button>
+ <button data-ok>Der Compiler meldet <code>cannot find symbol</code></button>
+ <button data-why="So weit kommt es gar nicht. Der Compiler meldet den Fehler schon beim Übersetzen, das Programm startet nie.">Das Programm startet und stürzt beim Tippen ab</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Der Import sagt dem Compiler, <em>wo</em> er die Klasse <code>Scanner</code> findet. Fehlt er, kennt der Compiler den Namen <code>Scanner</code> nicht, genau wie bei <code>system</code> statt <code>System</code>. Steht auch im Panik-Wörterbuch.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+
+ <div class="kapitel-ende">
+ <div class="blaettern">
+      <a class="btn" href="04-methoden.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Kapitel 4</a>
+      <a class="btn btn-haupt" href="06-verzweigungen.html">Kapitel 6: Verzweigungen<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </div>
+ </div>
+
+</main>
+
+<footer class="seitenfuss">
+ <div class="seitenfuss-innen">
+ <p><strong>Cheat Sheet: Java</strong> ·
+      Java-Grundlagen für Lernfeld 5,
+ „Software zur Verwaltung von Daten anpassen“, IT-Berufe, Jahrgangsstufe 10.</p>
+ </div>
+</footer>
+
+<script src="../js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 11 · Exception handling · Cheat Sheet: Java</title>
+<meta name="description" content="try, catch and finally: what to do when an error can't be made to go away because your code isn't at fault.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../../img/favicon.svg"><link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Remember this: bookmark</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Quick think: question for you</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Exercise: pencil</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>ZombieApocalypse project task: zombie head</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Scenario task: stopwatch</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: flag</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Explained differently: repeat</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Answer: key</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>The key points: page with dog-eared corner</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Learning goals: target</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Console: prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>IDE: editor window with sidebar</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Error message: bug</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Correct: check mark</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Wrong: cross</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Duration: clock</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Chapter: open notebook</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Table of contents</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Next</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Back</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Down</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Expandable</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Opens a window</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Night shift</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Day view</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Clear progress</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Print</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Skip to content</a>
+
+<nav class="topbar" aria-label="Main navigation">
+ <div class="topbar-innen">
+ <a class="marke" href="../index.html"> <img class="oakymarke" src="../../img/kapitel/oaky.svg" alt="" width="128" height="148"> Cheat Sheet: Java </a> <span class="topbar-titel">Chapter 11 · try, catch, finally</span> <span class="topbar-rechts"><a class="btn btn-klein" href="../index.html">Learning path</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Choose language"><span>EN</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="../../kapitel/11-ausnahmen.html" lang="de" hreflang="de">Deutsch</a></li><li><a href="11-ausnahmen.html" lang="en" hreflang="en" aria-current="true">English</a></li></ul></details><!--/sprache--></span>
+ </div>
+ <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+ <header class="kapitel-kopf">
+ <p class="kicker">Chapter 11 of 11 · try, catch, finally</p>
+ <h1>Exception handling</h1>
+ <p class="vorspann">For ten chapters, you've been getting rid of crashes. Here they become an event that a program can respond to.</p>
+ <p class="kapitel-meta"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>approx. 35 min</span></p>
+ </header>
+
+ <section class="einstieg" aria-label="Intro: the problem">
+ <p class="einstieg-kopf">THE PROBLEM</p>
+ <p class="einstieg-frage">Someone types “twelve” instead of “12” for the age. What does the program do?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox runner" data-out="" data-crash="Exception in thread &quot;main&quot; java.lang.NumberFormatException: For input string: &quot;twelve&quot;">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Age.java</p>
+<pre><code class="java">String input = "twelve";
+int age = Integer.parseInt(input);
+System.out.println("Next year you will be " + (age + 1) + ".");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>The program crashes just because someone made a typo. And only someone who knows Java understands the message.</p>
+ <button class="btn einstieg-knopf" type="button">With <code>try</code> and <code>catch</code></button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-out="That was not a number. Please enter your age in digits.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Age.java</p>
+<pre><code class="java">String input = "twelve";
+try {
+    int age = Integer.parseInt(input);
+    System.out.println("Next year you will be " + (age + 1) + ".");
+} catch (NumberFormatException e) {
+    System.out.println("That was not a number. Please enter your age in digits.");
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">The program catches the exception and keeps running. This chapter shows how.</p>
+ </div>
+ </section>
+
+
+
+ <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Contents of this chapter">
+ <h2 id="in-diesem-kapitel">In this chapter</h2>
+ </nav>
+
+ <div class="baustein anders">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-anders"></use></svg>Why this chapter comes last</p>
+ <p>Because it doesn't tell you anything new about Java, but about what goes wrong. You already know it, just from the wrong side:</p>
+ <ul>
+ <li><code>ArrayIndexOutOfBoundsException</code> in Chapter 8</li>
+ <li><code>NullPointerException</code> in Chapter 9</li>
+ <li>the <code>Scanner</code> from Chapter 5, which aborts as soon as someone types <code>twelve</code> instead of <code>12</code></li>
+ </ul>
+ <p>Before Chapter 8, it would be an answer without a question.</p>
+ </div>
+
+ <details class="baustein ziele">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>After this chapter you can<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+   <div class="inhalt">
+     <ul>
+ <li>read a crash message: which exception, which line</li>
+ <li>protect risky code with <code>try</code> and <code>catch</code></li>
+ <li>decide when <code>finally</code> is needed and when it isn't</li>
+ </ul>
+   </div>
+ </details>
+
+
+ <section class="block">
+ <h2 id="was-beim-absturz-wirklich-passiert"><span class="nr">11.1</span> Exceptions and stack trace</h2>
+ <p class="wozu">Before you catch a crash, you have to be able to read it. The message tells you <strong>what</strong> happened, <strong>where</strong>, and <strong>how far</strong> the program got.</p>
+ <div class="aufbau">
+ <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="kopf">Exception in thread "main"</span> <var data-teil="paket">package</var>.<var data-teil="sorte">exception type</var>: <var data-teil="grund">reason in plain text</var>
+   <span data-teil="wo">at</span> <var data-teil="wo">Class</var>.<var data-teil="wo">method</var>(<var data-teil="zeile">file</var>:<var data-teil="zeile">line</var>)</code></pre>
+ <p class="aufbau-info">Above it, the console shows what the program still printed before the crash.</p>
+ <div hidden data-erkl="kopf"><strong><code>Exception in thread "main"</code></strong> opens the message: An exception was thrown in the program's main thread and not caught by any <code>catch</code>. That's why the JVM ended the program.</div>
+ <div hidden data-erkl="paket"><strong>Package:</strong> where the exception's class lives, such as <code>java.lang</code> or <code>java.util</code>. For <code>java.lang</code> you don't need an import for a <code>catch</code>, for <code>java.util</code> you do.</div>
+ <div hidden data-erkl="sorte"><strong>Exception type:</strong> the name of its class, such as <code>ArrayIndexOutOfBoundsException</code>. The name describes the problem: an index outside the bounds of the array. You will write exactly this name later in the parentheses after <code>catch</code>.</div>
+ <div hidden data-erkl="grund"><strong>Reason in plain text:</strong> the exception's message, such as <code>Index 5 out of bounds for length 3</code>. It often names the values that didn't fit. In the program, <code>e.getMessage()</code> returns it.</div>
+ <div hidden data-erkl="wo"><strong>Class and method:</strong> where the exception was thrown, such as <code>at Crash.main</code>: in the method <code>main</code> of the class <code>Crash</code>. If several <code>at</code> lines are stacked, look for the topmost one that names one of your own classes.</div>
+ <div hidden data-erkl="zeile"><strong>File and line:</strong> the source file and the line number in it, such as <code>Crash.java:7</code>. That's where the statement that triggered the exception is, here <code>temperatures[5]</code>.</div>
+ </div>
+ <p>Three elements in the array, one access to index 5. Run it and watch what ends up on the console, and above all, what doesn't.</p>
+ <div class="codebox runner" data-out="All good so far." data-crash="Exception in thread &quot;main&quot; java.lang.ArrayIndexOutOfBoundsException: Index 5 out of bounds for length 3&#10;   at Crash.main(Crash.java:7)">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Crash.java</p>
+<pre><code class="java">public class Crash {
+
+    public static void main(String[] args) {
+        int[] temperatures = {18, 23, 19};
+
+        System.out.println("All good so far.");
+        System.out.println(temperatures[5]);
+        System.out.println("This line is never reached.");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">LINE BY LINE</p>
+ <table>
+ <tr><td><code>ArrayIndexOutOfBoundsException</code></td><td><strong>What:</strong> the exception type. Its package <code>java.lang</code> comes before it.</td></tr>
+ <tr><td><code>Index 5 out of bounds for length 3</code></td><td>the reason in plain text: with three elements, there is no index 5.</td></tr>
+ <tr><td><code>at Crash.main(Crash.java:7)</code></td><td><strong>Where:</strong> in the method <code>main</code> of the class <code>Crash</code>, file <code>Crash.java</code>, line 7. That's where <code>temperatures[5]</code> is.</td></tr>
+ <tr><td><code>All good so far.</code></td><td><strong>How far</strong> (easy to overlook): This line is still there. Everything <strong>before</strong> the line with the exception ran, everything after it didn't.</td></tr>
+ </table>
+ </div>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p>An <strong>exception</strong> is not a syntax error. The program runs, and in the middle of the run a line can't be executed. Java throws an exception and ends the program. That's only the default behavior, and you can change it.</p>
+ </div>
+ <div class="oaky">
+ <img class="figur" src="../../img/kapitel/oaky-zeigt.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p>The <a href="../panik.html">Panic glossary</a> shows how to <strong>get rid of</strong> the ten most common errors. Here we deal with the ones you can't get rid of: the fault isn't in your code but in the input.</p>
+ </div>
+ </div>
+
+ <p class="aufgabenmarke">Exercise 11.1.1</p>
+ <h3>Exercise 11.1.1: Which exception is thrown?</h3>
+ <p class="pfad-meta"><span class="etikett">Recognize</span><span class="etikett">~5 min</span></p>
+ <section class="baustein selbst quiz">
+ <h4>Five lines, five crashes</h4>
+ <div class="qq">
+ <p class="qq-text"><code>int[] a = new int[3]; a[3] = 1;</code></p>
+ <div class="qq-opt">
+ <button data-ok>ArrayIndexOutOfBoundsException</button>
+ <button data-why="The array has been created, so a holds a reference to an object. The problem is the index: with length 3 there are only 0, 1 and 2.">NullPointerException</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Three elements have the indexes 0, 1 and 2; there is no index 3.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text"><code>String s = null; s.length();</code></p>
+ <div class="qq-opt">
+ <button data-ok>NullPointerException</button>
+ <button data-why="No index anywhere in sight. The problem is that s doesn't hold an object at all that you could call length() on.">ArrayIndexOutOfBoundsException</button>
+ </div>
+ <p class="qq-erklaerung" hidden>s holds no reference to an object, and without an object you can't call a method.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text"><code>int x = 7 / (3 - 3);</code></p>
+ <div class="qq-opt">
+ <button data-why="InputMismatch comes from the Scanner and has nothing to do with calculating. Here, something is divided by 0.">InputMismatchException</button>
+ <button data-ok>ArithmeticException</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Only with INTEGERS: <code>7.0 / 0.0</code> doesn't crash but gives <code>Infinity</code>.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text"><code>keyboard.nextInt();</code>, the user types <code>eight</code></p>
+ <div class="qq-opt">
+ <button data-ok>InputMismatchException</button>
+ <button data-why="Integer.parseInt throws NumberFormatException. The Scanner has its own exception, which is in the same package.">NumberFormatException</button>
+ </div>
+ <p class="qq-erklaerung" hidden><code>nextInt()</code> expects an integer and gets letters.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text"><code>int n = Integer.parseInt("twelve");</code></p>
+ <div class="qq-opt">
+ <button data-why="InputMismatchException belongs to the Scanner and its nextInt(). Here Integer.parseInt does the parsing itself, and it has its own exception.">InputMismatchException</button>
+ <button data-ok>NumberFormatException</button>
+ </div>
+ <p class="qq-erklaerung" hidden>The text contains no number, you know this from Exercise 5.3.1.</p>
+ </div>
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+ </section>
+
+ <section class="block">
+ <h2 id="das-netz-try-und-catch"><span class="nr">11.2</span> Exception handling with try and catch</h2>
+ <p class="wozu"><code>try</code> means “give it a try,” <code>catch</code> means “catch it.” Together they work like a safety net: The code that can throw an exception goes into the <code>try</code> block. If an exception is thrown there, it lands in the <code>catch</code> block.</p>
+ <div class="aufbau">
+ <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="try">try</span> {
+    <var data-teil="code">code that can go wrong</var>
+} <span data-teil="catch">catch</span> (<var data-teil="sorte">exception type</var> <span data-teil="e">e</span>) {
+    <var data-teil="reaktion">what should happen then</var>
+}</code></pre>
+ <p class="aufbau-info">After the <code>catch</code>, the program continues normally, with the first line after its closing brace.</p>
+ <div hidden data-erkl="try"><strong><code>try</code></strong> starts the <code>try</code> block. If an exception is thrown inside it, Java aborts the block at that point and looks for a matching <code>catch</code> block. The remaining lines in the <code>try</code> block are skipped, not run later.</div>
+ <div hidden data-erkl="code"><strong>Code that can go wrong:</strong> the statement that can throw an exception, such as <code>System.out.println(temperatures[5]);</code>, and whatever depends directly on it. Nothing more belongs in here, because when an exception is thrown, everything after it is skipped.</div>
+ <div hidden data-erkl="catch"><strong><code>catch</code></strong> comes right after the closing brace of the <code>try</code> block. Its block runs only if an exception of the named type was thrown in the <code>try</code> block. If everything goes smoothly, it is skipped.</div>
+ <div hidden data-erkl="sorte"><strong>Exception type:</strong> the class name of the exception, such as <code>ArrayIndexOutOfBoundsException</code>. The <code>catch</code> block catches only this type: If a different one is thrown, the program still aborts.</div>
+ <div hidden data-erkl="e"><strong><code>e</code></strong> is a variable that holds the exception object. You can choose its name freely, <code>e</code> is customary. Section 11.3 shows what you can do with it.</div>
+ <div hidden data-erkl="reaktion"><strong>What should happen then:</strong> the statements in the <code>catch</code> block, such as <code>System.out.println("That slot does not exist.");</code>. Don't leave the block empty: Otherwise the program keeps running and nobody finds out about the exception.</div>
+ </div>
+ <div class="codebox runner" data-out="All good so far.\nThat slot does not exist.\nAnd on we go.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>SafetyNet.java</p>
+<pre><code class="java">public class SafetyNet {
+
+    public static void main(String[] args) {
+        int[] temperatures = {18, 23, 19};
+
+        try {
+            System.out.println("All good so far.");
+            System.out.println(temperatures[5]);
+            System.out.println("This line is never reached.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("That slot does not exist.");
+        }
+
+        System.out.println("And on we go.");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">LINE BY LINE</p>
+ <table>
+ <tr><td><code>try {</code></td><td>starts the <code>try</code> block. Everything up to the closing brace is protected.</td></tr>
+ <tr><td><code>temperatures[5]</code></td><td>throws the exception. Java aborts the <code>try</code> block at this point and looks for a matching <code>catch</code>.</td></tr>
+ <tr><td><code>catch (ArrayIndexOutOfBoundsException e)</code></td><td>The type matches, so this block runs: “That slot does not exist.”</td></tr>
+ <tr><td><code>System.out.println("And on we go.");</code></td><td>comes after the <code>catch</code> block. The exception is caught, the program continues normally.</td></tr>
+ </table>
+ </div>
+ <p>The same program as <code>Crash</code>, just with <code>try</code> and <code>catch</code> around it. That's what the whole chapter is about:</p>
+ <table>
+ <thead><tr><th>without <code>try</code>/<code>catch</code></th><th>with <code>try</code>/<code>catch</code></th></tr></thead>
+ <tbody>
+ <tr><td>Java ends the program.</td><td>Java jumps into the <code>catch</code>.</td></tr>
+ <tr><td>The message goes to the console.</td><td>You decide what it says.</td></tr>
+ <tr><td>Everything after it is skipped.</td><td>After the <code>catch</code>, it keeps going.</td></tr>
+ </tbody>
+ </table>
+ <p>And <code>This line is never reached.</code> is missing: The <code>try</code> block runs up to the exception, the rest is skipped, <em>not run afterward</em>. That's why as little as possible belongs in a <code>try</code> block: The more it contains, the more gets skipped.</p>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p><code>catch</code> catches <strong>only</strong> the type in its parentheses. <code>catch (ArithmeticException e)</code> doesn't catch an index error: The program then crashes despite the <code>try</code>.</p>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="das-e-ist-ein-objekt"><span class="nr">11.3</span> The exception object</h2>
+ <p class="wozu">The <code>e</code> in <code>catch (… e)</code> is an ordinary variable holding the exception object. Objects have methods (Chapter 9), and the most important one here is <code>getMessage()</code>.</p>
+ <div class="aufbau">
+ <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code>catch (<var data-teil="sorte">exception type</var> <span data-teil="e">e</span>) {
+    System.out.println(<var data-teil="text">Text</var> <span data-teil="plus">+</span> <span data-teil="e">e</span>.<span data-teil="getmessage">getMessage()</span>);
+}</code></pre>
+ <p class="aufbau-info"><code>e</code> has the exception type from the parentheses as its type. <code>getMessage()</code> returns the reason as a <code>String</code>.</p>
+ <div hidden data-erkl="sorte"><strong>Exception type:</strong> such as <code>ArithmeticException</code>. It comes before <code>e</code> like the type before a parameter: first the type, then the name.</div>
+ <div hidden data-erkl="e"><strong><code>e</code></strong> holds the reference to the exception object and is only valid inside the <code>catch</code> block. With the dot you call methods of this object, as with any other object.</div>
+ <div hidden data-erkl="text"><strong>Text:</strong> your own hint before the message, such as <code>"Message: "</code>. Remember the space before the closing quotation mark, otherwise the message sits right against the colon.</div>
+ <div hidden data-erkl="plus"><strong>The <code>+</code></strong> concatenates the two Strings: <code>"Message: "</code> and <code>"/ by zero"</code> become <code>Message: / by zero</code>.</div>
+ <div hidden data-erkl="getmessage"><strong><code>getMessage()</code></strong> is a method of the exception object. It returns the same message that, without a <code>catch</code>, would appear after the colon in the crash message, such as <code>/ by zero</code>. The empty parentheses are part of it.</div>
+ </div>
+ <div class="codebox runner" data-out="Message: / by zero">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Excerpt</p>
+<pre><code class="java">try {
+    int result = 10 / 0;
+    System.out.println(result);
+} catch (ArithmeticException e) {
+    System.out.println("Message: " + e.getMessage());
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">LINE BY LINE</p>
+ <table>
+ <tr><td><code>int result = 10 / 0;</code></td><td>divides an integer by 0. Java throws an <code>ArithmeticException</code>, the <code>println</code> below it is skipped.</td></tr>
+ <tr><td><code>catch (ArithmeticException e)</code></td><td>catches it and puts the exception object into the variable <code>e</code>.</td></tr>
+ <tr><td><code>e.getMessage()</code></td><td>calls a method of this object. It returns the reason as text: “/ by zero.”</td></tr>
+ </table>
+ </div>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p><code>e.getMessage()</code> returns the reason the JVM would otherwise have written after the colon, only now exactly where you want it.</p>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="mehrere-catch"><span class="nr">11.4</span> Multiple catch blocks</h2>
+ <p class="wozu">A <code>try</code> may have several <code>catch</code> blocks. Java goes from top to bottom and takes the first one whose type matches: like an <code>else if</code> for exceptions.</p>
+ <div class="aufbau">
+ <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="try">try</span> {
+    <var data-teil="code">code that can go wrong</var>
+} <span data-teil="catch">catch</span> (<var data-teil="erste">first type</var> e) {
+    <var data-teil="antwort">response to the first type</var>
+} <span data-teil="catch">catch</span> (<var data-teil="zweite">second type</var> e) {
+    <var data-teil="antwort">response to the second type</var>
+}</code></pre>
+ <p class="aufbau-info">Order matters: Java checks the <code>catch</code> blocks from top to bottom.</p>
+ <div hidden data-erkl="try"><strong><code>try</code>:</strong> a single <code>try</code> block, followed by any number of <code>catch</code> blocks. If an exception is thrown in it, the block aborts at that point, just as with only one <code>catch</code>.</div>
+ <div hidden data-erkl="code"><strong>Code that can go wrong:</strong> It can throw different types of exceptions. <code>names[2].toUpperCase()</code>, for example, throws an <code>ArrayIndexOutOfBoundsException</code> for an index outside the array and, if the element is <code>null</code>, a <code>NullPointerException</code>. At most one is thrown, though, because the block aborts at the first.</div>
+ <div hidden data-erkl="catch"><strong><code>catch</code>:</strong> Each block names its own type and has its own response. Once one has matched, all the others are skipped, even if their type would match too.</div>
+ <div hidden data-erkl="erste"><strong>First type:</strong> is checked first, such as <code>ArrayIndexOutOfBoundsException</code>. If <code>Exception</code> stands here, this block catches every exception, and the blocks below would never get their turn. Then the compiler reports an error.</div>
+ <div hidden data-erkl="zweite"><strong>Second type:</strong> is checked only if the first one didn't match, such as <code>NullPointerException</code>. If none of the types matches, the program aborts as if there were no <code>try</code> at all.</div>
+ <div hidden data-erkl="antwort"><strong>Response:</strong> Each type gets its own reaction, such as “Index is off.” for the index error and “There was nothing.” for <code>null</code>. That's exactly what multiple <code>catch</code> blocks are worth it for.</div>
+ </div>
+ <div class="codebox runner" data-out="Index is off.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Excerpt</p>
+<pre><code class="java">String[] names = {"Mia", "Paul"};
+
+try {
+    System.out.println(names[2].toUpperCase());
+} catch (ArrayIndexOutOfBoundsException e) {
+    System.out.println("Index is off.");
+} catch (NullPointerException e) {
+    System.out.println("There was nothing.");
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">LINE BY LINE</p>
+ <table>
+ <tr><td><code>names[2].toUpperCase()</code></td><td><code>names</code> has only the indexes 0 and 1. Even the access to index 2 throws the exception, <code>toUpperCase()</code> is never called.</td></tr>
+ <tr><td><code>catch (ArrayIndexOutOfBoundsException e)</code></td><td>the first <code>catch</code>. The type matches, so “Index is off.” appears.</td></tr>
+ <tr><td><code>catch (NullPointerException e)</code></td><td>is skipped: Only the first <code>catch</code> that matches runs.</td></tr>
+ </table>
+ </div>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p>Of several <code>catch</code> blocks, at most one runs: the first one from the top whose type matches.</p>
+ </div>
+ <div class="oaky">
+ <img class="figur" src="../../img/kapitel/oaky-finger.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p><code>catch (Exception e)</code> catches <strong>everything</strong>. Convenient, but rarely right: If you treat everything the same, you can't react differently. You repeat a wrong input, you fix an index error.</p>
+ </div>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="finally"><span class="nr">11.5</span> The finally block</h2>
+ <p class="wozu">After the <code>catch</code> blocks, you may add a <code>finally</code>. It <strong>always</strong> runs: after a smooth run just as after a caught exception.</p>
+ <div class="aufbau">
+ <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="try">try</span> {
+    <var data-teil="code">code that can go wrong</var>
+} <span data-teil="catch">catch</span> (<var data-teil="catch">exception type</var> e) {
+    <var data-teil="antwort">response to the exception</var>
+} <span data-teil="finally">finally</span> {
+    <var data-teil="aufraeumen">cleanup</var>
+}</code></pre>
+ <p class="aufbau-info">What for? For <strong>cleaning up</strong>: closing a file, disconnecting, closing the <code>Scanner</code>. That has to happen even when something went wrong, especially then.</p>
+ <div hidden data-erkl="try"><strong><code>try</code>:</strong> runs up to the statement that throws an exception. After that, it continues in the matching <code>catch</code> block and then in the <code>finally</code> block.</div>
+ <div hidden data-erkl="code"><strong>Code that can go wrong:</strong> such as <code>System.out.println("Per person: " + sum / people);</code>, which, when <code>people</code> equals <code>0</code>, throws an <code>ArithmeticException</code>. Lines after it in the <code>try</code> block are skipped.</div>
+ <div hidden data-erkl="catch"><strong><code>catch</code> with type:</strong> The block runs only if an exception of this type was thrown in the <code>try</code> block. If everything goes smoothly, it is skipped, but the <code>finally</code> block is not.</div>
+ <div hidden data-erkl="antwort"><strong>Response to the exception:</strong> the reaction to it, such as <code>System.out.println("Cannot divide by 0 people.");</code>. Only after that does the <code>finally</code> block run.</div>
+ <div hidden data-erkl="finally"><strong><code>finally</code></strong> comes after the last <code>catch</code> block. Its block runs in every case: after a smooth run, after a caught exception, and even when no type matches and the program aborts afterward.</div>
+ <div hidden data-erkl="aufraeumen"><strong>Cleanup:</strong> statements that are always needed, such as <code>keyboard.close();</code> for the <code>Scanner</code>. What should run only on success doesn't belong here, but in the <code>try</code> block.</div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">LINE BY LINE</p>
+ <table>
+ <tr><td><code>try { … }</code></td><td>runs up to the line with the exception, the rest is skipped.</td></tr>
+ <tr><td><code>catch (…) { … }</code></td><td>runs only if a matching exception was thrown.</td></tr>
+ <tr><td><code>finally { … }</code></td><td>runs either way.</td></tr>
+ </table>
+ </div>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p><code>finally</code> runs in every case. That's where you clean up.</p>
+ </div>
+
+ <p class="aufgabenmarke">Exercise 11.5.1</p>
+ <h3>Exercise 11.5.1: Desk check with finally</h3>
+ <p class="pfad-meta"><span class="etikett">Read instead of typing</span><span class="etikett">~10 min</span></p>
+ <p>Predict the <strong>exact</strong> output before you run it. Careful with <code>Done.</code>: Look at where the exception is thrown. Afterward: Would <code>Register closing.</code> have appeared even without <code>finally</code>?</p>
+ <div class="codebox runner" data-trace data-out="The bill is being split.\nCannot divide by 0 people.\nRegister closing.\nGoodbye.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Receipt.java</p>
+<pre><code class="java">public class Receipt {
+
+    public static void main(String[] args) {
+        int sum = 12;
+        int people = 0;
+
+        try {
+            System.out.println("The bill is being split.");
+            System.out.println("Per person: " + sum / people);
+            System.out.println("Done.");
+        } catch (ArithmeticException e) {
+            System.out.println("Cannot divide by 0 people.");
+        } finally {
+            System.out.println("Register closing.");
+        }
+
+        System.out.println("Goodbye.");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Why it works that way<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <ul>
+ <li><code>Done.</code> is missing, and that's the point: The exception is thrown one line above, the rest of the <code>try</code> block is skipped.</li>
+ <li><code>Register closing.</code> comes anyway, that's what <code>finally</code> is for.</li>
+ <li><code>Goodbye.</code> comes after the <code>finally</code> block: The program runs to its normal end.</li>
+ </ul>
+ <p><strong>And without <code>finally</code>?</strong> Here <code>Register closing.</code> would also have appeared as a line after the <code>catch</code>, because the exception is caught. <code>finally</code> makes a difference when the <code>catch</code> does <em>not</em> match: Then the program aborts, everything after the <code>finally</code> block is skipped, but the <code>finally</code> block still runs. That's why cleanup belongs there.</p>
+ </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <h2 id="die-tastatur"><span class="nr">11.6</span> Catching incorrect user input</h2>
+ <p class="wozu">An index error is <strong>your</strong> mistake: You fix it. A wrong keyboard input is <strong>nobody's</strong> mistake: People make typos. If a program crashes because of that, it's badly built, and this is exactly where <code>try</code>/<code>catch</code> pays off.</p>
+ <div class="aufbau">
+ <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="try">try</span> {
+    <var data-teil="lesen">read a number and keep working with it</var>
+} <span data-teil="catch">catch</span> (<var data-teil="sorte">InputMismatchException or NumberFormatException</var> e) {
+    <var data-teil="bitten">ask for a new input in a friendly way</var>
+}</code></pre>
+ <p class="aufbau-info">Which type is thrown depends on how you read. The two approaches below clear that up.</p>
+ <div hidden data-erkl="try"><strong><code>try</code>:</strong> If reading throws an exception, the rest of the block is skipped. That way the program never keeps calculating with a number that was never read.</div>
+ <div hidden data-erkl="lesen"><strong>Read a number and keep working with it:</strong> such as <code>int age = Integer.parseInt(raw);</code> and then the output with <code>age + 1</code>. Both belong in the <code>try</code> block, because a variable declared there, like <code>age</code>, doesn't exist outside of it.</div>
+ <div hidden data-erkl="catch"><strong><code>catch</code></strong> catches only exceptions from its own <code>try</code> block. If the reading happens outside, for example before it, it doesn't protect it.</div>
+ <div hidden data-erkl="sorte"><strong>Type:</strong> <code>nextInt()</code> throws an <code>InputMismatchException</code> (import from <code>java.util</code> required), <code>Integer.parseInt</code> throws a <code>NumberFormatException</code> (no import required). With the wrong type in the <code>catch</code>, the program aborts anyway.</div>
+ <div hidden data-erkl="bitten"><strong>Ask for a new input in a friendly way:</strong> a message that says what is expected, such as <code>System.out.println("That was not a whole number.");</code>. After that, the program continues normally after the <code>catch</code> block.</div>
+ </div>
+ <p>If <code>nextInt()</code> doesn't get an integer, the <code>Scanner</code> throws an <code>InputMismatchException</code>. It is in the same package but needs its own line, because an <code>import</code> brings in exactly one class (<code>import java.util.*;</code> brings in the whole package but doesn't reveal what you actually need):</p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>at the very top of the file</p>
+<pre><code class="java">import java.util.InputMismatchException;
+import java.util.Scanner;</code></pre>
+ </div>
+
+ <p>If you read with <code>nextLine()</code> as in Chapter 5 and parse it yourself, <code>Integer.parseInt</code> fails on <code>twelve</code> with a <code>NumberFormatException</code>. It is in <code>java.lang</code> like <code>String</code>, so it needs no import:</p>
+ <div class="codebox runner" data-in="twelve" data-out="How old are you?\nThat was not a whole number.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Input.java</p>
+<pre><code class="java">import java.util.Scanner;
+
+public class Input {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("How old are you?");
+        String raw = keyboard.nextLine().trim();
+
+        try {
+            int age = Integer.parseInt(raw);
+            System.out.println("Next year: " + (age + 1));
+        } catch (NumberFormatException e) {
+            System.out.println("That was not a whole number.");
+        }
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">LINE BY LINE</p>
+ <table>
+ <tr><td><code>keyboard.nextLine().trim()</code></td><td>reads the input as text and removes spaces at the beginning and end, as in Chapter 5.</td></tr>
+ <tr><td><code>Integer.parseInt(raw)</code></td><td>turns the text into an integer. That doesn't work for “twelve”: Java throws a <code>NumberFormatException</code>, the line below it is skipped.</td></tr>
+ <tr><td><code>catch (NumberFormatException e)</code></td><td>catches exactly this type and prints a hint instead of letting the program crash.</td></tr>
+ </table>
+ </div>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p>The <code>catch</code> has to match the type, and that depends on how you read:</p>
+ <ul>
+ <li><code>nextInt()</code> throws an <code>InputMismatchException</code>.</li>
+ <li><code>Integer.parseInt</code> throws a <code>NumberFormatException</code>.</li>
+ </ul>
+ </div>
+
+ <p class="aufgabenmarke">Exercise 11.6.1</p>
+ <h3>Exercise 11.6.1: The calculator that no longer crashes</h3>
+ <p class="pfad-meta"><span class="etikett">Basics</span><span class="etikett">~15 min</span><span class="etikett">IDE</span></p>
+ <p>Write a program that reads two integers from the keyboard and divides them. Two things can go wrong: The second number is a <code>0</code>, or letters come in instead of a number. In both cases the program should <strong>not</strong> crash, but print a message itself: <code>Nobody divides by zero.</code> or <code>Please enter whole numbers.</code></p>
+ <p>The two cases need <strong>different tools</strong>. Think first: Which one belongs in a <code>catch</code>, which one doesn't?</p>
+ <p>To try it out, enter: <code>12</code>, then <code>0</code>. Then once more with <code>twelve</code>.</p>
+ <p><strong>Expected output:</strong></p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Console</p>
+<pre><code class="nohl ausgabe">Numerator?
+Denominator?
+Nobody divides by zero.</code></pre>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Solution (try it yourself first)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <div class="codebox runner" data-in="12\n0" data-out="Numerator?\nDenominator?\nNobody divides by zero.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Calculator.java</p>
+<pre><code class="java">import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class Calculator {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        try {
+            System.out.println("Numerator?");
+            int numerator = keyboard.nextInt();
+            System.out.println("Denominator?");
+            int denominator = keyboard.nextInt();
+
+            if (denominator == 0) {
+                System.out.println("Nobody divides by zero.");
+            } else {
+                System.out.println("Result: " + numerator / denominator);
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Please enter whole numbers.");
+        }
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p><strong>Two problems, two tools:</strong></p>
+ <ul>
+ <li>You see the <code>0</code> coming: An <code>if</code> checks for it before dividing. What you can prevent yourself, you don't catch, you prevent.</li>
+ <li>Letters instead of a number are only noticed by <code>nextInt()</code> while reading: That's what <code>try</code> and <code>catch</code> are for.</li>
+ </ul>
+ <p>The <code>if</code> is inside the <code>try</code> too, because <code>numerator</code> and <code>denominator</code> are only valid there (Chapter 4).</p>
+ </div>
+ </details>
+
+ <details class="baustein optional" id="legendaer">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Legendary 11.6.2: The exception you throw yourself</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+   <div class="inhalt">
+ <p class="pfad-meta"><span class="etikett">New</span><span class="etikett">~20 min</span><span class="etikett">IDE</span></p>
+ <p>So far you have caught what Java threw. You can throw yourself too, with <code>throw</code>:</p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Excerpt</p>
+<pre><code class="java">throw new IllegalArgumentException("negative quantity: " + quantity);</code></pre>
+ </div>
+ <p>The line ends the method immediately like a <code>return</code>, but it doesn't return a value, it passes the exception on to the <strong>caller</strong>. The caller catches it with <code>catch</code>, otherwise the program crashes. This is how a method rejects an invalid value without inventing a substitute value that nobody can tell apart from an error.</p>
+ <p>Build a method <code>validate(int quantity)</code> that returns the quantity, but for a negative number throws instead of returning. main calls it for <code>5</code> and <code>-3</code>; the second call lands in the <code>catch</code>, which prints <code>e.getMessage()</code>.</p>
+ <p><strong>Expected output:</strong></p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Console</p>
+<pre><code class="nohl ausgabe">Ammo: 5
+Rejected: negative quantity: -3</code></pre>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Solution (try it yourself first)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <div class="codebox runner" data-out="Ammo: 5\nRejected: negative quantity: -3">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Guard.java</p>
+<pre><code class="java">public class Guard {
+
+    public static void main(String[] args) {
+        int[] attempts = {5, -3};
+
+        for (int v : attempts) {
+            try {
+                System.out.println("Ammo: " + validate(v));
+            } catch (IllegalArgumentException e) {
+                System.out.println("Rejected: " + e.getMessage());
+            }
+        }
+    }
+
+    static int validate(int quantity) {
+        if (quantity &lt; 0) {
+            throw new IllegalArgumentException(
+                    "negative quantity: " + quantity);
+        }
+        return quantity;
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p>Two things are new:</p>
+ <ul>
+ <li>After <code>throw</code>, there is no <code>return</code>: The method is over after that, and the compiler knows it.</li>
+ <li>The <code>try</code> is <em>inside</em> the loop, not around it. If it were outside, it would be over after the first rejected attempt.</li>
+ </ul>
+ <p>The text in the parentheses is exactly what <code>getMessage()</code> returns later. So what belongs there is what the caller needs to know, not “Error!”.</p>
+ </div>
+ </details>
+   </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <p class="aufgabenmarke handlung">Scenario task · 12 min</p>
+ <h3>The warehouse program</h3>
+ <p><strong>Situation:</strong> A warehouse program reads the quantity from the keyboard and calculates the total price (€2.50 per item). At the acceptance test, the customer types <code>twelve</code> instead of <code>12</code>, and the program aborts.</p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Excerpt</p>
+<pre><code class="java">System.out.println("Quantity?");
+int quantity = keyboard.nextInt();
+System.out.println("Total price: " + quantity * 2.5 + " euros");</code></pre>
+ </div>
+ <ol>
+ <li>Name the exception that is thrown here and the line where it happens.</li>
+ <li>Rewrite the three lines so that the program prints <code>Please enter a whole number.</code> on a wrong input and then continues normally.</li>
+ <li>A colleague suggests <code>catch (Exception e)</code>, “then we're prepared for everything.” Name one disadvantage.</li>
+ </ol>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Solution (try it yourself first)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <p><strong>a)</strong> An <code>InputMismatchException</code>, thrown by <code>keyboard.nextInt()</code> in line 2. <code>nextInt()</code> expects an integer and gets letters.</p>
+ <p><strong>b)</strong></p>
+ <div class="codebox runner" data-in="twelve" data-out="Quantity?\nPlease enter a whole number.\nNext item.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>CampOk.java</p>
+<pre><code class="java">import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class CampOk {
+
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("Quantity?");
+
+        try {
+            int quantity = keyboard.nextInt();
+            System.out.println("Total price: " + quantity * 2.5 + " euros");
+        } catch (InputMismatchException e) {
+            System.out.println("Please enter a whole number.");
+        }
+
+        System.out.println("Next item.");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p>The output line has to go <em>in</em> the <code>try</code> block too: <code>quantity</code> is declared <em>in</em> the <code>try</code> and is only valid there (<a href="04-methoden.html#wo-eine-variable-gilt">Chapter 4</a>). At the top you also need <code>import java.util.InputMismatchException;</code>.</p>
+ <p><strong>c)</strong> Two possible disadvantages of <code>catch (Exception e)</code>:</p>
+ <ul>
+ <li>It also catches what wasn't meant: index errors, <code>NullPointerException</code>, every programming error. The program seems to keep running, and the error only shows up much later.</li>
+ <li>If you treat everything the same, you can no longer react differently.</li>
+ </ul>
+ </div>
+ </details>
+ </section>
+
+
+ <section class="baustein selbst quiz">
+ <h3>Checkpoint</h3>
+ <div class="qq">
+ <p class="qq-text">The <code>try</code> block contains three <code>println</code> statements. The second one throws an exception. How many lines from the <code>try</code> block appear?</p>
+ <div class="qq-opt">
+ <button data-ok>One</button>
+ <button data-why="The rest of the try block is skipped, not run later. After the catch, execution continues AFTER the try.">Two</button>
+ </div>
+ <p class="qq-erklaerung" hidden>That's why as little as possible belongs in a try block.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text">When does a <code>finally</code> block run?</p>
+ <div class="qq-opt">
+ <button data-why="Then you wouldn't need it, the end of the catch is enough for that.">Only when an exception was caught</button>
+ <button data-ok>Always, with and without an exception</button>
+ </div>
+ <p class="qq-erklaerung" hidden>That's why you clean up there: closing a file, closing the Scanner.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text"><code>catch (ArithmeticException e)</code> is placed around an array access. What happens on the index error?</p>
+ <div class="qq-opt">
+ <button data-ok>The program crashes, the type doesn't match</button>
+ <button data-why="A catch catches only the type in its parentheses. Every other type stays uncaught, as if there were no try.">The catch catches it anyway</button>
+ </div>
+ <p class="qq-erklaerung" hidden>The program crashes despite the try. The type has to match.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text">Which error do you catch with catch, and which one do you fix?</p>
+ <div class="qq-opt">
+ <button data-why="The other way around. An index error is your own programming mistake, you don't catch it, you fix it.">Catch index errors, fix typos</button>
+ <button data-ok>Catch typos, fix index errors</button>
+ </div>
+ <p class="qq-erklaerung" hidden>What comes from outside (keyboard, file, network) you catch. Your own mistake you fix.</p>
+ </div>
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zusammenfassung"></use></svg>The key points</p>
+ <ul>
+ <li>An exception is not a syntax error, but an event at runtime.</li>
+ <li><code>try</code> wraps the risky code, <code>catch (Type e)</code> catches exactly this type.</li>
+ <li>In a <code>try</code>, everything after the line with the exception is skipped: put in as little as possible.</li>
+ <li><code>finally</code> runs in every case. That's where you clean up.</li>
+ <li><code>e.getMessage()</code> returns the plain text the JVM would otherwise have printed.</li>
+ <li>Rule of thumb: You fix your own errors. Errors from outside (keyboard, file, network) you catch.</li>
+ </ul>
+ </div>
+
+ <section class="baustein uebung quiz" style="background:var(--ueber-flaeche)">
+ <h3>The Everything Quiz: 11 questions, 11 chapters</h3>
+ <p class="widget-hinweis">One question per chapter, all mixed up. Best taken a few days after you have worked through the chapters: Your brain loves delayed review.</p>
+
+ <div class="qq">
+ <p class="qq-text">1. (Ch. 1) Java code is run by …</p>
+ <div class="qq-opt">
+ <button data-why="The processor directly understands only machine code. Java takes a detour: compiler &rarr; bytecode &rarr; JVM.">… the processor reading it directly</button>
+ <button data-ok>… the compiler generating bytecode that the JVM runs</button>
+ </div>
+ <p class="qq-erklaerung" hidden>As in Chapter 1: Java is first compiled, then interpreted.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">2. (Ch. 2) Which file belongs to the class <code>public class TrafficLight</code>?</p>
+ <div class="qq-opt">
+ <button data-ok>TrafficLight.java, exactly the same name, including the capital first letter</button>
+ <button data-why="Java insists on a match including upper and lower case, trafficLight.java gives a compiler error.">trafficLight.java, as long as it's lowercase</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Class name = file name. One of the first error messages everyone sees at some point.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">3. (Ch. 3) <code>int x = 7; x = x + 3;</code>: what is x?</p>
+ <div class="qq-opt">
+ <button data-ok>10</button>
+ <button data-why="No error! = is an assignment, not an equation: calculate the right side (7+3), store the result in x.">Compiler error, x can't be x + 3</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Read the old value of x, add 3, store the result back in x.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">4. (Ch. 4) <code>static double calculatePrice(int quantity)</code>: what is true?</p>
+ <div class="qq-opt">
+ <button data-ok>It receives an int and returns a double</button>
+ <button data-why="Read the other way around: The type BEFORE the name (double) is the return type, and the parameter (int quantity) is in the parentheses.">It receives a double and returns an int</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Read the signature: return type first, parameters in the parentheses.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">5. (Ch. 5) <code>String s = " Mia "; s.trim(); System.out.println(s.length());</code>: what appears on the console?</p>
+ <div class="qq-opt">
+ <button data-why="trim() returns a new String, but it isn't stored anywhere. s itself never changes.">3</button>
+ <button data-ok>7</button>
+ </div>
+ <p class="qq-erklaerung" hidden>A String never changes. If you want the return value, write <code>s = s.trim();</code></p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">6. (Ch. 6) <code>answer</code> holds what was typed. How do you check whether it was “yes”?</p>
+ <div class="qq-opt">
+ <button data-why="== doesn't check the content of Strings and likes to return false for texts that look identical. Chapter 9 explains why.">answer == "yes"</button>
+ <button data-ok>answer.equals("yes")</button>
+ </div>
+ <p class="qq-erklaerung" hidden>The iron rule: numbers with <code>==</code>, text with <code>equals()</code>.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">7. (Ch. 7) A loop should keep asking for a password UNTIL it is correct, at least once. Which one fits perfectly?</p>
+ <div class="qq-opt">
+ <button data-why="for shines when the NUMBER of repetitions is known beforehand. Here nobody knows how many times someone will type, and asking once is mandatory: do-while.">for</button>
+ <button data-ok>do-while</button>
+ </div>
+ <p class="qq-erklaerung" hidden>“Run first, check afterward”: The loop body runs at least once. That's exactly what do-while is for.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">8. (Ch. 8) <code>for (int i = 0; i &lt;= arr.length; i++)</code>: where is the error?</p>
+ <div class="qq-opt">
+ <button data-ok>The &lt;= goes one index too far, on the last i an ArrayIndexOutOfBoundsException is thrown</button>
+ <button data-why="i = 0 is exactly right. Arrays start at 0. The problem is at the other end: <= instead of < runs up to length, and THAT index doesn't exist.">The start at i = 0, arrays start at 1 after all</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Valid indexes: 0 to length − 1. The condition has to be i &lt; length.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">9. (Ch. 9) <code>Zombie a = new Zombie("Mo", …); Zombie b = a;</code>: how many Zombie objects exist?</p>
+ <div class="qq-opt">
+ <button data-why="new was called only ONCE, only new creates objects. b = a merely copies the reference.">Two, a and b</button>
+ <button data-ok>One, with two references to it</button>
+ </div>
+ <p class="qq-erklaerung" hidden>The twin experiment: Objects come into existence only through new.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">10. (Ch. 10) Add a new Zombie type “Beisser” without touching the feeding loop: which concept makes it possible?</p>
+ <div class="qq-opt">
+ <button data-why="Encapsulation protects attributes from uncontrolled access. The fact that the loop copes with EVERY subclass of Zombie is inheritance + polymorphism.">Encapsulation</button>
+ <button data-ok>Inheritance + polymorphism</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Beisser extends Zombie, its own groan(), the loop calls it polymorphically and doesn't need to know any of this.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">11. (Ch. 11) The user types “twelve” instead of a number, and <code>Integer.parseInt</code> throws a <code>NumberFormatException</code>. What is right?</p>
+ <div class="qq-opt">
+ <button data-why="What gets typed isn't decided by your code. You can't prevent input from outside, only catch it.">Change the code until no exception can occur anymore</button>
+ <button data-ok>Catch it with try and catch and ask again in a friendly way</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Errors from outside (keyboard, file, network) you catch. Your own error you fix.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+ <section class="block" id="finale">
+ <div class="feld" style="text-align:center;background:var(--rot-flaeche)">
+ <h2 id="das-war-s-wirklich">The foundation is in place.</h2>
+ <p style="margin:0 0 1em">Programs, variables, methods, Strings and input, conditionals, loops, arrays, objects, inheritance, exceptions: You have played through the complete Java foundation. Everything still to come builds on it.</p>
+ <p style="margin:0 0 1em">For looking things up, the <a href="../panik.html">Panic glossary</a> remains: the most common error messages in plain language.</p>
+ <p><button class="btn" id="finale-btn"> Celebrate finishing</button></p>
+ <p class="statuszeile" id="finale-msg"></p>
+ </div>
+ </section>
+
+ <div class="kapitel-ende">
+ <div class="blaettern">
+ <a class="btn" href="10-vererbung.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Chapter 10</a> <a class="btn btn-haupt" href="../panik.html">Panic glossary<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+ </div>
+ </div>
+
+</main>
+
+<footer class="seitenfuss">
+ <div class="seitenfuss-innen">
+ <p><strong>Cheat Sheet: Java</strong> · Java basics for Learning Field 5, “Adapting software for data management”, IT professions, grade 10.</p>
+ </div>
+</footer>
+
+<script src="../../js/app.js"></script>
+<script>
+(function () {
+ var $ = CC.$;
+
+ /* ---------- Finale ---------- */
+
+ var MSGS = [
+ 'Confetti earned. ',
+ 'Again? Happy to. ',
+ 'Okay, now we have really celebrated enough. (One more time is still allowed.)',
+ 'You can now officially add “object-oriented” to your vocabulary.'
+ ];
+ var clicks = 0;
+ $('#finale-btn').addEventListener('click', function () {
+ $('#finale-msg').textContent = MSGS[Math.min(clicks, MSGS.length - 1)];
+ clicks++;
+ });
+})();
+</script>
+</body>
+</html>

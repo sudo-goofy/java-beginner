@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" role="img">
+  <rect width="640" height="360" fill="none"/>
+  <text x="146" y="66" font-family="JetBrains Mono, monospace" font-size="22" font-weight="700" fill="#637EB9" text-anchor="middle">Klasse</text>
+  <path d="M146 88 l14 20 24 -6 -4 24 22 12 -18 17 10 23 -25 2 -6 24 -17 -16 -17 16 -6 -24 -25 -2 10 -23 -18 -17 22 -12 -4 -24 24 6 z" fill="none" stroke="#637EB9" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M236 168 h74" fill="none" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M296 156 l16 12 -16 12" fill="none" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="444" y="60" font-family="JetBrains Mono, monospace" font-size="22" font-weight="700" fill="#F15060" text-anchor="middle">Objekte</text>
+  <circle cx="372" cy="140" r="46" fill="#F15060" stroke="#14110C" stroke-width="4"/>
+  <circle cx="356" cy="128" r="5" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="386" cy="146" r="5" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="378" cy="120" r="4" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="466" cy="140" r="46" fill="#F15060" stroke="#14110C" stroke-width="4"/>
+  <circle cx="450" cy="128" r="5" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="480" cy="146" r="5" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="472" cy="120" r="4" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="420" cy="232" r="46" fill="#F15060" stroke="#14110C" stroke-width="4"/>
+  <circle cx="404" cy="220" r="5" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="434" cy="238" r="5" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="426" cy="212" r="4" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" role="img">
+  <rect width="640" height="360" fill="none"/>
+  <text x="320" y="66" font-family="Bricolage Grotesque, sans-serif" font-size="46" font-weight="800" fill="#14110C" text-anchor="middle">“Print Hello!”</text>
+  <path d="M150 108 H490 L372 214 v74 h-104 v-74 Z" fill="#FBF7EE" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M268 288 h104" fill="none" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="320" y="344" font-family="JetBrains Mono, monospace" font-size="21" font-weight="400" fill="#637EB9" text-anchor="middle">01001000 01100001 01101100</text>
+  <path d="M320 300 v18" fill="none" stroke="#637EB9" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M312 312 l8 10 8 -10" fill="none" stroke="#637EB9" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

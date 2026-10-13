@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panic glossary · The Big Java Cheat Sheet</title>
+<meta name="description" content="The ten error messages that are guaranteed to catch you while learning Java, quoted verbatim from javac, explained in plain English, with an instant check.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../img/favicon.svg">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Remember this: bookmark</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Quick think: question for you</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Exercise: pencil</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>ZombieApocalypse project task: zombie head</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Scenario task: stopwatch</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: flag</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Explained differently: repeat</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Answer: key</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>The key points: page with dog-eared corner</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Learning goals: target</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Console: prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>IDE: editor window with sidebar</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Error message: bug</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Correct: check mark</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Wrong: cross</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Duration: clock</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Chapter: open notebook</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Table of contents</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Next</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Back</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Down</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Expandable</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Opens a window</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Night shift</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Day view</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Clear progress</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Print</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Skip to content</a>
+
+<nav class="topbar" aria-label="Main navigation">
+  <div class="topbar-innen">
+    <a class="marke" href="index.html"> <img class="oakymarke" src="../img/kapitel/oaky.svg" alt="" width="128" height="148"> Java Cheat Sheet </a> <span class="topbar-titel">Panic glossary</span> <span class="topbar-rechts"> <a class="btn btn-klein" href="index.html">Learning path</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Choose language"><span>EN</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="../panik.html" lang="de" hreflang="de">Deutsch</a></li><li><a href="panik.html" lang="en" hreflang="en" aria-current="true">English</a></li></ul></details><!--/sprache-->
+    </span>
+  </div>
+  <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+  <header class="kapitel-kopf">
+    <p class="kicker">Emergency page</p>
+    <h1>The Panic glossary</h1>
+    <p class="vorspann">Ten error messages that are guaranteed to catch you, verbatim, explained in plain English.</p>
+    <p class="kapitel-meta">
+      <span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-fehler"></use></svg>10 messages</span> <span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>Reference</span>
+    </p>
+  </header>
+
+  <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Contents of this page">
+    <h2 id="auf-dieser-seite">On this page</h2>
+  </nav>
+
+  <section class="block">
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>The one rule</p>
+      <p>An error message is not an insult but a precise statement: <strong>which file, which line, which problem</strong>. Read first, then swear, then fix.</p>
+    </div>
+
+    <div class="oaky">
+      <img class="figur" src="../img/kapitel/oaky-lupe.svg" alt="" width="128" height="148">
+      <div class="text">
+        <p>There are <b>two kinds</b>: <strong>compiler errors</strong> (the program does not start at all) and <strong>runtime errors</strong> (it ran and crashed midway). Recognizing the kind already halves your search. The logic error from Chapter 1 never announces itself and is therefore missing here.</p>
+      </div>
+    </div>
+
+    <aside class="rand">
+      <p>All messages are real, from <code>javac</code> and the JVM (OpenJDK 25). If your output differs slightly, that is down to your Java version. The cause stays the same.</p>
+    </aside>
+  </section>
+
+  <section class="block">
+    <h2 id="compiler-fehler">Compiler errors: the program does not start</h2>
+    <p>These messages appear <em>before</em> anything runs. A caret (<code>^</code>) points to the spot where the compiler finds the error.</p>
+
+    <article class="baustein uebung panik-karte">
+      <h3>1. <code>';' expected</code></h3>
+      <p class="pfad-meta"><span class="etikett">Compiler</span><span class="etikett">Chapter 2</span></p>
+      <pre class="panik-meldung" lang="en">A.java:3: error: ';' expected
+        System.out.println("Hello")
+                                   ^
+1 error</pre>
+      <h4>In plain English</h4>
+      <p>“A semicolon is missing.” The classic. The caret sits right after the last character of the affected line. A forgotten bracket, on the other hand, is often reported by the compiler only further down.</p>
+      <h4>Instant check</h4>
+      <ul>
+        <li>Look at the line it names <strong>and the line above it</strong>.</li>
+        <li>Does every statement end with <code>;</code>?</li>
+      </ul>
+    </article>
+
+    <article class="baustein uebung panik-karte">
+      <h3>2. <code>package system does not exist</code></h3>
+      <p class="pfad-meta"><span class="etikett">Compiler</span><span class="etikett">Chapter 2</span></p>
+      <pre class="panik-meldung" lang="en">B.java:4: error: package system does not exist
+        system.out.println(name);
+              ^
+1 error</pre>
+      <h4>In plain English</h4>
+      <p><code>System</code> is written in lowercase. The compiler then reads <code>system.out</code> as “the package <code>system</code>,” and that does not exist. Upper and lower case always matter in Java.</p>
+      <h4>Instant check</h4>
+      <ul>
+        <li><code>System</code> capitalized, <code>out</code> and <code>println</code> lowercase.</li>
+        <li>The same goes for these: <code>String</code> capitalized, <code>int</code> lowercase.</li>
+      </ul>
+    </article>
+
+    <article class="baustein uebung panik-karte">
+      <h3>3. <code>cannot find symbol</code></h3>
+      <p class="pfad-meta"><span class="etikett">Compiler</span><span class="etikett">Chapter 3</span><span class="etikett">Chapter 4</span><span class="etikett">Chapter 6</span></p>
+      <pre class="panik-meldung" lang="en">G.java:7: error: cannot find symbol
+        System.out.println(teil);
+                           ^
+  symbol:   variable teil
+  location: class G
+1 error</pre>
+      <h4>In plain English</h4>
+      <p>The compiler does not know the name at this spot. Either a typo or, more often: the variable exists, but <strong>not at this spot</strong>. Declared inside a loop or an <code>if</code> block, it is no longer valid after the closing brace. This is called <strong>scope</strong> (<a href="kapitel/04-methoden.html#wo-eine-variable-gilt">Chapter 4</a>).</p>
+      <h4>Instant check</h4>
+      <ul>
+        <li>The <code>symbol:</code> line names the unknown word: compare it letter by letter.</li>
+        <li>Is the declaration <em>inside</em> a block <code>{ … }</code> that you have already left? Then declare it further up.</li>
+      </ul>
+    </article>
+
+    <article class="baustein uebung panik-karte">
+      <h3>4. <code>incompatible types</code></h3>
+      <p class="pfad-meta"><span class="etikett">Compiler</span><span class="etikett">Chapter 3</span></p>
+      <pre class="panik-meldung" lang="en">C.java:3: error: incompatible types: String cannot be converted to int
+        int age = "twenty";
+                    ^
+1 error</pre>
+      <h4>In plain English</h4>
+      <p>The value does not match the variable’s type. The message names both types: <em>X cannot be converted to Y</em>. X is the type of the value, Y the type of the variable.</p>
+      <h4>Instant check</h4>
+      <ul>
+        <li>What is wrong, the type of the variable or the value?</li>
+        <li>A decimal number in an <code>int</code>? Either use <code>double</code> or truncate deliberately: <code>(int) 4.9</code> gives <code>4</code>.</li>
+      </ul>
+    </article>
+
+    <article class="baustein uebung panik-karte">
+      <h3>5. <code>class X is public, should be declared in a file named X.java</code></h3>
+      <p class="pfad-meta"><span class="etikett">Compiler</span><span class="etikett">Chapter 2</span></p>
+      <pre class="panik-meldung" lang="en">D.java:1: error: class Lager is public, should be declared in a file named Lager.java
+public class Lager {
+       ^
+1 error</pre>
+      <h4>In plain English</h4>
+      <p>Class name and file name must match exactly, including upper and lower case: class <code>Lager</code>, file <code>Lager.java</code>.</p>
+      <h4>Instant check</h4>
+      <ul>
+        <li>Let the IDE rename it; it catches the class, the file and every use:
+          <!--ide:kurz-umbenennen-->
+<em>VS Code:</em> cursor on the name, <kbd>F2</kbd> · <em>IntelliJ IDEA:</em> cursor on the name, <kbd>Shift</kbd> + <kbd>F6</kbd>
+<!--/ide:kurz-umbenennen--></li>
+        <li>There is exactly one <code>public class</code> per file.</li>
+      </ul>
+    </article>
+
+    <article class="baustein uebung panik-karte">
+      <h3>6. <code>variable X might not have been initialized</code></h3>
+      <p class="pfad-meta"><span class="etikett">Compiler</span><span class="etikett">Chapter 3</span></p>
+      <pre class="panik-meldung" lang="en">J.java:4: error: variable hunger might not have been initialized
+        System.out.println(hunger);
+                           ^
+1 error</pre>
+      <h4>In plain English</h4>
+      <p>The variable is declared but does not have a value yet. The compiler won’t let you read it like that, unlike some languages that silently take some value instead.</p>
+      <h4>Instant check</h4>
+      <ul>
+        <li>Give it a starting value right at the declaration: <code>int hunger = 0;</code></li>
+        <li>A value that is only set in one <code>if</code> branch does not count: the other branch might run.</li>
+      </ul>
+    </article>
+
+    <article class="baustein uebung panik-karte">
+      <h3>7. <code>missing return statement</code></h3>
+      <p class="pfad-meta"><span class="etikett">Compiler</span><span class="etikett">Chapter 4</span></p>
+      <pre class="panik-meldung" lang="en">I.java:4: error: missing return statement
+    }
+    ^
+1 error</pre>
+      <h4>In plain English</h4>
+      <p>The signature has a return type (here <code>int</code>), but one path through the method ends without returning anything. The caret points to the closing brace: that is where the <code>return</code> is missing.</p>
+      <h4>Instant check</h4>
+      <ul>
+        <li>Does <strong>every</strong> possible path end with a <code>return</code>? The <code>else</code> branch too?</li>
+        <li>If nothing should come back: return type <code>void</code>.</li>
+      </ul>
+    </article>
+
+    <article class="baustein uebung panik-karte">
+      <h3>8. <code>constructor X cannot be applied to given types</code></h3>
+      <p class="pfad-meta"><span class="etikett">Compiler</span><span class="etikett">Chapter 9</span></p>
+      <pre class="panik-meldung" lang="en">K.java:7: error: constructor Zombie in class Zombie cannot be applied to given types;
+        Zombie z = new Zombie();
+                   ^
+  required: String
+  found:    no arguments
+  reason: actual and formal argument lists differ in length
+1 error</pre>
+      <h4>In plain English</h4>
+      <p>The constructor receives different values than it requires. The message is unusually detailed: <code>required</code> is what it needs, <code>found</code> is what arrived.</p>
+      <h4>Instant check</h4>
+      <ul>
+        <li>Which parameters are in the constructor’s parentheses?</li>
+        <li>Once you write your own constructor, the empty default constructor disappears: <code>new Zombie()</code> then works only if you add it yourself.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="block">
+    <h2 id="laufzeitfehler">Runtime errors: the program ran and crashed</h2>
+    <p>The compiler has compiled the code; the error only occurs when you run it. The bottom <code>at …</code> line names the spot in <em>your</em> code.</p>
+
+    <article class="baustein uebung panik-karte">
+      <h3>9. <code>ArrayIndexOutOfBoundsException</code></h3>
+      <p class="pfad-meta"><span class="etikett">Runtime</span><span class="etikett">Chapter 8</span></p>
+      <pre class="panik-meldung" lang="en">Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 5 out of bounds for length 5
+	at E.main(E.java:4)</pre>
+      <h4>In plain English</h4>
+      <p>You are accessing an index that does not exist in the array. <em>Index 5</em> with <em>length 5</em>: five elements have the indices 0 to 4. The last index is always <code>length - 1</code>.</p>
+      <h4>Instant check</h4>
+      <ul>
+        <li>Check the loop condition: <code>i &lt; array.length</code>, not <code>i &lt;= array.length</code>.</li>
+        <li>For arrays, <code>length</code> has no parentheses: <code>array.length</code>, not <code>array.length()</code>. Only for <code>String</code> is it a method.</li>
+      </ul>
+    </article>
+
+    <article class="baustein uebung panik-karte">
+      <h3>10. <code>NullPointerException</code></h3>
+      <p class="pfad-meta"><span class="etikett">Runtime</span><span class="etikett">Chapter 9</span></p>
+      <pre class="panik-meldung" lang="en">Exception in thread "main" java.lang.NullPointerException: Cannot invoke "Zombie.groan()" because "camp[2]" is null
+	at Lager.main(Lager.java:6)</pre>
+      <h4>In plain English</h4>
+      <p>The variable points to <strong>no</strong> object (<code>null</code>), so there is nothing whose method you could call. Since Java 14, the message names the variable that is <code>null</code>, here <code>camp[2]</code>.</p>
+      <h4>Instant check</h4>
+      <ul>
+        <li>After <code>new Zombie[3]</code> the array is <strong>empty</strong>: three elements, all <code>null</code>. Every object needs its own <code>new</code>.</li>
+        <li>Search backwards from the named variable: where did it last get a value?</li>
+      </ul>
+    </article>
+
+    <article class="baustein uebung panik-karte">
+      <h3>Bonus: <code>NumberFormatException</code></h3>
+      <p class="pfad-meta"><span class="etikett">Runtime</span><span class="etikett">Input</span></p>
+      <pre class="panik-meldung" lang="en">Exception in thread "main" java.lang.NumberFormatException: For input string: "zwoelf"
+	at java.base/java.lang.Integer.parseInt(Integer.java:565)
+	at Lager.main(Lager.java:3)</pre>
+      <h4>In plain English</h4>
+      <p>A number was supposed to arrive, but text arrived. The <code>at java.base/…</code> lines belong to the Java library. Only the <strong>bottom</strong> line matters: it points to your code.</p>
+      <h4>Instant check</h4>
+      <ul>
+        <li>Read from top to bottom: the first <code>at</code> line with your file name is the spot in your code.</li>
+        <li><code>For input string:</code> shows literally what arrived.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="block">
+    <h2 id="so-liest-du-eine-meldung">How to read any message, even an unfamiliar one</h2>
+    <ol>
+      <li><strong>Determine the kind.</strong> <code>error:</code> means compiler error, <code>Exception in thread</code> means: the program was already running.</li>
+      <li><strong>Find the place.</strong> <code>File.java:7</code> means: file <code>File.java</code>, line 7. For runtime errors, the bottom <code>at …</code> line with your file name is the one that counts.</li>
+      <li><strong>First message first.</strong> One missing semicolon can trigger twenty follow-up errors. Fix only the topmost one, then compile again.</li>
+      <li><strong>Take the sentence literally.</strong> <code>cannot be converted to int</code> means exactly that. The message is right, even if it is terse.</li>
+    </ol>
+
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+      <p>Being able to read error messages: the most underrated skill in programming, and the only one that gets better with every error.</p>
+    </div>
+
+    <nav class="blaettern" aria-label="Next">
+      <a class="btn" href="index.html"> <svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg> To the learning path</a> <a class="btn btn-haupt" href="kapitel/01-grundbegriffe.html">Chapter 1 <svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </nav>
+  </section>
+
+</main>
+
+<footer class="seitenfuss">
+  <div class="seitenfuss-innen">
+    <p><strong>The Big Java Cheat Sheet</strong> · Java basics for Learning Field 5, “Adapting software for data management”, IT professions, grade 10.</p>
+    <p>All messages on this page were generated with OpenJDK 25 and are quoted verbatim.</p>
+  </div>
+</footer>
+
+<script src="../js/app.js"></script>
+</body>
+</html>

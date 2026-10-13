@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 1 · What is programming, anyway? · Cheat Sheet: Java</title>
+<meta name="description" content="What a program is, how compilers and interpreters translate, and why Java is so strict about data types.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../../img/favicon.svg"><link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Remember this: bookmark</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Quick think: question for you</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Exercise: pencil</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>ZombieApocalypse project task: zombie head</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Scenario task: stopwatch</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: flag</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Explained differently: repeat</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Answer: key</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>The key points: page with dog-eared corner</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Learning goals: target</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Console: prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>IDE: editor window with sidebar</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Error message: bug</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Correct: check mark</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Wrong: cross</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Duration: clock</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Chapter: open notebook</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Table of contents</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Next</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Back</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Down</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Expandable</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Opens a window</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Night shift</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Day view</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Clear progress</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Print</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Skip to content</a>
+
+<nav class="topbar" aria-label="Main navigation">
+ <div class="topbar-innen">
+ <a class="marke" href="../index.html"> <img class="oakymarke" src="../../img/kapitel/oaky.svg" alt="" width="128" height="148"> Cheat Sheet: Java </a> <span class="topbar-titel">Chapter 1 · Basic concepts</span> <span class="topbar-rechts"><a class="btn btn-klein" href="../index.html">Learning path</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Choose language"><span>EN</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="../../kapitel/01-grundbegriffe.html" lang="de" hreflang="de">Deutsch</a></li><li><a href="01-grundbegriffe.html" lang="en" hreflang="en" aria-current="true">English</a></li></ul></details><!--/sprache--></span>
+ </div>
+ <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+ <header class="kapitel-kopf">
+ <p class="kicker">Chapter 1 of 11 · Compiler, interpreter, JVM</p>
+ <h1>What is programming, anyway?</h1>
+ <p class="vorspann">A computer performs billions of steps per second and decides nothing on its own. This chapter clarifies what that means for you.</p>
+ <p class="kapitel-meta"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>approx. 35 min</span></p>
+ </header>
+
+ <section class="einstieg" aria-label="Intro: the problem">
+ <p class="einstieg-kopf">THE PROBLEM</p>
+ <p class="einstieg-frage">You write text. Your processor only understands zeros and ones. How does that fit together?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>HelloWorld.java</p>
+<pre><code class="java">System.out.println("Hello!");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein einstieg-zeige" type="button">What does the processor understand?</button>
+ </div>
+ <div class="konsole einstieg-ausgabe">10111000 01001000 01100001 01101100 …</div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>The processor only executes machine code, instructions made of zeros and ones. So someone has to translate between your text and the processor. But who, and when?</p>
+ <button class="btn einstieg-knopf" type="button">This is how Java does it</button>
+ </div>
+ <div class="einstieg-mit">
+ <ol>
+ <li>You write <code>HelloWorld.java</code>, readable text.</li>
+ <li>The <strong>compiler</strong> <code>javac</code> translates it into <strong>bytecode</strong>: <code>HelloWorld.class</code>.</li>
+ <li>The <strong>JVM</strong> runs the bytecode and translates it into your processor's machine code as it goes.</li>
+ </ol>
+ <p class="einstieg-pointe">Compiler, bytecode, JVM: this chapter shows what is behind them and why Java works this way.</p>
+ </div>
+ </section>
+
+
+ <figure class="opener weit">
+ <img src="../../img/en/kapitel/uebersetzung.svg" alt="A funnel: at the top is the sentence “Print Hello!”, at the bottom zeros and ones fall out." width="640" height="360">
+ <figcaption>Human language at the top, machine code at the bottom. Translation in between.</figcaption>
+ </figure>
+
+ <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Contents of this chapter">
+ <h2 id="in-diesem-kapitel">In this chapter</h2>
+ </nav>
+
+ <details class="baustein ziele">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>After this chapter you can<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+   <div class="inhalt">
+     <ul>
+ <li>explain what a program actually is</li>
+ <li>explain the difference between <strong>compiler</strong> and <strong>interpreter</strong> (with a mental picture)</li>
+ <li>say what makes Java special and why it is so strict about data types</li>
+ <li>tell syntax, runtime, and logic errors apart and say who finds them</li>
+ </ul>
+   </div>
+ </details>
+
+ <section class="block">
+ <h2 id="der-computer-schnell-fleissig-planlos"><span class="nr">1.1</span> Programs: instructions for the computer</h2>
+ <p class="wozu">A computer performs <strong>billions</strong> of calculation steps per second, but decides nothing on its own. It needs an instruction for everything. Really everything.</p>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p>A <span class="hl">program is a list of instructions</span> that the computer works through stubbornly from top to bottom. Like a cooking recipe, except the cook crashes at “a pinch of salt”: “pinch” is not precisely defined.</p>
+ </div>
+
+ <div class="oaky">
+ <img class="figur" src="../../img/kapitel/oaky-lacht.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p><strong>Good news:</strong> The computer decides nothing on its own, so it is predictable: every error has a cause that can be found. That makes programming learnable.</p>
+ </div>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="das-uebersetzungsproblem"><span class="nr">1.2</span> Compiler and interpreter</h2>
+ <p class="wozu">The processor only understands <strong>machine code</strong>: zeros and ones. Humans are surprisingly bad at that. That is why there are <strong>programming languages</strong>: readable for humans, translatable into machine code.</p>
+ <p>The same instruction “print Hello!” on three levels:</p>
+ <div class="wflex">
+ <div class="feld">
+ <h4>Java (high-level language)</h4>
+ <div class="codebox flach" style="margin:0">
+<pre style="padding:12px 14px"><code class="java">System.out.println("Hello!");</code></pre>
+ </div>
+ <p class="statuszeile" style="margin-top:8px">Readable. Typeable. Learnable.</p>
+ </div>
+ <div class="feld">
+ <h4>Python (high-level language)</h4>
+ <div class="codebox flach" style="margin:0">
+<pre style="padding:12px 14px"><code class="nohl" style="background:none;border:none;padding:0;color:#ffd166;font-size:0.9rem">print("Hello!")</code></pre>
+ </div>
+ <p class="statuszeile" style="margin-top:8px">Different language, same idea.</p>
+ </div>
+ <div class="feld">
+ <h4>Machine code</h4>
+ <div class="codebox flach" style="margin:0">
+<pre style="padding:12px 14px"><code class="nohl" style="background:none;border:none;padding:0;color:#8a8598;font-size:0.9rem">10111000 01001000 01100001
+10111011 00000100 11001101
+10000000 11000011 00binary
+mush without end …</code></pre>
+ </div>
+ <p class="statuszeile" style="margin-top:8px">The processor executes this directly.</p>
+ </div>
+ </div>
+ <p style="margin-top:16px">There are two strategies for the translation from top to bottom:</p>
+ <ul>
+ <li><strong>Compiler</strong>: translates the <em>complete</em> program <em>beforehand</em> into machine code. Like a book translator: once the book is translated, everyone reads it lightning fast.</li>
+ <li><strong>Interpreter</strong>: translates <em>line by line, while</em> the program runs. Like a live interpreter: ready to go right away, but there is work again with every sentence.</li>
+ </ul>
+ </section>
+
+ <section class="widget">
+ <h3>Simulation: compiler vs. interpreter</h3>
+ <p class="widget-hinweis">Same code, two strategies. Start both and watch closely <em>when</em> translation happens and <em>when</em> something happens.</p>
+
+ <div class="predict" data-target="#comp-btn, #int-btn">
+ <p class="predict-q"><strong>Decide first:</strong> Which one shows something on the console <em>first</em>?</p>
+ <div class="predict-opts">
+ <button>The compiler</button>
+ <button>The interpreter</button>
+ <button>Both at the same time</button>
+ </div>
+ <p class="predict-notiz" hidden>Locked in! Now start both and check your prediction.</p>
+ </div>
+
+ <div class="wflex">
+ <div class="feld">
+ <h4>Compiler (e.g.&nbsp;C, C++)</h4>
+ <div id="comp-src" class="sim-src"></div>
+ <p class="statuszeile" id="comp-status">Ready.</p>
+ <div class="sim-konsole" id="comp-out"></div>
+ <p style="margin:12px 0 0"><button class="btn btn-klein" id="comp-btn"> Translate &amp; run</button></p>
+ </div>
+ <div class="feld">
+ <h4>Interpreter (e.g.&nbsp;Python)</h4>
+ <div id="int-src" class="sim-src"></div>
+ <p class="statuszeile" id="int-status">Ready.</p>
+ <div class="sim-konsole" id="int-out"></div>
+ <p style="margin:12px 0 0"><button class="btn btn-klein" id="int-btn"> Start right away</button></p>
+ </div>
+ </div>
+ <p class="statuszeile" id="race-summary" style="margin-top:14px"></p>
+ </section>
+
+ <section class="block">
+ <table>
+ <thead><tr><th></th><th>Compiler</th><th>Interpreter</th></tr></thead>
+ <tbody>
+ 
+ <tr><td><strong>translates …</strong></td><td>beforehand, completely</td><td>live, line by line</td></tr>
+ <tr><td><strong>starts …</strong></td><td>only after the translation</td><td>immediately</td></tr>
+ <tr><td><strong>Execution is …</strong></td><td>lightning fast</td><td>slower (every line costs)</td></tr>
+ </tbody>
+ </table>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p>The <strong>compiler</strong> translates the whole program beforehand, the <strong>interpreter</strong> translates line by line while the program runs.</p>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="und-java-nimmt-einfach-beides"><span class="nr">1.3</span> Bytecode and Java Virtual Machine (JVM)</h2>
+ <p class="wozu">Java takes a middle path and combines both strategies. That is how the same program runs on every operating system.</p>
+ <ol>
+ <li>Your Java code is translated by the compiler into <strong>bytecode</strong> (an intermediate language, file extension <code>.class</code>).</li>
+ <li>The <strong>JVM</strong> (Java Virtual Machine) runs this bytecode on any device: Windows, Mac, Linux, your toaster (almost).</li>
+ </ol>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p>The bytecode stays the same, only the JVM is different for each operating system. Hence <span class="hl">“Write once, run anywhere”</span>: you write the program one time and run it on any system.</p>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-up: What exactly is the JVM?</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>The JVM is itself a program, a “simulated computer” on your real one.</p>
+ <p>It translates frequently used bytecode into real machine code at runtime (<strong>JIT compiler</strong>, “just in time”). That is why Java programs get faster the longer they run, like you after your second coffee.</p>
+ </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <h2 id="typisierung-java-ist-streng-aber-fair"><span class="nr">1.4</span> Static typing</h2>
+ <p class="wozu">Java is <span class="hl">statically typed</span>: every variable has a fixed type, and it is checked <strong>already at compile time</strong>, not just in the running program.</p>
+ <p>Languages differ in how strict they are about <strong>data types</strong>: <strong>Python and JavaScript</strong> only check in the running program. JavaScript even converts types without asking: convenient, but it often leads to errors that only show up much later.</p>
+ </section>
+
+ <section class="widget">
+ <h3>Experiment: What the compiler checks</h3>
+ <p class="widget-hinweis">We store an age: <code>age = …</code>. Click a value and see how Java and JavaScript react.</p>
+ <p id="type-chips"><button class="btn btn-klein" data-val="20">20</button>
+ <button class="btn btn-klein" data-val="&quot;twenty&quot;">"twenty"</button>
+ <button class="btn btn-klein" data-val="20.5">20.5</button></p>
+ <div class="wflex">
+ <div class="feld">
+ <h4>Java <code class="umbruch">int age = …;</code></h4>
+ <p class="statuszeile" id="java-react">Waiting for your click …</p>
+ </div>
+ <div class="feld">
+ <h4>JavaScript <code class="umbruch">let age = …;</code></h4>
+ <p class="statuszeile" id="js-react">Waiting for your click …</p>
+ </div>
+ </div>
+ </section>
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p><strong>Java's strictness is a feature.</strong> The compiler reports type errors <em>before</em> the program runs at the customer's.</p>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="drei-sorten-fehler"><span class="nr">1.5</span> Kinds of errors: syntax, runtime, and logic errors</h2>
+ <p class="wozu">The compiler finds many errors, but not all. The three kinds of errors differ in <strong>when</strong> they show up and <strong>who</strong> notices them.</p>
+ <table>
+ <thead><tr><th>Kind</th><th>What is broken</th><th>Who notices</th></tr></thead>
+ <tbody>
+ <tr><td><strong>Syntax error</strong></td><td>A rule violation: semicolon missing, bracket still open, word misspelled.</td><td>The <strong>compiler</strong>. The program does not even start.</td></tr>
+ <tr><td><strong>Runtime error</strong></td><td>The rules are fine, but something impossible happens while the program runs: dividing an integer by zero, accessing a slot that does not exist.</td>
+ <td>The <strong>JVM</strong>, right in the middle of running. The program aborts.</td></tr>
+ <tr><td><strong>Logic error</strong></td><td>Everything runs through. Only the wrong thing comes out.</td><td><strong>Nobody.</strong> Only you. Or, worse, the customer.</td></tr>
+ </tbody>
+ </table>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <ul>
+ <li>The <strong>syntax error</strong> is the most harmless: it stops you before anything can happen.</li>
+ <li>The <strong>logic error</strong> is the most expensive: neither the compiler nor the JVM finds it. Only thinking and testing help against it.</li>
+ </ul>
+ </div>
+ <div class="oaky">
+ <img class="figur" src="../../img/kapitel/oaky-zeigt.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p>Runtime errors are called <strong>exceptions</strong> in Java. You can catch them instead of crashing: <a href="11-ausnahmen.html">Chapter 11</a>. The ten most common messages are in the <a href="../panik.html">Panic glossary</a>.</p>
+ </div>
+ </div>
+ <section class="baustein selbst quiz">
+ <h3>Exercise 1.5.1: Which kind of error?</h3>
+ <div class="qq">
+ <p class="qq-text">The semicolon is missing at the end of the line.</p>
+ <div class="qq-opt">
+ <button data-ok>Syntax error, the compiler</button>
+ <button data-why="Runtime would mean: the program starts and then aborts. Without the semicolon it does not start at all.">Runtime error, the JVM</button>
+ </div>
+ <p class="qq-erklaerung" hidden>A rule violation. The program never becomes bytecode.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text">The interest calculator uses <code>+</code> instead of <code>*</code>.</p>
+ <div class="qq-opt">
+ <button data-why="Syntactically there is nothing wrong with a plus, the compiler reports no error.">Syntax error, the compiler</button>
+ <button data-ok>Logic error, nobody</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Everything runs, everything is wrong. The most expensive kind.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text">The program divides an integer by zero.</p>
+ <div class="qq-opt">
+ <button data-ok>Runtime error, the JVM</button>
+ <button data-why="The compiler only sees that there is a division. It cannot know whether the denominator is 0 at runtime.">Syntax error, the compiler</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Only when it runs does it turn out that this is not possible. You can catch that: Chapter 11.</p>
+ </div>
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+ </section>
+
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>That's enough for now</p>
+ <ul>
+ <li>Program = list of instructions, worked through stubbornly from top to bottom.</li>
+ <li><strong>Compiler</strong> translates everything beforehand, <strong>interpreter</strong> line by line while the program runs.</li>
+ <li>Java does both: compiler &rarr; bytecode (<code>.class</code>) &rarr; JVM. Hence “write once, run anywhere”.</li>
+ <li>Java is <strong>statically typed</strong>: the compiler checks the types already when compiling.</li>
+ <li>Three kinds of errors: <strong>syntax</strong> (the compiler notices), <strong>runtime</strong> (JVM, program aborts), <strong>logic</strong> (only you notice).</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="baustein uebung quiz">
+ <h3>Checkpoint</h3>
+ <p class="widget-hinweis">4 questions, no time limit, doesn't count, except for your brain.</p>
+
+ <div class="qq">
+ <p class="qq-text">1. What is a program?</p>
+ <div class="qq-opt">
+ <button data-why="Sounds like movies, but even AI ultimately consists of instructions written by humans. A computer decides nothing on its own.">An artificial intelligence that makes decisions itself</button>
+ <button data-ok>A list of instructions that the computer works through one after another</button>
+ <button data-why="Images and sounds are data that a program works with, the program itself is the instructions.">A file that consists only of images and sounds</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Exactly: a stubborn list of instructions. Everything “intelligent” about it was put there by a human beforehand.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">2. What does a compiler do?</p>
+ <div class="qq-opt">
+ <button data-why="That is exactly the other way around: the interpreter translates line by line while the program runs. The compiler works beforehand, completely.">It runs the program line by line and translates live</button>
+ <button data-ok>It translates the complete program up front into machine code (or bytecode)</button>
+ <button data-why="If only! The compiler only finds rule violations (syntax errors). It cannot tell whether your logic is nonsense: your program is free to calculate wrongly without a single error.">It automatically searches for logic errors and repairs them</button>
+ </div>
+ <p class="qq-erklaerung" hidden>The compiler translates everything first, then the program runs. The interpreter translates line by line during execution.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">3. Why does Java bytecode run on Windows, Mac, and Linux?</p>
+ <div class="qq-opt">
+ <button data-why="Nothing runs without a processor, someone has to do the calculating. The trick: the JVM executes the bytecode on the respective processor.">Because Java programs do not need a processor at all</button>
+ <button data-why="Quite the opposite, that is the whole point! The bytecode stays exactly the same. Only the JVM is different on each system.">Because the bytecode is rewritten for each operating system</button>
+ <button data-ok>Because on every system a matching JVM runs the same bytecode</button>
+ </div>
+ <p class="qq-erklaerung" hidden>“Write once, run anywhere”: The bytecode stays the same, the JVM of each system runs it.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">4. Java is statically typed. What does that mean in practice?</p>
+ <div class="qq-opt">
+ <button data-ok>Every variable has a fixed data type, wrong values are caught already at compile time</button>
+ <button data-why="Comments are always allowed (and welcome!). Typing has to do with data types, not with comments.">You are not allowed to write comments in Java</button>
+ <button data-why="That describes dynamically typed languages like JavaScript or Python. Java is the exact opposite: set a type once, it stays.">Variables can change their type at any time, Java adapts</button>
+ </div>
+ <p class="qq-erklaerung" hidden>The compiler checks the types when compiling. That is strict, but it prevents type errors at runtime.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+ <div class="kapitel-ende">
+ <div class="blaettern">
+      <a class="btn" href="../index.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>To the Learning path</a> <a class="btn btn-haupt" href="02-erstes-programm.html">Chapter 2: Your first program<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </div>
+ </div>
+
+</main>
+
+<footer class="seitenfuss">
+ <div class="seitenfuss-innen">
+ <p><strong>Cheat Sheet: Java</strong> · Java basics for Learning Field 5, “Adapting software for data management”, IT professions, grade 10.</p>
+ </div>
+</footer>
+
+<script src="../../js/app.js"></script>
+<script>
+(function () {
+ var $ = CC.$;
+
+ /* ---------- Compiler vs. Interpreter ---------- */
+
+ var SRC = [
+ 'greet the user',
+ 'calculate 2 + 2',
+ 'show the result',
+ 'say goodbye'
+ ];
+ var OUT = ['Hello! ', '(calculating …)', '4', 'Bye!'];
+ var MACHINE = ['10110001 01001010', '01101100 10011101', '11010010 00101011', '10001111 01010110'];
+
+ function renderSrc(el, prefix) {
+ el.innerHTML = SRC.map(function (l, i) {
+ return '<div class="sim-zeile" id="' + prefix + i + '" style="font-family:var(--f-mono);font-size:0.8rem;padding:3px 8px;border-radius:6px">' + (i + 1) + '&nbsp;&nbsp;' + l + '</div>';
+ }).join('');
+ }
+ renderSrc($('#comp-src'), 'cl');
+ renderSrc($('#int-src'), 'il');
+
+ var compDone = false, intDone = false;
+ function summary() {
+ if (compDone && intDone) {
+ $('#race-summary').innerHTML = '<strong>Seen it?</strong> The compiler first translated <em>everything</em> and then ran it all in one go. The interpreter started right away, but had to translate every line individually. Java does a mix: compiler &rarr; bytecode &rarr; JVM.';
+ }
+ }
+
+ $('#comp-btn').addEventListener('click', function () {
+ var btn = this; btn.disabled = true;
+ renderSrc($('#comp-src'), 'cl');
+ $('#comp-out').textContent = '';
+ var st = $('#comp-status');
+ var i = 0;
+ st.textContent = 'Phase 1: Translating everything …';
+ (function translate() {
+ if (i < SRC.length) {
+ var line = $('#cl' + i);
+ line.style.background = 'var(--rot-flaeche)';
+ setTimeout(function () {
+ line.textContent = (i + 1) + ' ' + MACHINE[i];
+ line.style.background = 'var(--blau-flaeche)';
+ i++; translate();
+ }, 550);
+ } else {
+ st.textContent = 'Phase 2: Fully translated (app.class ), now run it!';
+ setTimeout(function () {
+ var out = $('#comp-out');
+ OUT.forEach(function (o, j) {
+ setTimeout(function () {
+ out.textContent += o + '\n';
+ if (j === OUT.length - 1) { st.textContent = 'Done. Execution: lightning fast '; btn.disabled = false; compDone = true; summary(); }
+ }, j * 120);
+ });
+ }, 600);
+ }
+ })();
+ });
+
+ $('#int-btn').addEventListener('click', function () {
+ var btn = this; btn.disabled = true;
+ renderSrc($('#int-src'), 'il');
+ $('#int-out').textContent = '';
+ var st = $('#int-status');
+ var i = 0;
+ (function step() {
+ if (i >= SRC.length) { st.textContent = 'Done. Started right away, but translated every line individually '; btn.disabled = false; intDone = true; summary(); return; }
+ var line = $('#il' + i);
+ st.textContent = 'Line ' + (i + 1) + ' translating …';
+ line.style.background = 'var(--rot-flaeche)';
+ setTimeout(function () {
+ st.textContent = 'Line ' + (i + 1) + ' executing …';
+ line.style.background = 'var(--blau-flaeche)';
+ $('#int-out').textContent += OUT[i] + '\n';
+ i++;
+ setTimeout(step, 500);
+ }, 650);
+ })();
+ });
+
+ /* ---------- Typprüfung ---------- */
+
+ var reactions = {
+ '20': {
+ java: ' <strong>Fits.</strong> 20 is an integer, exactly what <code>int</code> wants. On we go.',
+ js: ' <strong>Accepted.</strong> A variable declared with <code>let</code> takes values of any type.'
+ },
+ '"twenty"': {
+ java: ' <strong>Compiler error:</strong> <code class="umbruch">incompatible types: String cannot be converted to int</code>. Text does not fit into an <code>int</code> variable. The program does not even start.',
+ js: ' <strong>Accepted.</strong> Three weeks later your app calculates <code>"twenty" + 1 = "twenty1"</code> and nobody knows why. '
+ },
+ '20.5': {
+ java: ' <strong>Compiler error:</strong> 20.5 is a decimal number (<code>double</code>), not an integer. The compiler reports the error immediately. With <code>double age</code> it works.',
+ js: ' <strong>Accepted.</strong> Whether an age of 20.5 makes sense, nobody checks.'
+ }
+ };
+
+ CC.$$('#type-chips button').forEach(function (b) {
+ b.addEventListener('click', function () {
+ var r = reactions[b.getAttribute('data-val')];
+ $('#java-react').innerHTML = r.java;
+ $('#js-react').innerHTML = r.js;
+
+ });
+ });
+})();
+</script>
+</body>
+</html>

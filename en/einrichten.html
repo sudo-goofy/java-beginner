@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The development environment · The Big Java Cheat Sheet</title>
+<meta name="description" content="Set up VS Code or IntelliJ IDEA for Java: get the JDK, create a project, run, stop, rename, eight procedures, both programs side by side.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../img/favicon.svg">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Remember this: bookmark</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Quick think: question for you</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Exercise: pencil</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>ZombieApocalypse project task: zombie head</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Scenario task: stopwatch</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: flag</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Explained differently: repeat</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Answer: key</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>The key points: page with dog-eared corner</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Learning goals: target</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Console: prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>IDE: editor window with sidebar</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Error message: bug</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Correct: check mark</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Wrong: cross</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Duration: clock</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Chapter: open notebook</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Table of contents</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Next</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Back</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Down</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Expandable</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Opens a window</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Night shift</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Day view</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Clear progress</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Print</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Skip to content</a>
+
+<nav class="topbar" aria-label="Main navigation">
+  <div class="topbar-innen">
+    <a class="marke" href="index.html"> <img class="oakymarke" src="../img/kapitel/oaky.svg" alt="" width="128" height="148"> Cheat Sheet: Java </a> <span class="topbar-titel">Development environment</span> <span class="topbar-rechts"> <a class="btn btn-klein" href="index.html">Learning path</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Choose language"><span>EN</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="../einrichten.html" lang="de" hreflang="de">Deutsch</a></li><li><a href="einrichten.html" lang="en" hreflang="en" aria-current="true">English</a></li></ul></details><!--/sprache-->
+    </span>
+  </div>
+  <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+  <header class="kapitel-kopf">
+    <p class="kicker">Tools page</p>
+    <h1>The IDE</h1>
+    <p class="vorspann">Eight procedures that get every program in this course running, in <strong>VS Code</strong> and in <strong>IntelliJ IDEA</strong>, each shown side by side.</p>
+    <p class="kapitel-meta">
+      <span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>2 programs</span> <span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>set up once, then look things up</span>
+    </p>
+  </header>
+
+  <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Contents of this page">
+    <h2 id="auf-dieser-seite">On this page</h2>
+  </nav>
+
+  <section class="block">
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>The one rule</p>
+      <p>An IDE (<strong>integrated development environment</strong>) combines editor, compiler call and debugging in one interface. Java itself, the JDK, is not part of it but comes on top. And: the code you write is the same, character for character, in both programs. What differs are eight procedures. They are listed here.</p>
+    </div>
+
+    <div class="oaky">
+      <img class="figur" src="../img/kapitel/oaky-achselzuck.svg" alt="" width="128" height="148">
+      <div class="text">
+        <p>Pick the one that runs on your computer, and then use it for half a year. Switching costs an afternoon, you will regret the switch in week three, and your class has already decided anyway.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2 id="welche">Which one should I pick?</h2>
+    <p>Both are free, both run on Windows, macOS and Linux, and either one will get you through this course. There is no wrong choice, only the one you make and the one you keep putting off.</p>
+
+<!--ide:wahl-->
+<div class="karten">
+  <div class="karte">
+    <h3><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>Visual Studio Code</h3>
+    <p>Starts fast, runs on weak computers too, and can handle any other language later.</p>
+    <p><strong>Catch:</strong> It can’t do Java out of the box; only the extension turns it into a Java environment.</p>
+    <p><strong>Source:</strong> <code>code.visualstudio.com</code></p>
+  </div>
+  <div class="karte">
+    <h3><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>IntelliJ IDEA</h3>
+    <p>Built around Java: it understands your code better than any other and often suggests the solution before you even see the error.</p>
+    <p><strong>Catch:</strong> Needs more memory and shows a great many buttons at once on first start.</p>
+    <p><strong>Source:</strong> <code>jetbrains.com/idea</code></p>
+  </div>
+</div>
+<!--/ide:wahl-->
+
+    <div class="baustein">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-anders"></use></svg>In case someone told you “Community Edition”</p>
+      <p>For years, IntelliJ IDEA came as two separate downloads: the free <em>Community Edition</em> and the paid <em>Ultimate</em>. Since late 2025 there is only <strong>one</strong> download. Without paying, you get exactly what used to be called Community, and that is enough for everything in this course and far beyond. So you no longer search for the Community Edition, you simply download IntelliJ IDEA.</p>
+      <p>If you learn or teach at a school, you can apply to get the Ultimate features for free as well. You don’t need them for Learning Field 5.</p>
+    </div>
+
+    <div class="baustein extra">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg>And what about Eclipse?</p>
+      <p>For twenty years, Eclipse was <em>the</em> Java environment, and at many schools it is still installed. You can solve every exercise here with it, the procedures just have different names. We show the two you are most likely to meet on the job.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2 id="handgriffe">The eight procedures</h2>
+    <p>In order: you need the first four once, the last four again and again. Pick your program above; the page remembers your choice.</p>
+
+<!--ide:alle-->
+<div class="handgriff" id="h-befehl">
+  <h3>Find everything without searching</h3>
+  <p class="handgriff-warum">The most important procedure, and the only one you really have to know by heart. Both programs have a line where you type what you want instead of hunting for it in menus. All of the following procedures work through it.</p>
+  <div class="ide-tafel" data-ide-tafel>
+    <div class="ide-blatt" data-ide="vscode">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>VS Code</p>
+      <ol>
+        <li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> opens the <em>Command Palette</em>.</li>
+        <li>Start typing what you want to do, for example <code>Java:</code> for everything to do with Java.</li>
+        <li>To the right of each command is its keyboard shortcut. That’s how you learn them along the way.</li>
+      </ol>
+    </div>
+    <div class="ide-blatt" data-ide="intellij">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>IntelliJ IDEA</p>
+      <ol>
+        <li>Pressing <kbd>Shift</kbd> twice opens <em>Search Everywhere</em>: files, classes, actions, everything.</li>
+        <li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd> searches only <em>actions</em>, that is, commands.</li>
+        <li>To the right of each action is its keyboard shortcut. That’s how you learn them along the way.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="handgriff" id="h-jdk">
+  <h3>Getting Java itself</h3>
+  <p class="handgriff-warum">The IDE does not include Java. You get Java, more precisely the JDK with compiler and JVM, once, separately. Version 21 or newer; anything older is too old.</p>
+  <div class="ide-tafel" data-ide-tafel>
+    <div class="ide-blatt" data-ide="vscode">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>VS Code</p>
+      <ol>
+        <li>VS Code does not include Java. First install the <em>Extension Pack for Java</em> from Microsoft, which contains everything you need.</li>
+        <li>Then, in the Command Palette: <code>Java: Install New JDK</code>. That downloads one.</li>
+        <li>Check what is currently in use: <code>Java: Configure Java Runtime</code>.</li>
+      </ol>
+    </div>
+    <div class="ide-blatt" data-ide="intellij">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>IntelliJ IDEA</p>
+      <ol>
+        <li>IntelliJ doesn’t include Java either, but it fetches it itself.</li>
+        <li>When you create a project, the <em>JDK</em> field has <em>Download JDK</em> at the very bottom. Pick a version, click, wait.</li>
+        <li>Change it later: <em>File &rarr; Project Structure &rarr; Project &rarr; SDK</em>.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="handgriff" id="h-projekt">
+  <h3>Create a project</h3>
+  <p class="handgriff-warum">A project is just a folder with a label: Java code lives in here, namely in <code>src</code>. For this guide, one is enough, for example named <code>ZombieApocalypse</code>: in it, every program gets its own class.</p>
+  <div class="ide-tafel" data-ide-tafel>
+    <div class="ide-blatt" data-ide="vscode">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>VS Code</p>
+      <ol>
+        <li>Command palette: <code>Java: Create Java Project</code>.</li>
+        <li>Choose <em>No build tools</em> as the build tool. Maven and Gradle come later on the job, right now they would only be in the way.</li>
+        <li>Pick a folder, name it <code>ZombieApocalypse</code>. VS Code creates <code>src</code> for you right away.</li>
+      </ol>
+    </div>
+    <div class="ide-blatt" data-ide="intellij">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>IntelliJ IDEA</p>
+      <ol>
+        <li><em>File &rarr; New &rarr; Project</em>, select <em>Java</em> on the left.</li>
+        <li>Leave the <em>Build system</em> setting at <em>IntelliJ</em>; Maven and Gradle come later on the job.</li>
+        <li>Name it <code>ZombieApocalypse</code>, select a JDK, create the project. The code belongs in <code>src</code>.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="handgriff" id="h-klasse">
+  <h3>Create a class</h3>
+  <p class="handgriff-warum">Every class lives in its own file, and the file is named exactly like the class: <code>Zombie</code> goes in <code>Zombie.java</code>. Otherwise the compiler reports an error; the message is in the Panic glossary.</p>
+  <div class="ide-tafel" data-ide-tafel>
+    <div class="ide-blatt" data-ide="vscode">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>VS Code</p>
+      <ol>
+        <li>Right-click the <code>src</code> folder, then <em>New File</em>.</li>
+        <li>Type the name with the extension: <code>Zombie.java</code>. You forget the extension exactly once.</li>
+        <li>In the empty file, type <code>class</code> and press <kbd>Tab</kbd>; the IDE fills in the skeleton.</li>
+      </ol>
+    </div>
+    <div class="ide-blatt" data-ide="intellij">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>IntelliJ IDEA</p>
+      <ol>
+        <li>Right-click the <code>src</code> folder, then <em>New &rarr; Java Class</em>.</li>
+        <li>Type the name without the extension: <code>Zombie</code>. IntelliJ creates the matching file.</li>
+        <li>In the class body, type <code>main</code> and press <kbd>Tab</kbd>; the IDE fills in the main method.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="handgriff" id="h-starten">
+  <h3>Running the program</h3>
+  <p class="handgriff-warum">Both IDEs recognize the <code>main</code> method and offer to run it right next to it. You don’t have to configure anything.</p>
+  <div class="ide-tafel" data-ide-tafel>
+    <div class="ide-blatt" data-ide="vscode">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>VS Code</p>
+      <ol>
+        <li>Above the line with <code>main</code> you will see a small <em>Run | Debug</em>. Click <em>Run</em>.</li>
+        <li>Or <kbd>Ctrl</kbd> + <kbd>F5</kbd>: runs without the debugger, which is the normal case.</li>
+        <li>The output appears at the bottom in the <em>Terminal</em>.</li>
+      </ol>
+    </div>
+    <div class="ide-blatt" data-ide="intellij">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>IntelliJ IDEA</p>
+      <ol>
+        <li>To the left of the line with <code>main</code> there is a green triangle. Click it and choose <em>Run</em>.</li>
+        <li>Or <kbd>Shift</kbd> + <kbd>F10</kbd>: runs again whatever ran last.</li>
+        <li>The output appears at the bottom in the <em>Run</em> window.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="handgriff" id="h-stoppen">
+  <h3>Stopping an infinite loop</h3>
+  <p class="handgriff-warum">It happens. It happens to everyone. All that matters is that you find the red button before the fan gives up.</p>
+  <div class="ide-tafel" data-ide-tafel>
+    <div class="ide-blatt" data-ide="vscode">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>VS Code</p>
+      <ol>
+        <li>In the <em>Terminal</em> at the bottom, click the red square.</li>
+        <li>Or click into the terminal and press <kbd>Ctrl</kbd> + <kbd>C</kbd>.</li>
+      </ol>
+    </div>
+    <div class="ide-blatt" data-ide="intellij">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>IntelliJ IDEA</p>
+      <ol>
+        <li>In the <em>Run</em> window at the bottom, click the red square.</li>
+        <li>Or press <kbd>Ctrl</kbd> + <kbd>F2</kbd>.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="handgriff" id="h-umbenennen">
+  <h3>Renaming class and file together</h3>
+  <p class="handgriff-warum">Renaming by hand goes wrong: either the class name no longer matches the file name, or the old name is still used somewhere. Both IDEs do it in one go, everywhere, even in files that are currently closed.</p>
+  <div class="ide-tafel" data-ide-tafel>
+    <div class="ide-blatt" data-ide="vscode">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>VS Code</p>
+      <ol>
+        <li>Put the cursor in the class name.</li>
+        <li>Press <kbd>F2</kbd>, type the new name, <kbd>Enter</kbd>.</li>
+        <li>The file is renamed too, and so is every place that uses the class.</li>
+      </ol>
+    </div>
+    <div class="ide-blatt" data-ide="intellij">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>IntelliJ IDEA</p>
+      <ol>
+        <li>Put the cursor in the class name.</li>
+        <li>Press <kbd>Shift</kbd> + <kbd>F6</kbd>, type the new name, <kbd>Enter</kbd>.</li>
+        <li>The file is renamed too, and so is every place that uses the class.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="handgriff" id="h-fehler">
+  <h3>Seeing errors before you run</h3>
+  <p class="handgriff-warum">The compiler will report them anyway, but the IDE reports them earlier, namely while you type. The red squiggly line is the same error, just ten seconds sooner.</p>
+  <div class="ide-tafel" data-ide-tafel>
+    <div class="ide-blatt" data-ide="vscode">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>VS Code</p>
+      <ol>
+        <li>Red squiggly line in the code: hover over it with the mouse and the message appears.</li>
+        <li>All errors at once: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> opens <em>Problems</em>.</li>
+        <li>The number at the bottom left of the bar keeps count.</li>
+      </ol>
+    </div>
+    <div class="ide-blatt" data-ide="intellij">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>IntelliJ IDEA</p>
+      <ol>
+        <li>Red squiggly line in the code: hover over it with the mouse and the message appears.</li>
+        <li>The narrow strip at the right edge of the window shows every error as a tick mark; click it to jump there.</li>
+        <li>A check mark at the top right means: nothing to complain about.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+<!--/ide:alle-->
+  </section>
+
+  <section class="block">
+    <h2 id="klickwege">Why there are almost no click paths here</h2>
+    <p>A course handout that says <em>“Click the third icon at the top left”</em> is wrong after the next update, and updates come several times a year. That is why, above, wherever possible, you will find a <strong>command name</strong> or a <strong>keyboard shortcut</strong> instead of a path through menus.</p>
+    <p>That is not a trick for this course, but the procedure experienced people actually use. Once you know <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> or <kbd>Shift</kbd> twice, you will find everything again in any future version, and on any stranger’s computer as well.</p>
+
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+      <p>Name the command, not the click path. Menus get rearranged, command names stay.</p>
+    </div>
+
+    <aside class="rand">
+      <p><!--ide:stand-->
+Information current as of: <strong>September 2026</strong>. The keyboard shortcuts apply to Windows and Linux; on macOS you usually use the Command key (⌘) instead of Ctrl. Command search, where you type the command, works the same everywhere.
+<!--/ide:stand--></p>
+    </aside>
+
+    <nav class="blaettern" aria-label="Next">
+      <a class="btn" href="index.html"> <svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg> To the learning path</a> <a class="btn btn-haupt" href="kapitel/02-erstes-programm.html">To the first program <svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </nav>
+  </section>
+
+</main>
+
+<footer class="seitenfuss">
+  <div class="seitenfuss-innen">
+    <p><strong>The Big Java Cheat Sheet</strong> · Java basics for Learning Field 5, “Adapting software for data management”, IT professions, grade 10.</p>
+    <p>The details for both programs live in exactly one place in the project (<code>tools/ide.py</code>) and are inserted from there into this page and into the printed workbook. Updating means: changing one file.</p>
+  </div>
+</footer>
+
+<script src="../js/app.js"></script>
+</body>
+</html>

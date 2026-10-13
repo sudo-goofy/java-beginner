@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" role="img">
+  <rect width="640" height="360" fill="none"/>
+  <path d="M36 250 H466" fill="none" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M36 250 v-104" fill="none" stroke="#14110C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="79" y="288" font-family="JetBrains Mono, monospace" font-size="30" font-weight="700" fill="#14110C" text-anchor="middle">0</text>
+  <path d="M122 250 v-104" fill="none" stroke="#14110C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="165" y="288" font-family="JetBrains Mono, monospace" font-size="30" font-weight="700" fill="#14110C" text-anchor="middle">1</text>
+  <path d="M208 250 v-104" fill="none" stroke="#14110C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="251" y="288" font-family="JetBrains Mono, monospace" font-size="30" font-weight="700" fill="#14110C" text-anchor="middle">2</text>
+  <path d="M294 250 v-104" fill="none" stroke="#14110C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="337" y="288" font-family="JetBrains Mono, monospace" font-size="30" font-weight="700" fill="#14110C" text-anchor="middle">3</text>
+  <path d="M380 250 v-104" fill="none" stroke="#14110C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="423" y="288" font-family="JetBrains Mono, monospace" font-size="30" font-weight="700" fill="#14110C" text-anchor="middle">4</text>
+  <path d="M466 250 v-104" fill="none" stroke="#14110C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M132 242 h74 l-11 -34 h-52 z" fill="#637EB9" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="148" cy="242" r="9" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="190" cy="242" r="9" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <g transform="rotate(42 556 308)">
+  <path d="M516 308 h74 l-11 -34 h-52 z" fill="#F15060" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="532" cy="308" r="9" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="574" cy="308" r="9" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  </g>
+  <text x="556" y="196" font-family="JetBrains Mono, monospace" font-size="34" font-weight="700" fill="#F15060" text-anchor="middle">[5]</text>
+  <path d="M548 212 q6 26 -4 40" fill="none" stroke="#F15060" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 12"/>
+</svg>

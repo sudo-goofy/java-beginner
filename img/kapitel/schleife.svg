@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" role="img">
+  <rect width="640" height="360" fill="none"/>
+  <path d="M36 200 H168" fill="none" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M44 191 v18" fill="none" stroke="#14110C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M70 191 v18" fill="none" stroke="#14110C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M96 191 v18" fill="none" stroke="#14110C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M122 191 v18" fill="none" stroke="#14110C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M148 191 v18" fill="none" stroke="#14110C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M300 200 m-104 0 a104 104 0 1 0 208 0 a104 104 0 1 0 -208 0" fill="none" stroke="#F15060" stroke-width="4" stroke-linecap="round"/>
+  <path d="M168 200 h28" fill="none" stroke="#F15060" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M286 90 l20 8 -20 9" fill="none" stroke="#F15060" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="300" y="212" font-family="JetBrains Mono, monospace" font-size="30" font-weight="700" fill="#F15060" text-anchor="middle">while</text>
+  <path d="M404 200 H580" fill="none" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="12 10"/>
+  <path d="M560 190 l20 10 -20 10" fill="none" stroke="#14110C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="492" y="176" font-family="JetBrains Mono, monospace" font-size="20" font-weight="400" fill="#14110C" text-anchor="middle">irgendwann</text>
+</svg>

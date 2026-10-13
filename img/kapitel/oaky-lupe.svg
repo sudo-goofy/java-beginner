@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 148" width="128" height="148" role="img">
+  <rect width="128" height="148" fill="none"/>
+  <g transform="translate(0,0) scale(1.0)">
+  <path d="M52 90 v42" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M48 132 h10" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M76 90 v42" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M72 132 h10" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M28.8 63.5 c-7 15 -10 29 -10 44" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M99.2 63.5 c14 -6 20 -16 20 -26" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="64" cy="56" r="36.0" fill="none" stroke="#14110C" stroke-width="4.2"/>
+  <circle cx="48.16" cy="48.8" r="4.4" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="79.84" cy="48.8" r="4.4" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <path d="M53.9 67.4 q10.1 -1 20.2 -4.5" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="117.213313626417" cy="25.48482086943934" r="12" fill="none" stroke="#14110C" stroke-width="4.2"/>
+  <path d="M124.213313626417 33.48482086943934 l6 6" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

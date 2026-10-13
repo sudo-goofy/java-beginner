@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 8 · Arrays · Cheat Sheet: Java</title>
+<meta name="description" content="Arrays anlegen, befüllen und durchlaufen, und warum Java bei null zu zählen anfängt.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../img/favicon.svg"><link rel="stylesheet" href="../css/style.css"></head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Merksatz: Lesezeichen</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kurz nachgedacht: Frage an dich</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufgabe: Stift</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Projektaufgabe ZombieApocalypse: Zombiekopf</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Handlungsorientierte Aufgabe: Stoppuhr</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: Fahne</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nochmal anders erklärt: Wiederholung</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Auflösung: Schlüssel</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Das Wichtigste in Kürze: Seite mit Eselsohr</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Lernziele: Zielscheibe</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Konsole: Prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Entwicklungsumgebung: Editorfenster mit Seitenleiste</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fehlermeldung: Käfer</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Richtig: Haken</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Falsch: Kreuz</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Dauer: Uhr</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kapitel: aufgeschlagenes Heft</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Inhaltsverzeichnis</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Weiter</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Zurück</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nach unten</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufklappbar</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Öffnet ein Fenster</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nachtschicht</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Tagesansicht</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fortschritt löschen</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Drucken</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Zum Inhalt springen</a>
+
+<nav class="topbar" aria-label="Hauptnavigation">
+ <div class="topbar-innen">
+ <a class="marke" href="../index.html">
+ <img class="oakymarke" src="../img/kapitel/oaky.svg" alt="" width="128" height="148">
+ Cheat Sheet: Java
+ </a>
+ <span class="topbar-titel">Kapitel 8 · Index, length, for-each, 2D</span>
+ <span class="topbar-rechts"><a class="btn btn-klein" href="../index.html">Lernpfad</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Sprache wählen"><span>DE</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="08-arrays.html" lang="de" hreflang="de" aria-current="true">Deutsch</a></li><li><a href="../en/kapitel/08-arrays.html" lang="en" hreflang="en">English</a></li></ul></details><!--/sprache--></span>
+ </div>
+ <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+ <header class="kapitel-kopf">
+ <p class="kicker">Kapitel 8 von 11 · Index, length, for-each, 2D</p>
+ <h1>Arrays</h1>
+ <p class="vorspann">Zehn Messwerte, zehn Variablen <code>value1, value2, value3 …</code>? Bitte nicht. Dafür gibt es Arrays: viele Werte unter einem Namen.</p>
+ <p class="kapitel-meta"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>ca. 65 min</span></p>
+ </header>
+
+ <section class="einstieg" aria-label="Einstieg: das Problem">
+ <p class="einstieg-kopf">DAS PROBLEM</p>
+ <p class="einstieg-frage">An jedem Tag wurde die Temperatur gemessen. Wie bekommst du den Durchschnitt?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox runner" data-out="Average: 12.0">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Wetter.java</p>
+<pre><code class="java">int day1 = 12;
+int day2 = 15;
+int day3 = 9;
+System.out.println("Average: " + (day1 + day2 + day3) / 3.0);</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>Drei Tage, drei Variablen. Für einen Monat bräuchtest du 30 Variablen und eine Summe mit 30 Gliedern.</p>
+ <button class="btn einstieg-knopf" type="button">Mit einem Array</button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-out="Average: 12.0">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Wetter.java</p>
+<pre><code class="java">int[] days = {12, 15, 9};
+int sum = 0;
+for (int i = 0; i &lt; days.length; i++) {
+    sum = sum + days[i];
+}
+System.out.println("Average: " + sum / (double) days.length);</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">Ein Name für alle Werte, eine Schleife für die Summe. Ob 3 oder 30 Tage, der Code bleibt gleich. Wie Arrays funktionieren, zeigt dieses Kapitel.</p>
+ </div>
+ </section>
+
+
+
+ <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Inhalt dieses Kapitels">
+ <h2 id="in-diesem-kapitel">In diesem Kapitel</h2>
+ </nav>
+
+ <details class="baustein ziele">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>Danach kannst du<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+   <div class="inhalt">
+     <ul>
+ <li>Arrays anlegen, befüllen und mit dem <strong>Index</strong> auf einzelne Elemente zugreifen</li>
+ <li>erklären, warum der erste Index <strong>0</strong> ist und was bei Index-Fehlern passiert</li>
+ <li>mit <code>length</code> und der <strong>for-each-Schleife</strong> durch Arrays laufen</li>
+ <li>ein Array <strong>linear durchsuchen</strong> und sagen, was der Startwert −1 bedeutet</li>
+ <li>eine Zeile mit <code>split()</code> in ein Array zerlegen</li>
+ <li>ein <strong>zweidimensionales</strong> Array anlegen, ansprechen und mit zwei Schleifen durchlaufen</li>
+ <li>in den Übungsaufgaben Maximum, Minimum und Durchschnitt selbst programmieren. Umdrehen, FizzBuzz, Rotieren, Bubble Sort, binäre Suche und das Sieb des Eratosthenes stehen als Zusatz daneben</li>
+ </ul>
+   </div>
+ </details>
+
+
+ <section class="block">
+ <h2 id="ein-array-ist-ein-parkhaus"><span class="nr">8.1</span> Array, Element, Index</h2>
+ <p class="wozu">Ein <span class="hl">Array ist eine feste Reihe nummerierter Fächer</span>, alle vom gleichen Typ,
+ alle unter einem Namen. Wie ein Parkhaus: eine Adresse, durchnummerierte Stellplätze. Ein Fach heißt
+ <strong>Element</strong>, seine Nummer heißt <strong>Index</strong>.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><var data-teil="typ">Typ</var><span data-teil="arr">[]</span> <var data-teil="name">name</var> = <span data-teil="new">new</span> <var data-teil="typ">Typ</var>[<var data-teil="anzahl">Anzahl</var>];
+<var data-teil="typ">Typ</var><span data-teil="arr">[]</span> <var data-teil="name">name</var> = {<var data-teil="wert">Wert</var>, <var data-teil="wert">Wert</var>, …};
+<var data-teil="name">name</var>[<var data-teil="index">Index</var>] = <var data-teil="wert">Wert</var>;
+<var data-teil="name">name</var>.<span data-teil="length">length</span></code></pre>
+ <p class="aufbau-info">Die erste Form legt ein Array mit der angegebenen Anzahl Elemente an, die zweite füllt es gleich mit Werten. Gezählt wird ab 0: Der letzte Index ist <code>length - 1</code>.</p>
+ <div hidden data-erkl="typ"><strong>Typ:</strong> der Typ der Elemente, etwa <code>int</code>, <code>double</code> oder <code>String</code>. Alle Elemente eines Arrays haben denselben Typ. In der ersten Form steht er zweimal, beide Male gleich: <code>int[] spaces = new int[5];</code></div>
+ <div hidden data-erkl="arr"><strong>Die eckigen Klammern <code>[]</code></strong> hinter dem Typ machen die Variable zu einem Array: <code>int[]</code> heißt „Array mit Elementen vom Typ <code>int</code>“. Ohne sie wäre <code>spaces</code> eine einzelne <code>int</code>-Variable.</div>
+ <div hidden data-erkl="name"><strong>Name:</strong> frei wählbar, klein geschrieben, am besten in der Mehrzahl, etwa <code>spaces</code> oder <code>grades</code>. Über diesen einen Namen erreichst du alle Elemente.</div>
+ <div hidden data-erkl="new"><strong><code>new</code></strong> legt ein neues Array an. Bei <code>new int[5]</code> haben alle 5 Elemente zuerst den Wert <code>0</code>.</div>
+ <div hidden data-erkl="anzahl"><strong>Anzahl:</strong> wie viele Elemente das Array bekommt, etwa <code>5</code>. Hier darf auch eine <code>int</code>-Variable stehen, etwa <code>new int[count]</code>.</div>
+ <div hidden data-erkl="wert"><strong>Wert:</strong> muss zum Typ passen, etwa <code>17</code> bei <code>int</code> oder <code>"Mia"</code> bei <code>String</code>. In der zweiten Form stehen die Werte durch Komma getrennt in geschweiften Klammern. Das Array bekommt genau so viele Elemente, wie Werte dort stehen.</div>
+ <div hidden data-erkl="index"><strong>Index:</strong> die Nummer des Elements, in eckigen Klammern hinter dem Namen. Mit <code>spaces[0] = 17;</code> schreibst du einen Wert hinein, mit <code>System.out.println(spaces[0]);</code> liest du ihn aus. Statt einer Zahl darf auch eine <code>int</code>-Variable stehen, etwa <code>spaces[i]</code>.</div>
+ <div hidden data-erkl="length"><strong><code>length</code></strong> liefert die Zahl der Elemente, bei <code>new int[5]</code> also <code>5</code>. Bei Arrays steht <code>length</code> ohne runde Klammern, anders als <code>length()</code> bei einem String.</div>
+ </div>
+
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Parkhaus.java</p>
+<pre><code class="java">int[] spaces = new int[5];       // Parkhaus mit 5 Stellplätzen (alle starten bei 0)
+
+spaces[0] = 17;                  // ins ERSTE Fach. Index 0!
+spaces[4] = 99;                  // ins LETZTE Fach. Index 4, nicht 5!
+
+System.out.println(spaces[0]);   // 17
+System.out.println(spaces.length); // 5, wie viele Fächer gibt es?
+
+// Abkürzung, wenn du die Werte schon kennst:
+int[] grades = {1, 3, 2, 5, 1};</code></pre>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>int[] spaces</code></td><td>Die eckigen Klammern hinter dem Typ machen <code>spaces</code> zu einem Array: viele <code>int</code>-Werte unter einem Namen.</td></tr>
+ <tr><td><code>new int[5]</code></td><td>legt ein Array mit 5 Elementen an. Alle starten bei 0.</td></tr>
+ <tr><td><code>spaces[0] = 17;</code></td><td>schreibt in das <strong>erste</strong> Element. Die Zahl in den eckigen Klammern ist der <strong>Index</strong>.</td></tr>
+ <tr><td><code>spaces.length</code></td><td>die <strong>Länge</strong> des Arrays, also die Zahl der Elemente, hier 5. Ohne Klammern dahinter.</td></tr>
+ <tr><td><code>{1, 3, 2, 5, 1}</code></td><td>die Abkürzung, wenn du die Werte schon kennst: Java zählt sie selbst und legt genau so viele Elemente an.</td></tr>
+ </table>
+ </div>
+
+ <div class="oaky">
+ <img class="figur" src="../img/kapitel/oaky-zeigt.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p><strong>Warum ab 0?</strong> Der Index gibt an, wie weit ein Element vom Anfang des Arrays
+ entfernt ist. Das erste ist 0 Schritte entfernt, hat also Index 0.
+ Darum gilt: <span class="hl">letzter Index = length − 1</span>, bei 5 Elementen also 0 bis 4.</p>
+ </div>
+ </div>
+ </section>
+
+ <section class="widget">
+ <h3>Das Array zum Ausprobieren</h3>
+ <p class="widget-hinweis">Unten steht <code>int[] spaces = new int[5]</code>. Befülle es, greif per Index zu und probier unbedingt Index 5. Trau dich, es ist nur simuliert.</p>
+
+ <div class="predict" data-target="#ar-read, #ar-write">
+ <p class="predict-q"><strong>Erst festlegen:</strong> Das Array hat 5 Elemente. Was passiert bei <code>spaces[5]</code>?</p>
+ <div class="predict-opts">
+ <button>Java gibt einfach 0 zurück</button>
+ <button>Java legt automatisch ein sechstes Element an</button>
+ <button>Das Programm stürzt ab</button>
+ </div>
+ <p class="predict-notiz" hidden>Festgelegt! Jetzt probier es unten aus: Index 5 beim Lesen.</p>
+ </div>
+
+ <div class="array-row" id="ar-row"></div>
+ <p class="statuszeile">spaces.length&nbsp;&rarr;&nbsp;<strong id="ar-len">5</strong></p>
+
+ <div class="wflex" style="margin-top:10px">
+ <div class="feld">
+ <h4>Schreiben: <code class="umbruch">spaces[i] = value;</code></h4>
+ <p style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><label>Index: <input type="number" id="ar-widx" value="0" style="width:70px"></label>
+ <label>Wert: <input type="number" id="ar-wval" value="17" style="width:80px"></label>
+ <button class="btn btn-klein" id="ar-write">Schreiben</button></p>
+ </div>
+ <div class="feld">
+ <h4>Lesen: <code class="umbruch">spaces[i]</code></h4>
+ <p style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><label>Index: <input type="number" id="ar-ridx" value="0" style="width:70px"></label>
+ <button class="btn btn-klein" id="ar-read">Lesen</button></p>
+ <div class="sim-konsole" id="ar-read-out"></div>
+ </div>
+ </div>
+ <div class="crash" id="ar-crash"></div>
+ </section>
+
+ <section class="block">
+ <div class="baustein kern" id="drei-dinge-die-du-ueber-arrays-wissen-musst">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p><strong>Drei Dinge, die du über Arrays wissen musst:</strong></p>
+ <ul>
+ <li><strong>Feste Größe:</strong> Einmal <code>new int[5]</code>, immer 5 Elemente. Ein Array kann nicht wachsen
+ (flexibler: die <a href="#arraylist"><code>ArrayList</code></a> in Aufgabe 8.2.2).</li>
+ <li><strong>Startwerte:</strong> Zahlen-Arrays lauter 0, boolean false, Objekt-Arrays <code>null</code> (= „nichts drin“).</li>
+ <li><strong>Ungültiger Index:</strong> Zugriff auf ein Element, das es nicht gibt &rarr;
+ <code class="umbruch">ArrayIndexOutOfBoundsException</code>.</li>
+ </ul>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Sneak-Peek: Arrays voller Objekte</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Ab Kapitel 9 baust du eigene Datentypen, z.&nbsp;B. eine Klasse <code>Zombie</code>. Dann
+ kann ein Array statt Zahlen auch ganze Zombie-Objekte enthalten. Verstehen musst du den Code erst nach Kapitel 9:</p>
+ <div class="codebox flach">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>ZombieApocalypse2.java</p>
+<pre><code class="java">Zombie[] camp = new Zombie[3];
+camp[0] = new Zombie("Zombiefelix", "slow", "hungry");
+camp[1] = new Zombie("Mia", "fast", "groaning");
+// lager[2] ist noch null, leeres Fach!
+
+for (Zombie k : camp) {
+    if (k != null) {              // null-Check, sonst kracht's
+        System.out.println(k.getName());
+    }
+}</code></pre>
+ </div>
+ <p>So verwaltet man alle Figuren auf einer Zeichenfläche oder alle Kunden.
+ Array + Objekte + Schleife: das Fundament fast jeder Verwaltungssoftware.</p>
+ </div>
+ </details>
+
+ <h3>Aufgabe 8.1.2: length oder Index?</h3>
+ <p>Kurzer Selbsttest: <code>length</code> und Index werden gern verwechselt. Was kommt raus?</p>
+
+ <div class="codebox runner" data-trace data-out="3\n7">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>LengthOderIndex.java (Ausschnitt)</p>
+<pre><code class="java">int[] numbers = {4, 7, 1};
+
+System.out.println(numbers.length);
+System.out.println(numbers[1]);</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="durch-alle-faecher-laufen"><span class="nr">8.2</span> Arrays durchlaufen: for und for-each</h2>
+ <p class="wozu">Meist willst du nicht ein Element, sondern alle: ausgeben, zählen, vergleichen. Dafür passt die for-Schleife genau: Ihr Zähler ist der Index.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code>for (<span data-teil="i">int i = 0</span>; i <span data-teil="lt">&lt;</span> <var data-teil="array">array</var>.length; <span data-teil="i">i++</span>) {
+    <var data-teil="element">Anweisungen mit dem Element</var> <var data-teil="array">array</var><span data-teil="i">[i]</span>
+}
+
+for (<var data-teil="typ">Typ</var> <var data-teil="wert">wert</var> : <var data-teil="array">array</var>) {
+    <var data-teil="anw-wert">Anweisungen mit dem Wert</var> <var data-teil="wert">wert</var>
+}</code></pre>
+ <p class="aufbau-info">Die obere Form kennt den Index <code>i</code>. Brauchst du nur die Werte, nicht den Index, nimm die untere, die <strong>for-each-Schleife</strong>. Lies den Doppelpunkt als „in“.</p>
+ <div hidden data-erkl="i"><strong>Der Zähler <code>i</code></strong> ist der Index: <code>int i = 0</code> beginnt beim ersten Element, <code>i++</code> geht nach jeder Runde zum nächsten. Mit <code>array[i]</code> erreichst du so in jeder Runde ein anderes Element.</div>
+ <div hidden data-erkl="lt"><strong>Das Kleinerzeichen</strong> lässt <code>i</code> beim letzten Index aufhören: Bei 5 Elementen läuft <code>i</code> von 0 bis 4. Mit <code>&lt;=</code> gäbe es noch eine Runde mit <code>i</code> gleich 5, also einen Index, den es nicht gibt.</div>
+ <div hidden data-erkl="array"><strong>Array:</strong> der Name deines Arrays, etwa <code>spaces</code> oder <code>grades</code>. In der oberen Form brauchst du ihn zweimal: für die Länge und für den Zugriff auf das Element.</div>
+ <div hidden data-erkl="element"><strong>Anweisungen mit dem Element:</strong> der Schleifenrumpf, etwa <code>System.out.println(spaces[i]);</code>. Über den Index kannst du ein Element auch ändern: <code>spaces[i] = 0;</code></div>
+ <div hidden data-erkl="typ"><strong>Typ:</strong> derselbe Typ wie die Elemente des Arrays. Bei <code>int[] grades</code> steht hier <code>int</code>, bei <code>String[] names</code> steht <code>String</code>.</div>
+ <div hidden data-erkl="wert"><strong>Variable für den Wert:</strong> frei wählbar, meist die Einzahl des Array-Namens, etwa <code>grade</code> für <code>grades</code>. Sie enthält in jeder Runde das nächste Element, vom ersten bis zum letzten.</div>
+ <div hidden data-erkl="anw-wert"><strong>Anweisungen mit dem Wert:</strong> der Schleifenrumpf, etwa <code>System.out.println(grade);</code>. Achtung: <code>grade = 0;</code> ändert nur die Variable, das Element im Array bleibt, wie es ist. Zum Ändern brauchst du die obere Form.</div>
+ </div>
+
+ <p><code>i &lt; spaces.length</code> hört hinter dem letzten Element auf:</p>
+
+ <div class="codebox runner" data-out="Slot 0: 17\nSlot 1: 0\nSlot 2: 0\nSlot 3: 0\nSlot 4: 99">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Rundgang.java</p>
+<pre><code class="java">int[] spaces = new int[5];
+spaces[0] = 17;
+spaces[4] = 99;
+
+for (int i = 0; i < spaces.length; i++) {
+    System.out.println("Slot " + i + ": " + spaces[i]);
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <p>Brauchst du nur die Werte, nicht den Index, nimm die <strong>for-each-Schleife</strong>,
+ „für jeden Wert im Array“:</p>
+
+ <div class="codebox runner" data-out="1\n3\n2\n5\n1">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>ForEach.java</p>
+<pre><code class="java">int[] grades = {1, 3, 2, 5, 1};
+
+for (int grade : grades) {          // lies: "für jede note in noten"
+    System.out.println(grade);
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>int i = 0</code></td><td>Der Zähler ist der Index. Er startet beim ersten Element, also bei 0.</td></tr>
+ <tr><td><code>i &lt; spaces.length</code></td><td>hört <strong>hinter</strong> dem letzten Element auf: Bei 5 Elementen läuft <code>i</code> von 0 bis 4.</td></tr>
+ <tr><td><code>spaces[i]</code></td><td>das Element mit dem aktuellen Index. In jeder Runde ist es ein anderes.</td></tr>
+ <tr><td><code>for (int grade : grades)</code></td><td>für jede <code>grade</code> in <code>grades</code>: In jeder Runde liegt in <code>grade</code> der nächste Wert. Einen Index gibt es hier nicht.</td></tr>
+ </table>
+ </div>
+
+ <p>Schau dir den Durchlauf auch am Array oben an:</p>
+ <p><button class="btn" id="ar-foreach"> for-each durch das Array laufen lassen</button></p>
+ <div class="sim-konsole" id="ar-fe-out"></div>
+
+ <div class="codebox cloze">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Luecken.java: die zwei wichtigsten Array-Muster</p>
+<pre><code class="nohl luecken">// durch ALLE Elemente laufen, ohne hinter das letzte zu geraten:
+for (int i = 0; i &lt; items.<input class="cz" data-a="length" size="8">; i++) { … }
+
+// das LETZTE Element lesen (Vorsicht, beliebte Prüfungsfrage):
+int last = items[items.length <input class="cz" data-a="-1~- 1" size="4">];</code></pre>
+ <div class="cloze-leiste">
+ <button class="btn btn-klein cloze-check" type="button">Prüfen </button>
+ <p class="cloze-meldung"></p>
+ </div>
+ </div>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <ul>
+ <li>Durchlaufen mit for: <code>i &lt; length</code>, nicht <code>&lt;=</code>. Der letzte Index ist <code>length - 1</code>.</li>
+ <li>Nur die Werte gebraucht? for-each, der Doppelpunkt heißt „in“.</li>
+ </ul>
+ </div>
+
+ <details class="baustein optional" id="arraylist">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Legendär 8.2.2: Die Liste, die mitwächst</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+   <div class="inhalt">
+ <h4>Array gegen ArrayList</h4>
+ <p class="pfad-meta"><span class="etikett">Neu</span><span class="etikett">~15 min</span><span class="etikett">IDE</span></p>
+ <p>Das Lästigste an Arrays: <strong>Sie können nicht wachsen.</strong> Wer nicht weiß, wie
+ viele Werte kommen, legt das Array zu klein an oder verschwendet Speicher.</p>
+ <p>Java hat dafür die <code>ArrayList</code>, eine Liste, die sich selbst vergrößert. Vier
+ Unterschiede:</p>
+ <table>
+ <thead><tr><th>Array</th><th>ArrayList</th></tr></thead>
+ <tbody>
+ <tr><td><code>String[] a = new String[3];</code></td><td><code>ArrayList&lt;String&gt; a = new ArrayList&lt;&gt;();</code></td></tr>
+ <tr><td><code>a[0] = "Mia";</code></td><td><code>a.add("Mia");</code></td></tr>
+ <tr><td><code>a.length</code></td><td><code>a.size()</code></td></tr>
+ <tr><td>feste Größe</td><td>wächst und schrumpft: <code>a.remove("Mia")</code></td></tr>
+ </tbody>
+ </table>
+ <p>Die spitzen Klammern <code>&lt;String&gt;</code> sagen, <em>was</em> hineindarf, hier Texte.
+ Ganz oben braucht es <code>import java.util.ArrayList;</code>, wie beim Scanner.</p>
+ <p><strong>Deine Aufgabe:</strong> Bau eine Warteliste: drei Namen hinein, einer wieder heraus,
+ dann die Anzahl und alle verbliebenen ausgeben. Die for-each-Schleife funktioniert unverändert.</p>
+ <p><strong>Erwartete Ausgabe:</strong></p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Konsole</p>
+<pre><code class="nohl ausgabe">Count: 2
+Mia
+Nora</code></pre>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Lösung (erst selbst probieren)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <div class="codebox runner" data-out="Count: 2\nMia\nNora">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Waitlist.java</p>
+<pre><code class="java">import java.util.ArrayList;
+
+public class Waitlist {
+
+    public static void main(String[] args) {
+        ArrayList&lt;String&gt; list = new ArrayList&lt;&gt;();
+
+        list.add("Mia");
+        list.add("Paul");
+        list.add("Nora");
+
+        list.remove("Paul");
+
+        System.out.println("Count: " + list.size());
+
+        for (String name : list) {
+            System.out.println(name);
+        }
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <ul>
+ <li><code>Nora</code> hat nach dem <code>remove</code> den Index 1: Die Liste schließt die Lücke selbst.
+ Beim Array müsstest du das selbst machen.</li>
+ <li>In <code>new ArrayList&lt;&gt;()</code> bleiben die spitzen Klammern leer: Der Compiler übernimmt den Typ von links.</li>
+ <li>In die spitzen Klammern gehören nur <strong>Klassen</strong>. <code>ArrayList&lt;int&gt;</code>
+ gibt es nicht, dafür <code>ArrayList&lt;Integer&gt;</code>, die Wrapper-Klasse aus
+ <a href="05-strings-eingabe.html#casten-oder-parsen">Kapitel 5</a> (as bei <code>Integer.parseInt</code>).</li>
+ </ul>
+ </div>
+ </details>
+   </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <h2 id="max-jagd"><span class="nr">8.3</span> Maximumsuche</h2>
+ <p class="wozu">Der Array-Klassiker schlechthin (Klassenarbeits-Garantie!): Finde den größten Wert. Der Trick: Eine Variable <code>max</code> speichert den bisher größten Wert, und jedes Element wird mit ihr verglichen.</p>
+ </section>
+
+ <section class="widget">
+ <h3>Algorithmus live: die Maximumsuche</h3>
+ <p class="widget-hinweis">Schau dem Code zu, Schritt für Schritt:</p>
+
+ <div class="wflex">
+ <div style="flex:2 1 300px">
+ <div class="codebox flach" style="margin:0">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Maximumsuche.java</p>
+<pre><code class="nohl" style="background:none;border:none;padding:0;white-space:pre;color:#f0eef7;font-size:0.88rem;line-height:2"><span id="mx-l0" class="st-part">int[] temp = {18, 23, 19, 31, 25};</span>
+<span id="mx-l1" class="st-part">int max = temp[0];</span>
+<span id="mx-l2" class="st-part">for (int t : temp)</span> {
+    <span id="mx-l3" class="st-part">if (t &gt; max)</span> {
+        <span id="mx-l4" class="st-part">max = t;</span>
+    }
+}
+<span id="mx-l5" class="st-part">System.out.println("Heat record: " + max);</span></code></pre>
+ </div>
+ <p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-klein" id="mx-step">Schritt </button>
+ <button class="btn btn-klein" id="mx-auto">Auto </button>
+ <button class="btn btn-klein" id="mx-reset"> Reset</button></p>
+ </div>
+ <div style="flex:1 1 220px">
+ <div class="array-row" id="mx-row" style="margin-top:0"></div>
+ <div style="display:flex;justify-content:center;margin-top:10px">
+ <div class="var-box" style="width:130px;min-height:80px">
+ <span class="var-type" style="background:var(--rot-ink)">int</span>
+ <span class="var-name">max</span>
+ <span class="var-value" id="mx-max">: </span>
+ </div>
+ </div>
+ </div>
+ </div>
+ <p class="statuszeile" id="mx-status" style="margin-top:12px">Bereit. Drück „Schritt“.</p>
+ <div class="sim-konsole" id="mx-out" style="margin-top:10px"></div>
+ </section>
+
+ <section class="block">
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>int max = temp[0];</code></td><td>Startwert: Das erste Element ist das bisherige Maximum.</td></tr>
+ <tr><td><code>for (int t : temp)</code></td><td>Jedes Element kommt genau einmal dran, sein Wert steht in <code>t</code>.</td></tr>
+ <tr><td><code>if (t &gt; max)</code></td><td>der Vergleich: Ist <code>t</code> größer als das bisherige Maximum?</td></tr>
+ <tr><td><code>max = t;</code></td><td>Ja: <code>t</code> ist das neue Maximum. Sonst bleibt <code>max</code>, wie es ist.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Nach der Schleife steht in <code>max</code> der größte Wert. Für das <strong>Minimum</strong> drehst du nur den Vergleich um: <code>t &lt; min</code>.</p>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="lineare-suche"><span class="nr">8.4</span> Lineare Suche</h2>
+ <p class="wozu">Die zweithäufigste Frage an ein Array: <strong>„Ist X drin, und wenn ja, wo?“</strong>
+ Die Bauform ist dieselbe wie bei der Maximumsuche: einmal durchlaufen, unterwegs merken. Nur merkt man sich nicht den <em>Wert</em>, sondern den <em>Index</em>.</p>
+ <div class="codebox runner" data-out="Found in slot 3">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Search.java</p>
+<pre><code class="java">public class Search {
+
+    public static void main(String[] args) {
+        int[] measurements = {18, 23, 19, 31, 25};
+        int searchValue = 31;
+        int found = -1;
+
+        for (int i = 0; i &lt; measurements.length; i++) {
+            if (measurements[i] == searchValue) {
+                found = i;
+                break;
+            }
+        }
+
+        if (found == -1) {
+            System.out.println("Not in the array.");
+        } else {
+            System.out.println("Found in slot " + found);
+        }
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>int found = -1;</code></td><td>Der Startwert <code>-1</code> heißt „noch nichts gefunden“. Er ist kein gültiger Index, kann also nichts anderes bedeuten.</td></tr>
+ <tr><td><code>measurements[i] == searchValue</code></td><td>vergleicht jedes Element mit dem gesuchten Wert.</td></tr>
+ <tr><td><code>found = i;</code></td><td>merkt sich den Index, nicht den Wert. Deshalb hier die for-Schleife mit Index.</td></tr>
+ <tr><td><code>break;</code></td><td>Das <code>break</code> (<a href="07-schleifen.html#break-und-continue">Kapitel 7</a>) ist nicht überflüssig: Ohne es liefe die Schleife weiter, obwohl das Ergebnis feststeht. Bei fünf Elementen egal, bei fünf Millionen nicht.</td></tr>
+ <tr><td><code>if (found == -1)</code></td><td>Nach der Schleife entscheidet <code>found</code>: Steht noch <code>-1</code> darin, war der Wert nicht im Array.</td></tr>
+ </table>
+ </div>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <ul>
+ <li><strong>Lineare Suche</strong>: von vorn nach hinten, jedes Element einmal. Klappt immer, sortiert oder nicht.</li>
+ <li>Schlechtester Fall: alle <code>length</code> Elemente, wenn das Gesuchte ganz hinten steht oder fehlt.</li>
+ <li>Ist das Array <strong>sortiert</strong>, geht es viel schneller: Die <strong>binäre Suche</strong> halbiert bei jedem Step den Rest (Aufgabe 8.7.7).</li>
+ </ul>
+ </div>
+ <div class="oaky">
+ <img class="figur" src="../img/kapitel/oaky-finger.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p>Warum <code>-1</code> und nicht <code>0</code>? <code>0</code> ist der Index des ersten Elements. Bei
+ <code>found == 0</code> wüsste niemand: „an Index 0 gefunden“ oder „nichts gefunden“?</p>
+ </div>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="von-text-zu-array-split"><span class="nr">8.5</span> Strings zerlegen mit split()</h2>
+ <p class="wozu">Arrays entstehen selten von Hand. Meist kommt eine Zeile herein (aus Datei, Formular,
+ Tastatur) und muss zerlegt werden. Dafür hat <code>String</code> eine Methode, die ein
+ <strong>Array zurückgibt</strong>.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="typ">String[]</span> <var data-teil="teile">teile</var> = <var data-teil="text">text</var>.<span data-teil="split">split</span>("<var data-teil="trenn">Trennzeichen</var>");</code></pre>
+ <p class="aufbau-info">Die Stücke zwischen den Trennzeichen landen der Reihe nach in den Elementen des Arrays. Das Trennzeichen selbst fällt weg.</p>
+ <div hidden data-erkl="typ"><strong><code>String[]</code></strong> ist der Typ der Variable links: ein Array von Strings. Auch Zahlen im Text bleiben Strings: Aus <code>"3,5"</code> wird <code>"3"</code> und <code>"5"</code>, rechnen kannst du erst nach <code>Integer.parseInt(…)</code>.</div>
+ <div hidden data-erkl="teile"><strong>Name des Arrays:</strong> frei wählbar, etwa <code>names</code>. Wie viele Elemente es hat, hängt vom Text ab. Du erfährst es mit <code>names.length</code>.</div>
+ <div hidden data-erkl="text"><strong>Text:</strong> der String, der zerlegt wird, etwa die Variable <code>line</code> mit dem Inhalt <code>"Zombiefelix,Mia,Paul"</code>. Er selbst bleibt dabei unverändert.</div>
+ <div hidden data-erkl="split"><strong><code>split</code></strong> ist eine Methode von <code>String</code>, aufgerufen mit Punkt hinter dem Text wie <code>trim()</code> aus Kapitel 5. Ihr Rückgabewert ist ein neues Array mit den Stücken.</div>
+ <div hidden data-erkl="trenn"><strong>Trennzeichen:</strong> ein String in doppelten Anführungszeichen, etwa <code>","</code> für Komma oder <code>" "</code> für Leerzeichen. Einfache Anführungszeichen wie <code>','</code> meldet der Compiler als Fehler, denn das wäre ein <code>char</code>.</div>
+ </div>
+
+ <div class="codebox runner" data-out="3\nZombiefelix\n11">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>WordList.java</p>
+<pre><code class="java">public class WordList {
+
+    public static void main(String[] args) {
+        String line = "Zombiefelix,Mia,Paul";
+        String[] names = line.split(",");
+
+        System.out.println(names.length);
+        System.out.println(names[0]);
+        System.out.println(names[0].length());
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE: dreimal fast dasselbe Wort, dreimal etwas anderes gemeint</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>line.split(",")</code></td><td>zerschneidet den Text an jedem Komma und liefert die Stücke als neues Array.</td></tr>
+ <tr><td><code>String[] names</code></td><td>nimmt das Array auf: drei Elemente mit „Zombiefelix“, „Mia“ und „Paul“.</td></tr>
+ <tr><td><code>names.length</code></td><td>3: die Länge des Arrays, <strong>ohne</strong> Klammern.</td></tr>
+ <tr><td><code>names[0].length()</code></td><td>11: die Zahl der Zeichen in „Zombiefelix“, <strong>mit</strong> Klammern, denn hier fragst du einen String.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p><span class="hl">Ein Array hat <code>length</code> ohne Klammern, ein String hat
+ <code>length()</code> mit.</span> Kein Schreibfehler:</p>
+ <ul>
+ <li>Array: Die Länge ist ein <strong>fest eingebauter Wert</strong>.</li>
+ <li>String: Die Länge liefert eine <strong>Methode</strong>.</li>
+ <li>Verwechselt? Dann meldet der Compiler <em>cannot find symbol</em>, und man sucht meist an der falschen Stelle.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="zweidimensionale-arrays"><span class="nr">8.6</span> Zweidimensionale Arrays</h2>
+ <p class="wozu">Manche Daten bilden eine Tabelle aus <strong>Zeilen</strong> und <strong>Spalten</strong>,
+ etwa die Stellplätze eines Parkhauses mit mehreren Etagen. Dafür gibt es das zweidimensionale Array:
+ ein Array, dessen Elemente wieder Arrays sind.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><var data-teil="typ">Typ</var><span data-teil="arr">[][]</span> <var data-teil="name">name</var> = <span data-teil="new">new</span> <var data-teil="typ">Typ</var>[<var data-teil="zeile">Zeilen</var>][<var data-teil="spalte">Spalten</var>];
+<var data-teil="name">name</var>[<var data-teil="zeile">Zeile</var>][<var data-teil="spalte">Spalte</var>] = <var data-teil="wert">Wert</var>;</code></pre>
+ <p class="aufbau-info">Erst Zeile, dann Spalte. Kennst du die Werte schon, schreibst du sie Zeile für Zeile in geschweifte Klammern, wie im Beispiel.</p>
+ <div hidden data-erkl="typ"><strong>Typ:</strong> der Typ aller Elemente, etwa <code>int</code>. Er steht zweimal, beide Male gleich: <code>int[][] spaces = new int[2][3];</code></div>
+ <div hidden data-erkl="arr"><strong>Zwei Paar eckige Klammern</strong> machen ein zweidimensionales Array: <code>int[][]</code> heißt „Array von <code>int</code>-Arrays“. Jedes dieser inneren Arrays ist eine Zeile der Tabelle.</div>
+ <div hidden data-erkl="name"><strong>Name:</strong> frei wählbar, etwa <code>spaces</code>. <code>spaces.length</code> liefert die Zahl der Zeilen, <code>spaces[0].length</code> die Zahl der Spalten in Zeile 0.</div>
+ <div hidden data-erkl="new"><strong><code>new</code></strong> legt das ganze Array auf einmal an: <code>new int[2][3]</code> ergibt 2 Zeilen mit je 3 Elementen, zusammen 6, alle zuerst mit dem Wert <code>0</code>.</div>
+ <div hidden data-erkl="zeile"><strong>Zeilen, Zeile:</strong> die erste Zahl in eckigen Klammern. Beim Anlegen ist es die Anzahl der Zeilen, beim Zugriff der Index der Zeile, ab 0 gezählt.</div>
+ <div hidden data-erkl="spalte"><strong>Spalten, Spalte:</strong> die zweite Zahl. Beim Anlegen ist es die Anzahl der Spalten je Zeile, beim Zugriff der Index der Spalte, ebenfalls ab 0: <code>spaces[1][2]</code> ist die dritte Spalte der zweiten Zeile.</div>
+ <div hidden data-erkl="wert"><strong>Wert:</strong> muss zum Typ passen, etwa <code>1</code> für einen belegten Platz. Er wird in genau das Element geschrieben, das die beiden Indizes festlegen: <code>spaces[0][1] = 1;</code> belegt in Zeile 0 die Spalte 1.</div>
+ </div>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>zwei Etagen, je drei Plätze</p>
+<pre><code class="java">int[][] spaces = {
+    {1, 0, 0},
+    {0, 1, 1},
+};</code></pre>
+ </div>
+ <p>Zugriff mit <strong>zwei</strong> Indizes: erst Zeile, dann Spalte. <code>spaces[1][2]</code>
+ is zweite Zeile (Etage), dritte Spalte (Platz), also die <code>1</code> rechts unten.</p>
+ <p>Durchlaufen wird das mit einer verschachtelten Schleife
+ (<a href="07-schleifen.html#schleife-in-der-schleife">Kapitel 7</a>):</p>
+ <div class="codebox runner" data-trace data-out="Floor 0: 1 0 0\nFloor 1: 0 1 1">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>ParkingDeck.java</p>
+<pre><code class="java">public class ParkingDeck {
+
+    public static void main(String[] args) {
+        int[][] spaces = {
+            {1, 0, 0},
+            {0, 1, 1},
+        };
+
+        for (int floor = 0; floor &lt; spaces.length; floor++) {
+            String line = "";
+
+            for (int space = 0; space &lt; spaces[floor].length; space++) {
+                line = line + spaces[floor][space] + " ";
+            }
+
+            System.out.println("Floor " + floor + ": " + line.trim());
+        }
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>floor &lt; spaces.length</code></td><td>Die äußere Schleife läuft über die Zeilen, hier 2 Etagen.</td></tr>
+ <tr><td><code>space &lt; spaces[floor].length</code></td><td>Die innere Schleife läuft über die Spalten <strong>dieser</strong> Zeile, hier 3 Plätze.</td></tr>
+ <tr><td><code>spaces[floor][space]</code></td><td>ein einzelnes Element: erst die Zeile (<code>floor</code>), dann die Spalte (<code>space</code>).</td></tr>
+ <tr><td><code>line = line + … + " ";</code></td><td>hängt jeden Wert mit einem Leerzeichen an den Text der Zeile an.</td></tr>
+ <tr><td><code>line.trim()</code></td><td>entfernt das letzte Leerzeichen (<a href="05-strings-eingabe.html">Kapitel 5</a>), bevor die Zeile ausgegeben wird.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <ul>
+ <li><code>spaces.length</code>: Zahl der <strong>Zeilen</strong>, nicht aller Elemente.</li>
+ <li><code>spaces[floor].length</code>: Zahl der Spalten <em>dieser</em> Zeile. Sie darf von Zeile zu Zeile verschieden sein.</li>
+ </ul>
+ </div>
+ <div class="oaky">
+ <img class="figur" src="../img/kapitel/oaky-finger.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p>Leer anlegen: <code>int[][] grid = new int[2][3];</code>, zwei Zeilen, drei Spalten,
+ alles 0. Drei Dimensionen sind erlaubt, aber selten. Wer sie braucht, braucht meist eine Klasse (Kapitel 9).</p>
+ </div>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Mehrdimensionale Arrays (das Chessboard)</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Jedes Element ist wieder ein Array: zwei Indizes, also ein Raster.</p>
+ <div class="codebox flach">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Chessboard.java</p>
+<pre><code class="java">String[][] board = new String[8][8];   // 8 Reihen × 8 Spalten
+board[0][0] = "Rook";                   // Reihe 0, Spalte 0
+board[7][4] = "King";
+
+// alle Felder abklappern: verschachtelte Schleife
+for (int row = 0; row < 8; row++) {
+    for (int column = 0; column < 8; column++) {
+        // board[reihe][spalte] …
+    }
+}</code></pre>
+ </div>
+ <p><code>board[row][column]</code>: erst Zeile, dann Spalte.</p>
+ </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <h2 id="trainingslager"><span class="nr">8.7</span> Übungsaufgaben zu Arrays</h2>
+ <p class="wozu">Acht Aufgaben zu allem, was das Kapitel gezeigt hat: Maximum und Minimum, Durchlaufen, Tauschen, Suchen. Geschrieben werden sie in der IDE, nicht auf Papier.</p>
+ <h3>Die Klassiker</h3>
+ <p class="aufgabenmarke">Aufgabe 8.7.1</p>
+ <h4>Aufgabe 8.7.1: Maximum und Minimum</h4>
+ <p class="pfad-meta"><span class="etikett">Grundlagen</span><span class="etikett">~10 min</span><span class="etikett">IDE</span></p>
+
+ <p>Wie die Maximumsuche, nur <strong>beides auf einmal</strong>: wärmsten und kältesten Tag in <em>einem</em> Durchlauf.
+ Zwei Variablen <code>max</code> und <code>min</code> statt einer, sonst ändert sich nichts.</p>
+ <p>Gegeben: <code>int[] temperatures = {18, 23, 19, 31, 25, 12, 27};</code></p>
+ <p><strong>Erwartete Ausgabe:</strong></p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Konsole</p>
+<pre><code class="nohl ausgabe">Warmest day:  31
+Coldest day: 12</code></pre>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Lösung (erst selbst probieren)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <div class="codebox runner" data-out="Warmest day:  31\nColdest day: 12">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Finder.java</p>
+<pre><code class="java">public class Finder {
+
+    public static void main(String[] args) {
+        int[] temperatures = {18, 23, 19, 31, 25, 12, 27};
+
+        int max = temperatures[0];
+        int min = temperatures[0];
+
+        for (int t : temperatures) {
+            if (t &gt; max) {
+                max = t;
+            }
+            if (t &lt; min) {
+                min = t;
+            }
+        }
+
+        System.out.println("Warmest day:  " + max);
+        System.out.println("Coldest day: " + min);
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p><strong>Warum <code>temperatures[0]</code> als Startwert und nicht 0?</strong>
+ Bei lauter Plusgraden würde 0 nie unterboten: Der „kälteste Tag“ wäre 0 Grad, obwohl es
+ ihn nie gab. Der erste echte Wert ist immer ein zulässiger Start.</p>
+ </div>
+ </details>
+ <details class="baustein optional">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Legendär 8.7.2: Der Reverser</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+   <div class="inhalt">
+ <p class="pfad-meta"><span class="etikett">Grundlagen</span><span class="etikett">~15 min</span><span class="etikett">IDE</span></p>
+
+ <p>Dreh die Reihenfolge um: Aus <code>{1, 2, 3, 4, 5}</code> wird <code>{5, 4, 3, 2, 1}</code>.
+ <span class="hl">Kein zweites Array:</span> Tausche erstes mit letztem,
+ zweites mit vorletztem und so weiter.</p>
+ <p>Stolperfalle Abbruch: Läufst du bis <code>length</code>, drehst du alles
+ zweimal um und bist wieder am Anfang.</p>
+ <p><strong>Erwartete Ausgabe:</strong></p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Konsole</p>
+<pre><code class="nohl ausgabe">5 4 3 2 1</code></pre>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Lösung (erst selbst probieren)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <div class="codebox runner" data-out="5 4 3 2 1">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Reverser.java</p>
+<pre><code class="java">public class Reverser {
+
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3, 4, 5};
+
+        for (int i = 0; i &lt; numbers.length / 2; i++) {
+            int saved = numbers[i];
+            numbers[i] = numbers[numbers.length - 1 - i];
+            numbers[numbers.length - 1 - i] = saved;
+        }
+
+        String line = "";
+        for (int z : numbers) {
+            line = line + z + " ";
+        }
+        System.out.println(line.trim());
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <ul>
+ <li><code>numbers.length / 2</code>: Mehr als die Hälfte darfst du nicht laufen.</li>
+ <li><code>saved</code>: Ohne ihn überschreibst du den ersten Wert, bevor du ihn gerettet hast.</li>
+ <li><code>trim()</code> entfernt am End das überzählige Leerzeichen (Kapitel 5).</li>
+ </ul>
+ </div>
+ </details>
+   </div>
+ </details>
+ <p class="aufgabenmarke">Aufgabe 8.7.3</p>
+ <h4>Aufgabe 8.7.3: Der Durchschnittsrechner</h4>
+ <p class="pfad-meta"><span class="etikett">Grundlagen</span><span class="etikett">~10 min</span><span class="etikett">IDE</span></p>
+
+ <p>Summe durch Anzahl, als Methode für <strong>jedes</strong> Array:
+ <code class="umbruch">static double average(int[] items)</code>. Zwei Zeilen,
+ aber genau hier wartet die Falle aus Kapitel 3.</p>
+ <p>Teste mit <code>{12, 15, 9, 20, 13}</code> und <code>{1, 2}</code>.</p>
+ <p><strong>Erwartete Ausgabe:</strong></p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Konsole</p>
+<pre><code class="nohl ausgabe">Average: 13.8
+Average: 1.5</code></pre>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Lösung (erst selbst probieren)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <div class="codebox runner" data-out="Average: 13.8\nAverage: 1.5">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Average.java</p>
+<pre><code class="java">public class Average {
+
+    public static void main(String[] args) {
+        int[] points = {12, 15, 9, 20, 13};
+        int[] two = {1, 2};
+
+        System.out.println("Average: " + average(points));
+        System.out.println("Average: " + average(two));
+    }
+
+    static double average(int[] items) {
+        int sum = 0;
+        for (int w : items) {
+            sum = sum + w;
+        }
+        return (double) sum / items.length;
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p><code>int[] items</code> im Parameter: Ein ganzes Array geht hinein. Wie lang es ist,
+ verrät <code>items.length</code>.</p>
+ <p><strong>Ohne den <code>(double)</code>-Cast kommen 13.0 und 1.0 heraus:</strong> int durch int
+ ergibt int, der Rest ist weg. Der Rückgabetyp <code>double</code> kommt zu spät. Der Cast muss
+ <em>vor</em> der Division stehen.</p>
+ </div>
+ </details>
+ <h3>Berühmte Interview-Fragen</h3>
+ <p class="aufgabenmarke">Aufgabe 8.7.4</p>
+ <h4>Aufgabe 8.7.4: FizzBuzz auf Steroiden</h4>
+ <p class="pfad-meta"><span class="etikett">Interview-Frage</span><span class="etikett">~20 min</span><span class="etikett">IDE</span></p>
+
+ <p>Die berühmteste Aussiebfrage in Bewerbungsgesprächen, hier mit Array.
+ Leg ein <code>String[]</code> mit 100 Elementen an. An Index <em>i</em> kommt die Zahl
+ <em>i</em>+1, <strong>außer</strong>:</p>
+ <ul>
+ <li>durch 3 teilbar &rarr; <code>"Fizz"</code></li>
+ <li>durch 5 teilbar &rarr; <code>"Buzz"</code></li>
+ <li>durch beides &rarr; <code>"FizzBuzz"</code></li>
+ </ul>
+ <p>Gib die ersten 15 Elemente aus. Der Witz steckt in der <strong>Reihenfolge der Prüfungen</strong>:
+ Wer falsch anfängt, sieht nie ein „FizzBuzz“.</p>
+ <p><strong>Erwartete Ausgabe:</strong></p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Konsole</p>
+<pre><code class="nohl ausgabe">1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz</code></pre>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Lösung (erst selbst probieren)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <div class="codebox runner" data-out="1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>FizzBuzz.java</p>
+<pre><code class="java">public class FizzBuzz {
+
+    public static void main(String[] args) {
+        String[] output = new String[100];
+
+        for (int i = 0; i &lt; output.length; i++) {
+            int number = i + 1;
+            if (number % 15 == 0) {
+                output[i] = "FizzBuzz";
+            } else if (number % 3 == 0) {
+                output[i] = "Fizz";
+            } else if (number % 5 == 0) {
+                output[i] = "Buzz";
+            } else {
+                output[i] = "" + number;
+            }
+        }
+
+        String line = "";
+        for (int i = 0; i &lt; 15; i++) {
+            line = line + output[i] + " ";
+        }
+        System.out.println(line.trim());
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <ul>
+ <li><strong>Die 15 zuerst prüfen.</strong> Wer mit <code>% 3</code> anfängt, trägt bei der 15 schon
+ „Fizz“ ein: Die <code>else-if</code>-Kette endet beim ersten Treffer (Kapitel 6), und
+ <code>else if (number % 5 == 0)</code> kommt nie dran.</li>
+ <li><code>"" + number</code> macht aus der Zahl einen Text. Ein <code>String[]</code> nimmt nur Strings auf, kein int.</li>
+ </ul>
+ </div>
+ </details>
+ <details class="baustein optional">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Legendär 8.7.5: Rotating</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+   <div class="inhalt">
+ <p class="pfad-meta"><span class="etikett">Interview-Frage</span><span class="etikett">~20 min</span><span class="etikett">IDE</span></p>
+
+ <p>Verschieb alle Elemente um <em>n</em> Stellen nach rechts. Was hinten herausfällt, kommt
+ vorne wieder herein: Aus <code>{1, 2, 3, 4, 5, 6, 7}</code> wird bei 3 Schritten
+ <code>{5, 6, 7, 1, 2, 3, 4}</code>.</p>
+ <p>Ein zweites Array ist erlaubt, dann reicht eine Zeile im Schleifenrumpf.
+ Die Frage ist nur: welcher Zielindex?</p>
+ <p><strong>Erwartete Ausgabe:</strong></p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Konsole</p>
+<pre><code class="nohl ausgabe">5 6 7 1 2 3 4</code></pre>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Lösung (erst selbst probieren)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <div class="codebox runner" data-out="5 6 7 1 2 3 4">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Rotating.java</p>
+<pre><code class="java">public class Rotating {
+
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3, 4, 5, 6, 7};
+        int steps = 3;
+
+        int[] replacement = new int[numbers.length];
+        for (int i = 0; i &lt; numbers.length; i++) {
+            replacement[(i + steps) % numbers.length] = numbers[i];
+        }
+
+        String line = "";
+        for (int z : replacement) {
+            line = line + z + " ";
+        }
+        System.out.println(line.trim());
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p><strong>Der Modulo fängt am Ende wieder vorne an.</strong> Bei den hinteren Elementen ist
+ <code>(i + steps)</code> zu groß für einen gültigen Index, <code>% numbers.length</code> rechnet ihn auf den Anfang um.
+ Wie bei der Uhr: 11 Uhr plus 3 Stunden ist 2 Uhr, nicht 14 Uhr.</p>
+ <p><strong>Probier aus:</strong> Setz <code>steps</code> auf 7 (die Länge) und auf 10.
+ Bei 7 kommt das Original heraus, bei 10 dasselbe as bei 3. Auch das erledigt der Modulo.</p>
+ </div>
+ </details>
+   </div>
+ </details>
+ <h3>Die legendären Algorithmen</h3>
+ <details class="baustein optional">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Legendär 8.7.6: Bubble Sort</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+   <div class="inhalt">
+ <p class="pfad-meta"><span class="etikett">Algorithmus mit Namen</span><span class="etikett">~30 min</span><span class="etikett">IDE</span></p>
+
+ <p>Sortiere ein Array von klein nach groß. Das Verfahren ist einfach:</p>
+ <ul>
+ <li>Vergleiche zwei Nachbarn. Steht der Größere links, tausche sie.</li>
+ <li>Geh so einmal durchs ganze Array.</li>
+ <li>Wiederhole, bis nichts mehr zu tauschen ist.</li>
+ </ul>
+ <p>Die großen Zahlen steigen wie Blasen nach rechts, daher der Name. Gib nach jeder Runde
+ den Zwischenstand aus, dann siehst du es.</p>
+ <p>Gegeben: <code>int[] numbers = {5, 1, 4, 2, 8};</code></p>
+ <p><strong>Erwartete Ausgabe:</strong></p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Konsole</p>
+<pre><code class="nohl ausgabe">Start:   5 1 4 2 8
+Round 1: 1 4 2 5 8
+Round 2: 1 2 4 5 8
+Round 3: 1 2 4 5 8</code></pre>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Lösung (erst selbst probieren)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <div class="codebox runner" data-out="Start:   5 1 4 2 8\nRound 1: 1 4 2 5 8\nRound 2: 1 2 4 5 8\nRound 3: 1 2 4 5 8">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>BubbleSort.java</p>
+<pre><code class="java">public class BubbleSort {
+
+    public static void main(String[] args) {
+        int[] numbers = {5, 1, 4, 2, 8};
+
+        System.out.println("Start:   " + asLine(numbers));
+
+        int round = 0;
+        boolean swapped;
+
+        do {
+            swapped = false;
+            round++;
+
+            for (int i = 0; i &lt; numbers.length - round; i++) {
+                if (numbers[i] &gt; numbers[i + 1]) {
+                    int saved = numbers[i];
+                    numbers[i] = numbers[i + 1];
+                    numbers[i + 1] = saved;
+                    swapped = true;
+                }
+            }
+
+            System.out.println("Round " + round + ": " + asLine(numbers));
+        } while (swapped);
+    }
+
+    static String asLine(int[] a) {
+        String line = "";
+        for (int z : a) {
+            line = line + z + " ";
+        }
+        return line.trim();
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <ul>
+ <li><strong>Zwei Schleifen ineinander:</strong> Die innere läuft einmal durch, die äußere
+ wiederholt das, solange in der letzten Runde noch getauscht wurde.</li>
+ <li><code>swapped</code> merkt sich das: vor jeder Runde <code>false</code>, beim ersten Tausch <code>true</code>.</li>
+ <li><code>- round</code> in der inneren Bedingung: Nach Runde 1 steht die größte Zahl sicher
+ ganz rechts, nach Runde 2 die zweitgrößte. Diese Elemente muss man nie wieder ansehen.</li>
+ <li><strong>Runde 3</strong> muss sein: Sortiert ist schon nach Runde 2, aber das weiß das
+ Programm erst nach einer Runde ohne Tausch.</li>
+ </ul>
+ <p>Langsam bleibt Bubble Sort trotzdem: Bei 1000 Zahlen sind es im schlechtesten Fall rund
+ eine halbe Million Vergleiche. An ihm <em>lernt</em> man Sortieren, sortieren tut man damit nicht.</p>
+ </div>
+ </details>
+   </div>
+ </details>
+ <details class="baustein optional">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Legendär 8.7.7: Binäre Search</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+   <div class="inhalt">
+ <p class="pfad-meta"><span class="etikett">Algorithmus mit Namen</span><span class="etikett">~30 min</span><span class="etikett">IDE</span></p>
+
+ <p>In einem <strong>sortierten</strong> Array eine Zahl finden, ohne alles durchzugehen.
+ Schau in die Mitte. Zu klein? Wirf die linke Hälfte weg. Zu groß? Die rechte. Wiederhole
+ mit dem Rest.</p>
+ <p>Gegeben: <code>int[] sorted = {3, 7, 12, 18, 25, 31, 44};</code>, gesucht wird
+ <code>25</code>. Gib jeden Schritt aus.</p>
+ <p><strong>Vorher überlegen:</strong> Wie viele Schritte braucht es höchstens bei sieben
+ Elementen? Und bei tausend?</p>
+ <p><strong>Erwartete Ausgabe:</strong></p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Konsole</p>
+<pre><code class="nohl ausgabe">Step 1: look at slot 3 (value 18)
+Step 2: look at slot 5 (value 31)
+Step 3: look at slot 4 (value 25)
+Found in slot 4 after 3 steps.</code></pre>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Lösung (erst selbst probieren)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <div class="codebox runner" data-out="Step 1: look at slot 3 (value 18)\nStep 2: look at slot 5 (value 31)\nStep 3: look at slot 4 (value 25)\nFound in slot 4 after 3 steps.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>BinarySearch.java</p>
+<pre><code class="java">public class BinarySearch {
+
+    public static void main(String[] args) {
+        int[] sorted = {3, 7, 12, 18, 25, 31, 44};
+        int searchValue = 25;
+
+        int left = 0;
+        int right = sorted.length - 1;
+        int found = -1;
+        int steps = 0;
+
+        while (left &lt;= right) {
+            int middle = (left + right) / 2;
+            steps = steps + 1;
+            System.out.println("Step " + steps + ": look at slot " + middle
+                    + " (value " + sorted[middle] + ")");
+
+            if (sorted[middle] == searchValue) {
+                found = middle;
+                break;
+            } else if (sorted[middle] &lt; searchValue) {
+                left = middle + 1;
+            } else {
+                right = middle - 1;
+            }
+        }
+
+        System.out.println("Found in slot " + found + " after " + steps + " steps.");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p><strong>Drei Schritte für sieben Elemente</strong>, zehn für tausend, zwanzig für eine
+ Million. Jeder Schritt halbiert, deshalb wächst der Aufwand so unverschämt langsam. Das macht
+ sortierte Daten so wertvoll.</p>
+ <p><strong>Zwei Fallen:</strong></p>
+ <ul>
+ <li><code>left &lt;= right</code> mit Gleichheitszeichen, sonst wird das letzte verbleibende Element nie geprüft.</li>
+ <li><code>found = -1</code> als Startwert heißt „nicht gefunden“, wie bei der linearen Suche. Probier es mit 26.</li>
+ </ul>
+ </div>
+ </details>
+   </div>
+ </details>
+ <details class="baustein optional">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Legendär 8.7.8: Das Sieve des Eratosthenes</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+   <div class="inhalt">
+ <p class="pfad-meta"><span class="etikett">Algorithmus mit Namen</span><span class="etikett">~30 min</span><span class="etikett">IDE</span></p>
+
+ <p>Über zweitausend Jahre alt und bis heute Standard, wenn man <strong>alle</strong>
+ Primzahlen bis zu einer Grenze braucht. Es kommt ohne Teilbarkeitsprüfung aus.</p>
+ <p>Der Gedanke: ein <code>boolean[]</code>, ein Element pro Zahl. Nimm die kleinste ungestrichene
+ Zahl, die 2, und streiche <strong>alle ihre Vielfachen</strong>. Dann die nächste
+ ungestrichene, die 3, und so weiter. Was übrig bleibt, ist prim.</p>
+ <p>Gegeben: <code>int limit = 50;</code></p>
+ <p><strong>Erwartete Ausgabe:</strong></p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Konsole</p>
+<pre><code class="nohl ausgabe">2 3 5 7 11 13 17 19 23 29 31 37 41 43 47</code></pre>
+ </div>
+ <p><strong>Zwei Stellen, an denen es klemmt:</strong></p>
+ <ul>
+ <li>Ein <code>boolean[]</code> startet mit lauter <code>false</code>. Soll das „gestrichen“ oder „prim“ heißen?</li>
+ <li>Fängst du beim Streichen nicht bei <code>z * 2</code> an, sondern bei <code>z * z</code>,
+ sparst du die halbe Arbeit. Warum darfst du das?</li>
+ </ul>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Lösung (erst selbst probieren)<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <div class="codebox runner" data-out="2 3 5 7 11 13 17 19 23 29 31 37 41 43 47">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Sieve.java</p>
+<pre><code class="java">public class Sieve {
+
+    public static void main(String[] args) {
+        int limit = 50;
+        boolean[] crossedOut = new boolean[limit + 1];
+
+        for (int z = 2; z * z &lt;= limit; z++) {
+            if (!crossedOut[z]) {
+                for (int v = z * z; v &lt;= limit; v = v + z) {
+                    crossedOut[v] = true;
+                }
+            }
+        }
+
+        String line = "";
+        for (int z = 2; z &lt;= limit; z++) {
+            if (!crossedOut[z]) {
+                line = line + z + " ";
+            }
+        }
+        System.out.println(line.trim());
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <ul>
+ <li><strong><code>crossedOut</code> statt <code>prim</code>:</strong> Ein frisches <code>boolean[]</code>
+ ist überall <code>false</code>, also „noch nicht gestrichen“. Hieße es <code>prim</code>, müsste
+ man erst alles auf <code>true</code> setzen.</li>
+ <li><strong>Ab <code>z * z</code>:</strong> Jedes kleinere Vielfache von <code>z</code> hat einen
+ kleineren Faktor und ist längst gestrichen. 3 · 2 hat die 2 erledigt, 5 · 2 und 5 · 3 ebenso.</li>
+ <li><strong><code>limit + 1</code>:</strong> die übliche Falle. Für den Index <code>50</code>
+ braucht das Array 51 Elemente.</li>
+ </ul>
+ </div>
+ </details>
+   </div>
+ </details>
+ </section>
+
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Das reicht für jetzt</p>
+ <ul>
+ <li>Array = feste Reihe von Elementen gleichen Typs unter einem Namen, Länge fest. Zugriff mit <code>name[index]</code>.</li>
+ <li>Erster Index 0, letzter <code>length − 1</code>. Ungültiger Index: <code>ArrayIndexOutOfBoundsException</code>, die Meldung nennt den Index.</li>
+ <li>Durchlaufen mit for (<code>i &lt; length</code>!) oder for-each (Doppelpunkt = „in“).</li>
+ <li>Maximum: <code>max</code> mit dem ersten Element starten, jeden Wert mit <code>max</code> vergleichen. Suche: Index merken, <code>-1</code> = „nicht gefunden“.</li>
+ <li>Array: <code>length</code> ohne Klammern, String: <code>length()</code> mit.</li>
+ <li><code>int[][]</code> = Array aus Arrays: <code>[Zeile][Spalte]</code>, durchlaufen mit verschachtelter Schleife.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="baustein uebung quiz">
+ <h3>Checkpoint</h3>
+ <p class="widget-hinweis">4 Fragen. Denk dran: Der Index beginnt bei 0.</p>
+
+ <div class="qq">
+ <p class="qq-text">1. <code>int[] items = new int[10];</code>, welche Indizes sind gültig?</p>
+ <div class="qq-opt">
+ <button data-why="Menschlich gezählt, aber der Index beginnt bei 0. „1 bis 10“ hieße: Index 0 vergessen UND mit Index 10 hinter das letzte Element gegriffen.">1 bis 10</button>
+ <button data-ok>0 bis 9</button>
+ <button data-why="Fast, aber 0 bis 10 wären ELF Elemente. Bei 10 Elementen ist der letzte Index 9 (length − 1).">0 bis 10</button>
+ </div>
+ <p class="qq-erklaerung" hidden>10 Elemente, Index ab 0: 0 … 9. Der letzte Index ist immer length − 1.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">2. Was passiert bei <code>items[10]</code> im Array von Frage 1?</p>
+ <div class="qq-opt">
+ <button data-why="Arrays haben eine FESTE Größe: einmal new int[10], immer 10 Elemente. Ein Array wird nie von selbst verlängert.">Java legt automatisch ein neues Element an</button>
+ <button data-why="0 steht nur in Elementen, die EXISTIEREN. Index 10 gibt es nicht, und ein ungültiger Index liefert keinen Ersatzwert.">Es kommt 0 zurück, das Standard-Ergebnis</button>
+ <button data-ok>Das Programm stürzt mit einer ArrayIndexOutOfBoundsException ab</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Index 10 gibt es nicht &rarr; Exception, Crash. Dafür nennt die Meldung exakt den Index.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">3. Was liefert <code>grades.length</code> für <code>int[] grades = {1, 3, 2};</code>?</p>
+ <div class="qq-opt">
+ <button data-why="Du denkst an den letzten INDEX (2), length ist aber die ANZAHL (3). Genau diese Verwechslung produziert die berühmten „off by one“-Fehler.">2, der letzte Index</button>
+ <button data-ok>3, die Anzahl der Elemente</button>
+ <button data-why="length liest keine Werte aus, es zählt nur die Elemente. Summieren müsstest du selbst, mit einer Schleife.">6, die Summe der Werte</button>
+ </div>
+ <p class="qq-erklaerung" hidden>length zählt die Elemente (3), nicht den letzten Index (2). Deshalb heißt die Schleifenbedingung i &lt; length, nicht &lt;=.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">4. Wie liest man <code>for (int grade : grades)</code>?</p>
+ <div class="qq-opt">
+ <button data-ok>„Für jede note im Array noten“, die Schleife besucht alle Werte der Reihe nach</button>
+ <button data-why="Der Doppelpunkt ist kein Vergleich, er heißt „in“. Vergleiche (&lt;) gibt es nur in der klassischen for-Schleife mit Zähler.">„Solange note kleiner als noten ist“</button>
+ <button data-why="Wie oft gelaufen wird, bestimmt die LÄNGE des Arrays, nicht der Wert von note. note ist nur die Variable für den aktuellen Wert.">„Wiederhole note-mal“</button>
+ </div>
+ <p class="qq-erklaerung" hidden>for-each: Der Doppelpunkt heißt „in“. Praktisch, wenn dich nur die Werte interessieren und nicht die Indizes.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+ <div class="kapitel-ende">
+ <div class="blaettern">
+      <a class="btn" href="07-schleifen.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Kapitel 7</a>
+      <a class="btn btn-haupt" href="09-objekte-klassen.html">Kapitel 9: Klassen & Objekte<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </div>
+ </div>
+
+</main>
+
+<footer class="seitenfuss">
+ <div class="seitenfuss-innen">
+ <p><strong>Cheat Sheet: Java</strong> ·
+      Java-Grundlagen für Lernfeld 5,
+ „Software zur Verwaltung von Daten anpassen“, IT-Berufe, Jahrgangsstufe 10.</p>
+ </div>
+</footer>
+
+<script src="../js/app.js"></script>
+<script>
+(function () {
+ var $ = CC.$, $$ = CC.$$;
+
+ var N = 5;
+ var data = [0, 0, 0, 0, 0];
+
+ function render(activeIdx) {
+ var row = $('#ar-row');
+ row.innerHTML = '';
+ data.forEach(function (v, i) {
+ var cell = document.createElement('div');
+ cell.className = 'array-cell' + (i === activeIdx ? ' active' : '');
+ cell.innerHTML = '<div class="cell-box">' + v + '</div><div class="cell-idx">[' + i + ']</div>';
+ cell.addEventListener('click', function () {
+ $('#ar-read-out').textContent = '> spaces[' + i + ']\n' + data[i];
+ render(i);
+ });
+ row.appendChild(cell);
+ });
+ }
+
+ function crash(idx, aktion) {
+ var c = $('#ar-crash');
+ c.innerHTML = 'Exception in thread "main" java.lang.<strong>ArrayIndexOutOfBoundsException</strong>: '
+ + 'Index ' + idx + ' out of bounds for length ' + N
+ + '<br><br> Rumms. ' + (idx === N
+ ? 'Index ' + N + ' klingt logisch, existiert aber nicht: Bei ' + N + ' Elementen ist ' + (N - 1) + ' der letzte Index. Das „ab 0 zählen“ erwischt wirklich alle einmal.'
+ : idx < 0
+ ? 'Negative Indizes gibt es nicht. Die JVM bricht sofort ab.'
+ : 'Dieser Index liegt weit außerhalb des Arrays. Ein ungültiger Index liefert keinen Ersatzwert, das Programm bricht ab.');
+ c.classList.remove('show'); void c.offsetWidth; c.classList.add('show');
+ }
+
+ function okIdx(raw) {
+ var idx = parseInt(raw, 10);
+ if (isNaN(idx)) return null;
+ return idx;
+ }
+
+ $('#ar-write').addEventListener('click', function () {
+ var idx = okIdx($('#ar-widx').value);
+ var val = parseInt($('#ar-wval').value, 10) || 0;
+ $('#ar-crash').classList.remove('show');
+ if (idx === null) return;
+ if (idx < 0 || idx >= N) { crash(idx, 'schreiben'); return; }
+ data[idx] = val;
+ render(idx);
+ $('#ar-read-out').textContent = '> spaces[' + idx + '] = ' + val + ';\n// gespeichert ';
+ });
+
+ $('#ar-read').addEventListener('click', function () {
+ var idx = okIdx($('#ar-ridx').value);
+ $('#ar-crash').classList.remove('show');
+ if (idx === null) return;
+ if (idx < 0 || idx >= N) { crash(idx, 'lesen'); return; }
+ $('#ar-read-out').textContent = '> spaces[' + idx + ']\n' + data[idx];
+ render(idx);
+ });
+
+ $('#ar-foreach').addEventListener('click', function () {
+ var btn = this; btn.disabled = true;
+ var out = $('#ar-fe-out');
+ out.textContent = '';
+ var i = 0;
+ $$('#ar-row .array-cell').forEach(function (c) { c.classList.remove('visited', 'active'); });
+ (function step() {
+ var cells = $$('#ar-row .array-cell');
+ if (i > 0) { cells[i - 1].classList.remove('active'); cells[i - 1].classList.add('visited'); }
+ if (i >= N) {
+ out.textContent += '// fertig, jedes Element genau einmal gelesen.';
+ btn.disabled = false;
+ setTimeout(function () { render(); }, 1200);
+ return;
+ }
+ cells[i].classList.add('active');
+ out.textContent += data[i] + '\n';
+ i++;
+ setTimeout(step, 550);
+ })();
+ });
+
+ render();
+
+ /* ---------- Max-Jagd ---------- */
+
+ var MX = [18, 23, 19, 31, 25];
+ var mxSteps = [];
+ var mxPos = 0, mxAuto = null;
+
+ (function buildSteps() {
+ mxSteps.push({ line: 'mx-l0', max: null, cell: -1, status: '1 Das Array steht: 5 Temperaturen im Speicher.' });
+ mxSteps.push({ line: 'mx-l1', max: MX[0], cell: 0, status: '2 Startwert: Das ERSTE Element (' + MX[0] + ') ist das bisherige Maximum.' });
+ var max = MX[0];
+ for (var i = 0; i < MX.length; i++) {
+ mxSteps.push({ line: 'mx-l2', max: max, cell: i, status: ' for-each liest Element [' + i + ']: t = ' + MX[i] });
+ if (MX[i] > max) {
+ mxSteps.push({ line: 'mx-l3', max: max, cell: i, status: ' Vergleich: Ist ' + MX[i] + ' > ' + max + '? Ja, true!' });
+ max = MX[i];
+ mxSteps.push({ line: 'mx-l4', max: max, cell: i, status: ' Neues Maximum: max = ' + max, crown: true });
+ } else {
+ mxSteps.push({ line: 'mx-l3', max: max, cell: i, status: ' Vergleich: Ist ' + MX[i] + ' > ' + max + '? Nein, false. max bleibt.' });
+ }
+ }
+ mxSteps.push({ line: 'mx-l5', max: max, cell: -1, status: ' Alle Elemente verglichen. In max steht der größte Wert.', print: 'Heat record: ' + max });
+ })();
+
+ function mxRender() {
+ var row = $('#mx-row');
+ row.innerHTML = '';
+ var st = mxSteps[Math.max(0, mxPos - 1)];
+ MX.forEach(function (v, i) {
+ var cell = document.createElement('div');
+ cell.className = 'array-cell' + (mxPos > 0 && st.cell === i ? ' active' : '');
+ cell.innerHTML = '<div class="cell-box">' + v + '</div><div class="cell-idx">[' + i + ']</div>';
+ row.appendChild(cell);
+ });
+ ['mx-l0', 'mx-l1', 'mx-l2', 'mx-l3', 'mx-l4', 'mx-l5'].forEach(function (id) {
+ var el = $('#' + id);
+ var on = mxPos > 0 && st.line === id;
+ el.style.background = on ? 'var(--blau-ink)' : 'transparent';
+ el.style.color = on ? '#fff' : '';
+ el.style.borderRadius = '6px';
+ el.style.padding = '1px 4px';
+ });
+ if (mxPos > 0) {
+ $('#mx-max').textContent = st.max === null ? ', ' : String(st.max);
+ $('#mx-status').textContent = st.status;
+ if (st.crown) { var mb = $('#mx-max'); }
+ if (st.print) $('#mx-out').textContent = st.print;
+ } else {
+ $('#mx-max').textContent = ', ';
+ $('#mx-status').textContent = 'Bereit. Drück „Schritt“.';
+ $('#mx-out').textContent = '';
+ }
+ }
+
+ function mxStep() {
+ if (mxPos >= mxSteps.length) {
+ $('#mx-status').textContent = ' Fertig. Reset für einen neuen Durchlauf, oder bau den Algorithmus gleich selbst in deiner IDE nach.';
+ if (mxAuto) { clearInterval(mxAuto); mxAuto = null; $('#mx-auto').textContent = 'Auto '; }
+ return;
+ }
+ mxPos++;
+ mxRender();
+ if (mxPos === mxSteps.length && mxAuto) { clearInterval(mxAuto); mxAuto = null; $('#mx-auto').textContent = 'Auto '; }
+ }
+
+ $('#mx-step').addEventListener('click', mxStep);
+ $('#mx-reset').addEventListener('click', function () {
+ mxPos = 0;
+ if (mxAuto) { clearInterval(mxAuto); mxAuto = null; $('#mx-auto').textContent = 'Auto '; }
+ mxRender();
+ });
+ $('#mx-auto').addEventListener('click', function () {
+ if (mxAuto) { clearInterval(mxAuto); mxAuto = null; this.textContent = 'Auto '; return; }
+ if (mxPos >= mxSteps.length) mxPos = 0;
+ this.textContent = ' Pause';
+ mxAuto = setInterval(mxStep, 1000);
+ });
+ mxRender();
+})();
+</script>
+</body>
+</html>

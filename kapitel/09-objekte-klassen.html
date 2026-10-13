@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 9 · Klassen & Objekte · Cheat Sheet: Java</title>
+<meta name="description" content="Klassen als Bauplan, Objekte als Exemplare, dazu Konstruktor, Kapselung und der Unterschied zwischen Wert und Referenz.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../img/favicon.svg"><link rel="stylesheet" href="../css/style.css"></head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Merksatz: Lesezeichen</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kurz nachgedacht: Frage an dich</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufgabe: Stift</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Projektaufgabe ZombieApocalypse: Zombiekopf</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Handlungsorientierte Aufgabe: Stoppuhr</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: Fahne</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nochmal anders erklärt: Wiederholung</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Auflösung: Schlüssel</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Das Wichtigste in Kürze: Seite mit Eselsohr</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Lernziele: Zielscheibe</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Konsole: Prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Entwicklungsumgebung: Editorfenster mit Seitenleiste</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fehlermeldung: Käfer</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Richtig: Haken</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Falsch: Kreuz</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Dauer: Uhr</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kapitel: aufgeschlagenes Heft</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Inhaltsverzeichnis</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Weiter</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Zurück</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nach unten</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufklappbar</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Öffnet ein Fenster</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nachtschicht</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Tagesansicht</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fortschritt löschen</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Drucken</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Zum Inhalt springen</a>
+
+<nav class="topbar" aria-label="Hauptnavigation">
+ <div class="topbar-innen">
+ <a class="marke" href="../index.html">
+ <img class="oakymarke" src="../img/kapitel/oaky.svg" alt="" width="128" height="148">
+ Cheat Sheet: Java
+ </a>
+ <span class="topbar-titel">Kapitel 9 · Klasse, Objekt, Konstruktor, Referenz</span>
+ <span class="topbar-rechts"><a class="btn btn-klein" href="../index.html">Lernpfad</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Sprache wählen"><span>DE</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="09-objekte-klassen.html" lang="de" hreflang="de" aria-current="true">Deutsch</a></li><li><a href="../en/kapitel/09-objekte-klassen.html" lang="en" hreflang="en">English</a></li></ul></details><!--/sprache--></span>
+ </div>
+ <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+ <header class="kapitel-kopf">
+ <p class="kicker">Kapitel 9 von 11 · Klasse, Objekt, Konstruktor, Referenz</p>
+ <h1>Klassen &amp; Objekte</h1>
+ <p class="vorspann">Eine Klasse ist der Bauplan. Die Objekte sind das, was danach gebaut wird, und nur die kann man benutzen.</p>
+ <p class="kapitel-meta"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>ca. 50 min</span></p>
+ </header>
+
+ <section class="einstieg" aria-label="Einstieg: das Problem">
+ <p class="einstieg-kopf">DAS PROBLEM</p>
+ <p class="einstieg-frage">Zwei Zombies, jeder mit Name und Hunger. Wie hältst du die Daten zusammen?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox runner" data-out="Zombiefelix has hunger 7\nMia has hunger 7">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Horde.java</p>
+<pre><code class="java">String name1 = "Zombiefelix";
+int hunger1 = 7;
+String name2 = "Mia";
+int hunger2 = 3;
+System.out.println(name1 + " has hunger " + hunger1);
+System.out.println(name2 + " has hunger " + hunger1);</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>Mia hat Hunger 7? Name und Hunger gehören nur über die Nummer im Variablennamen zusammen, und eine falsche Nummer fällt niemandem auf.</p>
+ <button class="btn einstieg-knopf" type="button">Mit einer Klasse</button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-out="Zombiefelix has hunger 7\nMia has hunger 3">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Horde.java</p>
+<pre><code class="java">class Zombie {
+    String name;
+    int hunger;
+
+    Zombie(String name, int hunger) {
+        this.name = name;
+        this.hunger = hunger;
+    }
+
+    void report() {
+        System.out.println(name + " has hunger " + hunger);
+    }
+}
+
+public class Horde {
+
+    public static void main(String[] args) {
+        Zombie felix = new Zombie("Zombiefelix", 7);
+        Zombie mia = new Zombie("Mia", 3);
+        felix.report();
+        mia.report();
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">Jedes Objekt trägt seinen Namen und seinen Hunger selbst. Was eine Klasse ist und wie du Objekte erzeugst, zeigt dieses Kapitel.</p>
+ </div>
+ </section>
+
+
+
+ <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Inhalt dieses Kapitels">
+ <h2 id="in-diesem-kapitel">In diesem Kapitel</h2>
+ </nav>
+
+
+ <details class="baustein ziele">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>Danach kannst du<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+   <div class="inhalt">
+     <ul>
+ <li>erklären, was eine <strong>Klasse</strong> ist und was ein <strong>Objekt</strong> und warum das zwei verschiedene Dinge sind</li>
+ <li>Objekte mit <code>new</code> und einem <strong>Konstruktor</strong> erzeugen und per <strong>Punkt-Operator</strong> benutzen</li>
+ <li>Objekten <strong>Methoden</strong> geben und ihre Attribute mit <code>private</code> schützen (<strong>Datenkapselung</strong>)</li>
+ <li>erklären, was in einer Objekt-Variable <em>wirklich</em> steht: eine <strong>Referenz</strong></li>
+ <li>ein UML-Klassendiagramm lesen</li>
+ </ul>
+   </div>
+ </details>
+
+ <section class="block">
+ <h2 id="der-bauplan-trick"><span class="nr">9.1</span> Klasse und Objekt</h2>
+ <p class="wozu">Programme bilden die echte Welt ab: Kunden, Bestellungen, Ampeln, Zombies.
+ Die besteht nicht aus einzelnen ints und Strings, sondern aus <strong>Dingen</strong> mit mehreren Eigenschaften.
+ Eine Klasse fasst diese Eigenschaften zu einem Bauplan zusammen.</p>
+ <ul>
+ <li>Eine <span class="hl">Klasse ist ein Bauplan</span>: Sie beschreibt, welche Eigenschaften (<strong>Attribute</strong>)
+ und Fähigkeiten (<strong>Methoden</strong>) eine Type von Dingen hat. Etwa: „Jeder Zombie hat Name, Farbe und Laune.“</li>
+ <li>Ein <span class="hl">Objekt ist ein konkretes Exemplar</span> nach diesem Bauplan: <em>dieser eine</em> Zombie
+ namens Zombiefelix, orange, hungrig.</li>
+ </ul>
+ <p>Wie Keksausstecher (Klasse) und Kekse (Objekte): <strong>ein</strong> Ausstecher, beliebig viele Kekse,
+ jeder anders verziert.</p>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Nochmal anders erklärt: das Formular</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Ein <strong>leeres Anmeldeformular</strong> beim Zombie-Abwehr-Zentrum hat vorgedruckte Felder: <em>Name: ___, Farbe: ___, Laune: ___</em>.
+ Es ist noch kein Zombie, sagt aber, <strong>welche Angaben es zu einem Zombie gibt</strong>.</p>
+ <ul>
+ <li><strong>Klasse</strong> = der leere Vordruck (definiert die Felder)</li>
+ <li><strong>Objekt</strong> = ein <em>ausgefülltes</em> Exemplar (Name: Zombiefelix, Farbe: orange, …)</li>
+ <li><code>new</code> = „einmal den Vordruck kopieren und ausfüllen, bitte!“</li>
+ </ul>
+ <p>Vom selben Vordruck kann es hunderte ausgefüllte Formulare geben, jedes mit anderen Angaben.</p>
+ </div>
+ </details>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code>public class <var data-teil="name">Klassenname</var> {
+    <var data-teil="typ">Typ</var> <var data-teil="attribut">attribut</var>;
+    <var data-teil="typ">Typ</var> <var data-teil="attribut">attribut</var>;
+}
+
+<var data-teil="name">Klassenname</var> <var data-teil="variable">variable</var> = <span data-teil="new">new</span> <var data-teil="name">Klassenname</var>();
+<var data-teil="variable">variable</var><span data-teil="punkt">.</span><var data-teil="attribut">attribut</var> = <var data-teil="wert">Wert</var>;</code></pre>
+ <p class="aufbau-info">Die Attribute stehen in der Klasse, aber in keiner Methode. Die unteren beiden Zeilen stehen in der <code>main</code> einer anderen Klasse.</p>
+ <div hidden data-erkl="name"><strong>Klassenname:</strong> beginnt mit einem Großbuchstaben, etwa <code>Zombie</code>, und die Datei heißt genauso: <code>Zombie.java</code>. In der unteren Zeile steht er zweimal: vorn als Typ der Variable, hinter <code>new</code> als die Klasse, von der ein Objekt erzeugt wird.</div>
+ <div hidden data-erkl="typ"><strong>Typ:</strong> der Datentyp des Attributs, etwa <code>String</code> für Text oder <code>int</code> für ganze Zahlen. Er legt fest, welche Werte das Attribut aufnehmen kann.</div>
+ <div hidden data-erkl="attribut"><strong>Attribut:</strong> eine Eigenschaft, die jedes Objekt der Klasse hat, klein geschrieben, etwa <code>name</code> oder <code>mood</code>. Jedes Objekt hat dafür seinen eigenen Wert. Solange du keinen setzt, steht in einem <code>String</code>-Attribut <code>null</code>.</div>
+ <div hidden data-erkl="variable"><strong>Variable:</strong> speichert eine Referenz auf das neue Objekt, etwa <code>felix</code>. Ihr Typ ist die Klasse. Über diesen Namen erreichst du das Objekt danach, wie in der letzten Zeile vor dem Punkt.</div>
+ <div hidden data-erkl="new"><strong><code>new</code></strong> erzeugt ein neues Objekt der Klasse, mit eigenen Werten für alle Attribute. Die runden Klammern dahinter gehören dazu: <code>new Zombie()</code>. Zweimal <code>new</code> heißt zwei voneinander unabhängige Objekte.</div>
+ <div hidden data-erkl="punkt"><strong>Der Punkt-Operator</strong> greift auf ein Attribut eines bestimmten Objekts zu: <code>felix.name</code> heißt „das Attribut <code>name</code> von <code>felix</code>“. Links vom <code>=</code> schreibst du so einen Wert hinein, mit <code>System.out.println(felix.name);</code> liest du ihn aus.</div>
+ <div hidden data-erkl="wert"><strong>Wert:</strong> was ins Attribut geschrieben wird. Er muss zum Typ passen: <code>"Zombiefelix"</code> in Anführungszeichen für einen <code>String</code>, <code>3</code> ohne Anführungszeichen für einen <code>int</code>.</div>
+ </div>
+
+ <h3 id="schritt-1-die-einfachste-klasse-der-welt">Die einfachste Klasse der Welt</h3>
+ <p>Ganz minimal: eine Klasse, die <em>nur</em> beschreibt, was jeder Zombie <em>hat</em>:</p>
+
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Zombie.java: Version 1, nur Attribute</p>
+<pre><code class="java">public class Zombie {
+
+    // Attribute: Was hat jeder Zombie?
+    String name;
+    String color;
+    String mood;
+
+}</code></pre>
+ </div>
+
+ <p>Das war's: eine Klasse nur mit Attributen, ohne main. <strong>Ausführen</strong> kann man sie nicht.
+ Benutzt wird sie von einer <strong>ausführbaren Klasse</strong> mit main:</p>
+
+ <div class="codebox runner" data-out="Zombiefelix\norange">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>ZombieApocalypse.java, die ausführbare Klasse</p>
+<pre><code class="java">public class ZombieApocalypse {
+
+    public static void main(String[] args) {
+        Zombie felix = new Zombie();     // new erzeugt ein Objekt der Klasse
+
+        felix.name = "Zombiefelix";      // Punkt-Operator: Attribut befüllen
+        felix.color = "orange";
+        felix.mood = "hungry";
+
+        System.out.println(felix.name);   // … und auslesen
+        System.out.println(felix.color);
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>String name;</code></td><td>ein Attribut: Jeder Zombie bekommt sein eigenes Feld <code>name</code>. Noch steht nichts darin.</td></tr>
+ <tr><td><code>Zombie felix = new Zombie();</code></td><td><code>new</code> erzeugt ein Objekt der Klasse <code>Zombie</code>. Erreichbar ist es über die Variable <code>felix</code>, ihr Typ ist die Klasse.</td></tr>
+ <tr><td><code>felix.name = "Zombiefelix";</code></td><td>der Punkt-Operator: Das Attribut <code>name</code> <em>von</em> felix bekommt einen Wert.</td></tr>
+ <tr><td><code>System.out.println(felix.name);</code></td><td>liest das Attribut über den Punkt wieder aus und gibt <code>Zombiefelix</code> aus.</td></tr>
+ </table>
+ </div>
+
+ <h3 id="schritt-2-das-geist-zombie-problem">Attribute ohne Wert</h3>
+ <div class="baustein selbst">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>Erst du, dann Java</p>
+ <p>Version 1 hat einen Haken. Was passiert, wenn man das Befüllen <strong>vergisst</strong>?</p>
+ </div>
+
+ <div class="codebox runner" data-out="null">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>ZombieApocalypse.java: hoppla</p>
+<pre><code class="java">Zombie mia = new Zombie();      // Objekt gebaut …
+                              // … aber niemand hat die Attribute gesetzt!
+System.out.println(mia.name); //  ???</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE: was kommt wohl raus?</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <p><code>null</code> heißt <strong>„da ist nichts“</strong>. Das Objekt <code>mia</code> existiert,
+ aber niemand hat seine Attribute gesetzt. Objekte mit ungesetzten Attributen sind eine der häufigsten Fehlerquellen:</p>
+ <ul>
+ <li>Noch stürzt nichts ab, <code>println(mia.name)</code> zeigt nur <code>null</code>.</li>
+ <li>Machst du etwas mit dem Namen, etwa <code>mia.name.length()</code>, wirft Java die berüchtigte
+ <strong>NullPointerException</strong> (<a href="../panik.html">Panik-Wörterbuch</a>).</li>
+ </ul>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Der <strong>Punkt-Operator</strong> heißt <span class="hl">„von“</span>:
+ <code>felix.name</code> = „der Name <em>von</em> felix“. Lesen und Schreiben gehen über den Punkt.</p>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="schritt-3-der-konstruktor-die-bauanleitung-mit-p"><span class="nr">9.2</span> Konstruktoren</h2>
+ <p class="wozu">Besser wäre, man könnte ein Objekt <strong>gar nicht erst ohne Werte erzeugen</strong>.
+ Dafür gibt es den <strong>Konstruktor</strong>: Er läuft bei jedem <code>new</code> und legt fest, welche Werte man dabei angeben <em>muss</em>.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code>public <var data-teil="name">Klassenname</var>(<var data-teil="typ">Typ</var> <var data-teil="param">parameter</var>, …) {
+    <span data-teil="this">this</span>.<var data-teil="attribut">attribut</var> = <var data-teil="param">parameter</var>;
+}
+
+<var data-teil="name">Klassenname</var> <var data-teil="variable">variable</var> = new <var data-teil="name">Klassenname</var>(<var data-teil="wert">Wert</var>, …);</code></pre>
+ <p class="aufbau-info">Der Konstruktor heißt <strong>exakt wie die Klasse</strong> und hat <strong>keinen Rückgabetyp</strong>, nicht einmal <code>void</code>. <code>new</code> ruft ihn auf und gibt ihm die Werte in derselben Reihenfolge mit.</p>
+ <div hidden data-erkl="name"><strong>Klassenname:</strong> Oben ist er der Name des Konstruktors, etwa <code>public Zombie(…)</code> in der Klasse <code>Zombie</code>. Unten steht er als Typ der Variable und hinter <code>new</code>. Schreibst du <code>void</code> vor den Konstruktor, wird daraus eine gewöhnliche Methode, und der Compiler meldet bei <code>new Zombie("Mia", …)</code> einen Fehler.</div>
+ <div hidden data-erkl="typ"><strong>Typ:</strong> der Datentyp des Parameters, meist derselbe wie beim Attribut, das er füllt: <code>String name</code> für das Attribut <code>String name;</code>.</div>
+ <div hidden data-erkl="param"><strong>Parameter:</strong> nimmt einen Wert entgegen, den der Aufruf mit <code>new</code> mitgibt, und heißt meist wie das Attribut, etwa <code>name</code>. Rechts vom <code>=</code> wird sein Wert ins Attribut geschrieben. Mehrere Parameter trennt ein Komma, jeder ist eine Pflichtangabe.</div>
+ <div hidden data-erkl="this"><strong><code>this</code></strong> steht für das Objekt, das gerade erzeugt wird: <code>this.name</code> ist sein Attribut, <code>name</code> allein der Parameter. Lässt du <code>this.</code> weg, weist <code>name = name;</code> den Parameter sich selbst zu, und das Attribut bleibt <code>null</code>, ohne dass der Compiler etwas meldet.</div>
+ <div hidden data-erkl="attribut"><strong>Attribut:</strong> eines der Attribute, die oben in der Klasse deklariert sind. Der Konstruktor gibt ihm seinen Startwert, für jedes Attribut eine Zeile wie diese.</div>
+ <div hidden data-erkl="variable"><strong>Variable:</strong> speichert die Referenz auf das neue Objekt, etwa <code>felix</code>. Ihr Typ ist die Klasse.</div>
+ <div hidden data-erkl="wert"><strong>Werte:</strong> Der erste geht an den ersten Parameter, der zweite an den zweiten, und jeder muss zum Typ seines Parameters passen: <code>new Zombie("Mia", "gray", "relaxed")</code>. Gibt es nur diesen Konstruktor, meldet der Compiler bei <code>new Zombie()</code> ohne Werte einen Fehler.</div>
+ </div>
+
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Zombie.java: Version 2, mit Konstruktor</p>
+<pre><code class="java">public class Zombie {
+
+    String name;
+    String color;
+    String mood;
+
+    // Der Konstruktor: OHNE diese drei Angaben gibt es keinen Zombie!
+    public Zombie(String name, String color, String mood) {
+        this.name = name;      // "MEIN name = der Wert, der reinkam"
+        this.color = color;
+        this.mood = mood;
+    }
+
+}</code></pre>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>public Zombie(String name, …)</code></td><td>der Konstruktor: heißt wie die Klasse, kein Rückgabetyp. Seine Parameter sind die Pflichtangaben.</td></tr>
+ <tr><td><code>this.name = name;</code></td><td><span class="hl"><code>this</code> = „dieses Objekt hier“</span>. <code>this.name</code> ist das Attribut <em>dieses</em> Objekts, <code>name</code> der Parameter, also der Wert, der übergeben wurde.</td></tr>
+ <tr><td><code>new Zombie("Mia", …)</code></td><td>ruft den Konstruktor auf. „Mia“ landet in <code>name</code>, „gray“ in <code>color</code>, „relaxed“ in <code>mood</code>.</td></tr>
+ <tr><td><code>// Zombie geist = new Zombie();</code></td><td>ist auskommentiert, denn ohne die drei Pflichtangaben wäre die Zeile ein Compiler-Fehler.</td></tr>
+ </table>
+ </div>
+
+ <div class="codebox runner" data-out="Zombiefelix\nMia">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>ZombieApocalypse.java: mit Pflichtangaben</p>
+<pre><code class="java">public class ZombieApocalypse {
+
+    public static void main(String[] args) {
+        Zombie felix = new Zombie("Zombiefelix", "orange", "hungry");
+        Zombie mia   = new Zombie("Mia", "gray", "relaxed");
+
+        // Zombie geist = new Zombie();   Compiler-Fehler! Pflichtfelder fehlen.
+
+        System.out.println(felix.name);
+        System.out.println(mia.name);
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p><strong>Drei Vokabeln, ein Satz:</strong> <code>new</code> erzeugt das Objekt und ruft den <strong>Konstruktor</strong>,
+ der die Attribute gleich setzt, und der <strong>Punkt-Operator</strong> (<code>felix.name</code>)
+ greift danach auf Attribute und Methoden zu. Das sind 80&nbsp;% der Objektorientierung. Ehrlich.</p>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Wozu genau das „this“ im Konstruktor?</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p><code>this.name = name;</code> sieht doppelt gemoppelt aus. Parameter und Attribut heißen beide <code>name</code>,
+ und <code>this</code> („<strong>dieses Objekt hier</strong>“) löst die Verwechslung auf:</p>
+ <div class="codebox flach">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>this erklärt</p>
+<pre><code class="java">this.name = name;
+// ^^^^^^^   ^^^^
+// Attribut  Parameter (der Wert, der reinkam)
+// "MEIN name soll der übergebene name sein"</code></pre>
+ </div>
+ <p>Ohne <code>this.</code> <strong>verdeckt</strong> der gleichnamige Parameter das Attribut (Gültigkeit,
+ <a href="04-methoden.html#wo-eine-variable-gilt">Kapitel 4</a>). <code>name = name;</code> weist dann den
+ Parameter sich selbst zu, das Attribut bleibt unberührt. Der Compiler meldet nichts, die Zeile ist ja formal richtig.</p>
+ <p>Man könnte den Parameter anders nennen und auf <code>this</code> verzichten, aber die this-Schreibweise ist Standard.</p>
+ </div>
+ </details>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Überladene Konstruktoren</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Eine Klasse darf <strong>mehrere Konstruktoren</strong> haben, wenn sich die Parameterlisten unterscheiden:
+ <strong>Überladen</strong> (overloading).</p>
+ <div class="codebox flach">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Zombie.java (Ausschnitt)</p>
+<pre><code class="java">public Zombie(String name, String color, String mood) {
+    this.name = name;
+    this.color = color;
+    this.mood = mood;
+}
+
+public Zombie(String name) {              // Kurzversion!
+    this.name = name;
+    this.color = "gray";                  // Standardwerte
+    this.mood = "relaxed";
+}</code></pre>
+ </div>
+ <p>Java erkennt an den Argumenten, welcher Konstruktor gemeint ist:
+ <code>new Zombie("Mia")</code> &rarr; Kurzversion, <code>new Zombie("Zombiefelix", "orange", "hungry")</code> &rarr; Vollversion.</p>
+ </div>
+ </details>
+ </section>
+
+ <section class="widget">
+ <h3>Die Zombie-Fabrik</h3>
+ <p class="widget-hinweis">Links die Klasse, rechts der Speicher. Werte einstellen, <code>new</code> drücken. Erzeug ruhig mehrere Objekte und klick sie an!</p>
+
+ <div class="wflex">
+ <div class="feld">
+ <h4>Klasse Zombie</h4>
+ <p style="display:flex;flex-direction:column;gap:10px;margin:0 0 12px"><label>name: <input type="text" id="kf-name" placeholder="z. B. Zombiefelix" style="width:100%"></label>
+ <label>color:
+ <select id="kf-farbe" style="width:100%">
+ <option value="orange">orange</option>
+ <option value="gray">grau</option>
+ <option value="black">schwarz</option>
+ <option value="white">weiß</option>
+ </select>
+ </label>
+ <label>mood:
+ <select id="kf-laune" style="width:100%">
+ <option value="relaxed">entspannt</option>
+ <option value="hungry">hungrig</option>
+ <option value="offended">beleidigt</option>
+ </select>
+ </label></p>
+ <button class="btn btn-klein" id="kf-new">new Zombie( … ) </button>
+ <p class="statuszeile" id="kf-msg" style="margin-top:10px"></p>
+ </div>
+ <div style="flex:2 1 320px">
+ <h4 style="margin:0 0 4px">Der Speicher (Heap)</h4>
+ <p class="widget-hinweis" style="margin:0 0 10px">„Heap“ = der Bereich im Arbeitsspeicher, in dem Java die Objekte anlegt.</p>
+ <div class="heap" id="kf-heap"></div>
+ </div>
+ </div>
+
+ <div class="codebox" style="margin-bottom:0">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>dein Code (schreibt sich live)</p>
+ <pre><code class="nohl" id="kf-code" style="background:none;border:none;padding:0;white-space:pre;color:#f0eef7;font-size:0.85rem">// Noch kein Zombie-Objekt erzeugt.</code></pre>
+ </div>
+
+ <div class="feld" id="kf-dot" style="margin-top:16px;display:none">
+ <h4>· Punkt-Operator ausprobieren (an deinem neuesten Zombie)</h4>
+ <p style="display:flex;gap:8px;flex-wrap:wrap" id="kf-dot-btns"></p>
+ <div class="sim-konsole" id="kf-dot-out"></div>
+ </div>
+ </section>
+
+ <section class="block">
+ <h3 id="zwei-zombies-vom-selben-bauplan-haengen-die-zusa">Zwei Zombies derselben Klasse: Hängen die zusammen?</h3>
+ <div class="baustein selbst">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>Erst du, dann Java</p>
+ <p>felix und mia sind Objekte <strong>derselben</strong> Klasse. Wir ändern <em>nur</em> felix' Laune.
+ Kriegt Mia das mit? Sag die Ausgabe voraus:</p>
+ </div>
+
+
+ <div class="codebox runner" data-trace data-out="hungry\nrelaxed">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>ZweiLeben.java (Ausschnitt)</p>
+<pre><code class="java">Zombie felix = new Zombie("Zombiefelix", "orange", "relaxed");
+Zombie mia   = new Zombie("Mia", "gray", "relaxed");
+
+felix.mood = "hungry";        // NUR Zombiefelix wird angefasst!
+
+System.out.println(felix.mood);
+System.out.println(mia.mood);</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Auflösung: erst ausführen, dann aufklappen!<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Mia bleibt entspannt: Sie ist ein <strong>eigenes Objekt</strong> mit eigenen Werten.
+ Jedes <code>new</code> erzeugt ein unabhängiges Exemplar.
+ (Weiter unten referenzieren zwei Variablen <em>doch</em> denselben Zombie.)</p>
+ </div>
+ </details>
+
+ <h3 id="kurz-ueben-luecken-fuellen">Kurz üben: Lücken füllen</h3>
+ <div class="codebox cloze">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Luecken.java, erzeuge einen Zombie und lies seinen Namen</p>
+<pre><code class="nohl luecken">Zombie mia = <input class="cz" data-a="new" size="6"> Zombie("Mia", "gray", "relaxed");
+
+System.out.println(<input class="cz" data-a="mia.name" size="12">);   // soll "Mia" ausgeben</code></pre>
+ <div class="cloze-leiste">
+ <button class="btn btn-klein cloze-check" type="button">Prüfen </button>
+ <p class="cloze-meldung"></p>
+ </div>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="methoden-ziehen-in-die-klasse"><span class="nr">9.3</span> Objektmethoden</h2>
+ <p class="wozu">In Kapitel 4 standen deine Methoden neben der main. Meist gehören sie aber <strong>in die Klasse</strong> der Objekte:
+ Dort dürfen sie die <strong>Attribute des Objekts benutzen</strong> und beschreiben, was jeder Zombie <em>kann</em>.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code>public class <var data-teil="name">Klassenname</var> {
+    <var data-teil="rueck">Rückgabetyp</var> <var data-teil="methode">methode</var>(<var data-teil="param">Parameter</var>) {
+        <var data-teil="anw">Anweisungen, die die Attribute benutzen</var>
+    }
+}
+
+<var data-teil="variable">variable</var>.<var data-teil="methode">methode</var>(<var data-teil="arg">Argumente</var>);</code></pre>
+ <p class="aufbau-info">Aufgerufen wird die Methode an einem Objekt, mit dem Punkt-Operator: erst das Objekt, dann der Name der Methode.</p>
+ <div hidden data-erkl="name"><strong>Klassenname:</strong> die Klasse, zu der die Methode gehört, etwa <code>Zombie</code>. Die Methode steht im Klassenrumpf neben Attributen und Konstruktor, nie innerhalb einer anderen Methode.</div>
+ <div hidden data-erkl="rueck"><strong>Rückgabetyp:</strong> der Typ des Werts, den die Methode mit <code>return</code> zurückgibt, oder <code>void</code>, wenn sie nichts zurückgibt: <code>void groan()</code>. Davor steht hier kein <code>static</code>, denn die Methode gehört zu jedem einzelnen Objekt.</div>
+ <div hidden data-erkl="methode"><strong>Methodenname:</strong> klein geschrieben, meist ein Verb, etwa <code>groan</code>. Beim Aufruf unten steht derselbe Name, danach immer runde Klammern, auch wenn sie leer bleiben.</div>
+ <div hidden data-erkl="param"><strong>Parameter:</strong> Werte, die die Methode beim Aufruf zusätzlich braucht, jeweils mit Typ, etwa <code>double amount</code>. Die Attribute des Objekts gehören nicht hierher, die kennt die Methode schon. Braucht sie nichts, bleiben die Klammern leer.</div>
+ <div hidden data-erkl="anw"><strong>Anweisungen:</strong> der Methodenrumpf. Hier benutzt du die Attribute direkt mit ihrem Namen, ohne Punkt: <code>System.out.println(name + " groans: Grrr!");</code>. Gemeint ist immer das Attribut des Objekts, an dem die Methode gerade aufgerufen wird.</div>
+ <div hidden data-erkl="variable"><strong>Variable:</strong> die Referenz auf das Objekt, an dem die Methode aufgerufen wird. Bei <code>felix.groan()</code> ist <code>name</code> im Rumpf „Zombiefelix“, bei <code>mia.groan()</code> „Mia“.</div>
+ <div hidden data-erkl="arg"><strong>Argumente:</strong> die Werte für die Parameter, in derselben Reihenfolge und mit passendem Typ, etwa <code>account.deposit(20)</code>. Ohne Parameter bleiben die Klammern leer: <code>felix.groan();</code>.</div>
+ </div>
+
+
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Zombie.java (Ausschnitt) + Aufruf</p>
+<pre><code class="java">public class Zombie {
+
+    String name;
+    // … Konstruktor wie oben …
+
+    void groan() {                  // KEIN static, die Methode gehört zum Objekt!
+        System.out.println(name + " groans: Grrr!");
+    }
+
+}
+
+// Aufruf über den Punkt-Operator, "groan von felix":
+felix.groan();     //  Zombiefelix stöhnt: Grrr!
+mia.groan();       //  Mia stöhnt: Grrr!</code></pre>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>void groan()</code></td><td>eine Methode in der Klasse <code>Zombie</code>, ohne <code>static</code> und ohne Parameter.</td></tr>
+ <tr><td><code>name + " groans: Grrr!"</code></td><td>benutzt das Attribut <code>name</code> des Objekts, an dem die Methode gerade aufgerufen wird.</td></tr>
+ <tr><td><code>felix.groan();</code></td><td>gelesen „groan von felix“: Hier ist <code>name</code> also „Zombiefelix“.</td></tr>
+ <tr><td><code>mia.groan();</code></td><td>dieselbe Methode an einem anderen Objekt, darum mit „Mia“.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Neu gegenüber Kapitel 4:</p>
+ <ul>
+ <li><span class="hl">Kein <code>static</code>:</span> Die Methode gehört jedem einzelnen Objekt, nicht der Klasse als Ganzes.</li>
+ <li><span class="hl">Kein <code>name</code>-Parameter:</span> Jeder Zombie kennt seinen eigenen Namen.
+ Gleicher Aufruf, persönliche Antwort.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="datenkapselung-mach-deine-attribute-private"><span class="nr">9.4</span> Datenkapselung: Zugriffsmodifikatoren, Getter und Setter</h2>
+ <p class="wozu">Bisher konnte jeder von außen <code>felix.mood = "exploding"</code> setzen, auch wenn das keine
+ gültige Laune ist. Die Lösung heißt <strong>Datenkapselung</strong>: <span class="hl">Attribute privat machen,
+ Zugriff nur über Methoden</span>.</p>
+ <p>Zwei Schlüsselwörter regeln, wer worauf zugreifen darf:</p>
+ <ul>
+ <li><code>private</code>: Nur Code in der eigenen Klasse kommt heran.</li>
+ <li><code>public</code>: Von überall aus benutzbar.</li>
+ <li>Von außen geht es deshalb nur über Methoden: <strong>Getter</strong> geben einen Wert zurück, <strong>Setter</strong> ändern ihn und prüfen vorher, ob der neue Wert gültig ist.</li>
+ </ul>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="private">private</span> <var data-teil="typ">Typ</var> <var data-teil="attribut">attribut</var>;
+
+<span data-teil="public">public</span> <var data-teil="typ">Typ</var> <span data-teil="getter">get</span><var data-teil="getter">Attribut</var>() {
+    return <var data-teil="attribut">attribut</var>;
+}
+
+<span data-teil="public">public</span> void <var data-teil="aendern">ändern</var>(<var data-teil="typ">Typ</var> <var data-teil="wert">wert</var>) {
+    <span data-teil="pruefung">if</span> (<var data-teil="pruefung">wert ist gültig</var>) {
+        <var data-teil="attribut">attribut</var> = <var data-teil="wert">neuer Wert</var>;
+    }
+}</code></pre>
+ <p class="aufbau-info">Der Getter heißt wie das Attribut, mit <code>get</code> davor. Die Methode, die ändert, prüft zuerst und ändert nur, wenn alles stimmt.</p>
+ <div hidden data-erkl="private"><strong><code>private</code>:</strong> Nur Code in derselben Klasse kommt an das Attribut heran. Schreibt eine andere Klasse <code>account.balance</code>, meldet der Compiler einen Fehler. Von außen geht es nur über die Methoden darunter.</div>
+ <div hidden data-erkl="typ"><strong>Typ:</strong> steht dreimal und ist jedes Mal derselbe, etwa <code>double</code>: als Typ des Attributs, als Rückgabetyp des Getters und als Typ des Parameters.</div>
+ <div hidden data-erkl="attribut"><strong>Attribut:</strong> der Name des geschützten Attributs, etwa <code>balance</code>. Innerhalb der Klasse benutzen die Methoden es direkt mit seinem Namen, ohne Punkt.</div>
+ <div hidden data-erkl="public"><strong><code>public</code>:</strong> Die Methode ist von überall aufrufbar, auch aus anderen Klassen, etwa <code>account.getBalance()</code> in der <code>main</code>. Über diese Methoden läuft jeder Zugriff von außen.</div>
+ <div hidden data-erkl="getter"><strong>Getter:</strong> Hinter <code>get</code> steht der Attributname mit großem Anfangsbuchstaben, aus <code>balance</code> wird <code>getBalance()</code>. Er hat keine Parameter, gibt mit <code>return</code> den Wert des Attributs zurück und ändert nichts.</div>
+ <div hidden data-erkl="aendern"><strong>Name der ändernden Methode:</strong> sagt, was sie tut, etwa <code>deposit</code>. Setzt sie ein Attribut direkt auf einen neuen Wert, heißt sie meist <code>set</code> plus Attributname, etwa <code>setMood</code>, und man nennt sie <strong>Setter</strong>. Ihr Rückgabetyp ist <code>void</code>.</div>
+ <div hidden data-erkl="wert"><strong>Wert und neuer Wert:</strong> Der Parameter bringt den gewünschten Wert mit, etwa <code>double amount</code>. Unten wird daraus der neue Wert des Attributs, direkt übernommen oder damit berechnet: <code>balance = balance + amount;</code>.</div>
+ <div hidden data-erkl="pruefung"><strong>Die Prüfung:</strong> eine Bedingung, die ungültige Werte abfängt, etwa <code>amount &gt; 0</code>. Ist sie <code>false</code>, wird der Block übersprungen, und das Attribut bleibt, wie es war. Kein Semikolon direkt hinter <code>if (…)</code>, sonst läuft der Block immer.</div>
+ </div>
+
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Account.java, gut gekapselt</p>
+<pre><code class="java">public class Account {
+
+    private double balance;          // private: nur in Konto zugreifbar
+
+    public double getBalance() {     // Getter: liefert den Wert nach außen
+        return balance;
+    }
+
+    public void deposit(double amount) {   // Änderung beantragen
+        if (amount > 0) {                    // WENN der Betrag okay ist …
+            balance = balance + amount;          // … DANN wird geändert
+        }
+    }
+
+}</code></pre>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>private double balance;</code></td><td>privat: Nur Code in der Klasse <code>Account</code> selbst kommt an <code>balance</code> heran.</td></tr>
+ <tr><td><code>public double getBalance()</code></td><td>der Getter: gibt den Saldo zurück, ändert aber nichts.</td></tr>
+ <tr><td><code>public void deposit(double amount)</code></td><td>ändert den Saldo. Von außen ist das der einzige Weg, den Saldo zu ändern.</td></tr>
+ <tr><td><code class="umbruch">if (amount &gt; 0)</code></td><td>die Prüfung: Nur ein positiver Betrag kommt durch. Das ist das <code>if</code> aus <a href="06-verzweigungen.html">Kapitel 6</a> an ihrem wichtigsten Einsatzort.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p><strong>Attribute <code>private</code>, Zugriff nur über Methoden.</strong> Die Methode prüft den neuen Wert
+ und fängt ungültige Werte ab, bevor sie ein Attribut ändert.</p>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Warum der Aufwand mit Gettern und Settern?</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Drei Gründe aus echten Projekten:</p>
+ <ol>
+ <li><strong>Validierung:</strong> Der Setter kann Unsinn abweisen (negative Einzahlung, Age = -5, Laune = „exploding“).</li>
+ <li><strong>Kontrolle:</strong> Du kannst Attribute nur-lesbar machen: Getter ja, Setter nein. Von außen unveränderbar.</li>
+ <li><strong>Flexibilität:</strong> Du kannst das Innere der Klasse später umbauen. Wer sie benutzt, merkt nichts und ruft weiter nur getBalance() auf.</li>
+ </ol>
+ <p>Kurz: Ohne Kapselung darf jede Klasse ein Attribut direkt ändern. Mit Kapselung läuft jede Änderung über eine Methode, die prüft.</p>
+ </div>
+ </details>
+ </section>
+
+ <section class="widget">
+ <h3>Aufgabe 9.4.2: Zugriff von außen</h3>
+ <p class="widget-hinweis">Das Konto von oben, balance steht auf 50.0. Versuch, von außen (aus einer anderen Klasse) darauf zuzugreifen:</p>
+ <p style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-klein" data-try="0" style="font-family:var(--f-mono)">account.balance</button>
+ <button class="btn btn-klein" data-try="1" style="font-family:var(--f-mono)">account.getBalance()</button>
+ <button class="btn btn-klein" data-try="2" style="font-family:var(--f-mono)">account.deposit(20)</button>
+ <button class="btn btn-klein" data-try="3" style="font-family:var(--f-mono)">account.deposit(-999)</button></p>
+ <div class="feld" id="ts-info">
+ <p style="margin:0;color:var(--ink-2)">Klick einen der vier Zugriffe an.</p>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="was-steckt-wirklich-in-der-variable-ein-pfeil"><span class="nr">9.5</span> Referenzvariablen</h2>
+ <p class="wozu">In Kapitel 3 hieß es: „Eine Variable ist eine Box mit Wert drin.“ Für Zahlen stimmt das.
+ <span class="hl">Bei Objekten steht in der Variable nicht der Zombie, sondern nur eine <strong>Referenz</strong> auf ihn.</span>
+ Im Speicherbild zeichnet man sie als Pfeil. Der Zombie selbst liegt im <strong>Heap</strong>, dem Bereich des Arbeitsspeichers, in dem Java die Objekte anlegt.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><var data-teil="klasse">Klasse</var> <var data-teil="b">b</var> = <var data-teil="a">a</var>;
+<var data-teil="klasse">Klasse</var> <var data-teil="c">c</var> = <span data-teil="new">new</span> <var data-teil="klasse">Klasse</var>(<var data-teil="werte">Werte</var>);</code></pre>
+ <p class="aufbau-info">Beide Zeilen speichern eine Referenz in einer Variable, aber nur die zweite erzeugt dabei ein Objekt. Referenzen kann man also <em>kopieren</em>.</p>
+ <div hidden data-erkl="klasse"><strong>Klasse als Typ:</strong> etwa <code>Zombie</code>. Eine Variable dieses Typs speichert nie das Objekt selbst, sondern eine Referenz auf ein Objekt der Klasse. Das Objekt liegt im Heap.</div>
+ <div hidden data-erkl="b"><strong><code>b</code></strong> bekommt eine Kopie der Referenz aus <code>a</code>. Danach verweisen <code>a</code> und <code>b</code> auf dasselbe Objekt: Änderst du <code>b.mood</code>, liest du über <code>a.mood</code> den neuen Wert.</div>
+ <div hidden data-erkl="a"><strong><code>a</code></strong> ist eine Variable, die schon eine Referenz enthält, etwa <code>felix</code>. Sie selbst bleibt unverändert, nur ihre Referenz wird kopiert.</div>
+ <div hidden data-erkl="c"><strong><code>c</code></strong> bekommt die Referenz auf das neu erzeugte Objekt. Selbst wenn es dieselben Werte hat wie das Objekt von <code>a</code>, ergibt <code>c == a</code> den Wert <code>false</code>, denn <code>==</code> vergleicht bei Objekten Referenzen, nicht Inhalte. Deshalb vergleichst du Strings mit <code>.equals()</code>.</div>
+ <div hidden data-erkl="new"><strong><code>new</code></strong> erzeugt ein neues Objekt im Heap und liefert die Referenz darauf. Nur <code>new</code> erzeugt Objekte, eine Zuweisung wie in der ersten Zeile nie.</div>
+ <div hidden data-erkl="werte"><strong>Werte:</strong> die Argumente für den Konstruktor, in der Reihenfolge seiner Parameter, etwa <code>new Zombie("Mia", "gray", "relaxed")</code>.</div>
+ </div>
+ </section>
+
+ <section class="widget">
+ <h3>Das Zwillings-Experiment</h3>
+ <p class="widget-hinweis">Die drei Zeilen nacheinander ausführen, den Zombie im Auge behalten.</p>
+
+ <div class="wflex" style="align-items:center">
+ <div style="flex:1 1 200px">
+ <p style="display:flex;flex-direction:column;gap:8px"><button class="btn btn-klein" id="rf-1" style="font-family:var(--f-mono);text-align:left">1 Zombie twin = felix;</button>
+ <button class="btn btn-klein" id="rf-2" style="font-family:var(--f-mono);text-align:left" disabled>2 twin.mood = "offended";</button>
+ <button class="btn btn-klein" id="rf-3" style="font-family:var(--f-mono);text-align:left" disabled>3 System.out.println(felix.mood);</button>
+ <button class="btn btn-klein" id="rf-reset"> Reset</button></p>
+ </div>
+ <div style="flex:1 1 280px">
+ <div style="display:flex;align-items:center;gap:6px;justify-content:center;flex-wrap:wrap">
+ <div style="display:flex;flex-direction:column;gap:14px">
+ <div style="display:flex;align-items:center;gap:4px"><span class="token" style="font-size:0.78rem">felix</span><span style="font-size:1.4rem"></span></div>
+ <div style="display:flex;align-items:center;gap:4px;visibility:hidden" id="rf-tag2"><span class="token" style="font-size:0.78rem;background:var(--ueber)">twin</span><span style="font-size:1.4rem"></span></div>
+ </div>
+ <div class="obj-card" id="rf-cat" style="cursor:default">
+ <span class="obj-title">: Zombie</span>
+ <svg viewBox="0 0 90 80" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#17150f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="width:64px;display:block;margin:0 auto"><path d="M20 30 l-6 -16 14 7" fill="#f5a24b"/><path d="M70 30 l6 -16 -14 7" fill="#f5a24b"/><circle cx="45" cy="42" r="26" fill="#f5a24b"/><circle cx="36" cy="38" r="2.6" fill="#17150f" stroke="none"/><circle cx="54" cy="38" r="2.6" fill="#17150f" stroke="none"/><path d="M41 48 q4 4 8 0" /><path d="M10 44 h14 M12 52 h13 M66 44 h14 M65 52 h13" stroke-width="2.5"/></svg>
+ <ul>
+ <li>name = "Zombiefelix"</li>
+ <li id="rf-laune">mood = "relaxed"</li>
+ </ul>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="sim-konsole" id="rf-out" style="margin-top:14px"></div>
+ <div class="feld" id="rf-info" style="margin-top:12px">
+ <p style="margin:0;color:var(--ink-2)">Start: Es gibt EINEN Zombie und EINE Referenz darauf (Variable <code>felix</code>).</p>
+ </div>
+ </section>
+
+ <section class="block">
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>Zombie twin = felix;</code></td><td>kopiert die Referenz aus <code>felix</code> in die Variable <code>twin</code>. Ein <code>new</code> steht nicht da, also entsteht auch kein zweiter Zombie.</td></tr>
+ <tr><td><code>twin.mood = "offended";</code></td><td>folgt der Referenz zum Objekt im Heap und ändert dort die Laune.</td></tr>
+ <tr><td><code>felix.mood</code></td><td>folgt der Referenz in <code>felix</code>, kommt beim selben Objekt an und liest dort die Laune.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p><strong>Die Pointe:</strong></p>
+ <ul>
+ <li><code>twin</code> war nie ein zweiter Zombie, nur eine zweite Referenz auf <em>denselben</em> Zombie.
+ Was du über <code>twin</code> änderst, ändert sich auch für <code>felix</code>.</li>
+ <li><strong>Das löst das Rätsel aus Kapitel 6:</strong> Auch ein String ist ein Objekt. <code>==</code> prüft bei
+ <code>"yes" == answer</code> nur, ob zwei <em>Referenzen auf dasselbe Objekt</em> zeigen, nicht ob der Text gleich ist.
+ Deshalb Texte immer mit <code>.equals()</code>.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="uml-der-steckbrief-einer-klasse"><span class="nr">9.6</span> UML-Klassendiagramm</h2>
+ <p class="wozu">In Projekten und Prüfungen skizziert man Klassen als <strong>UML-Klassendiagramm</strong>:
+ ein Kasten mit drei Bereichen für Name, Attribute und Methoden. So steht eine Klasse auf dem Papier, bevor die erste Zeile Java geschrieben ist.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><var data-teil="name">Klassenname</var>
+<span data-teil="sicht">-</span> <var data-teil="attribut">attribut</var>: <var data-teil="typ">Typ</var>
+<span data-teil="sicht">+</span> <var data-teil="name">Klassenname</var>(<var data-teil="param">parameter</var>: <var data-teil="typ">Typ</var>)
+<span data-teil="sicht">+</span> <var data-teil="methode">methode</var>(<var data-teil="param">parameter</var>: <var data-teil="typ">Typ</var>): <var data-teil="rueck">Rückgabetyp</var></code></pre>
+ <p class="aufbau-info"><code>-</code> heißt <em>private</em>, <code>+</code> heißt <em>public</em>. Anders als in Java steht der Typ <strong>hinter</strong> dem Namen, nach einem Doppelpunkt.</p>
+ <div hidden data-erkl="name"><strong>Klassenname:</strong> steht allein im obersten Bereich, etwa <code>Zombie</code>. Taucht er unten in der Liste noch einmal auf, ist das der Konstruktor: Er hat im UML wie in Java keinen Rückgabetyp.</div>
+ <div hidden data-erkl="sicht"><strong>Sichtbarkeit:</strong> Jede Zeile unter dem Klassennamen beginnt mit ihrem Zeichen. Üblich sind private Attribute und öffentliche Methoden, also die Datenkapselung aus 9.4. In Kapitel 10 kommt <code>#</code> für <code>protected</code> dazu.</div>
+ <div hidden data-erkl="attribut"><strong>Attribut:</strong> im mittleren Bereich, eines pro Zeile. Aus <code>- name: String</code> wird in Java <code>private String name;</code>.</div>
+ <div hidden data-erkl="typ"><strong>Typ:</strong> der Datentyp, im UML hinter dem Namen. Beim Übersetzen in Java wandert er nach vorn: Aus <code>age: int</code> wird <code>int age</code>.</div>
+ <div hidden data-erkl="param"><strong>Parameter:</strong> in den Klammern, mehrere durch Kommas getrennt, jeder mit seinem Typ dahinter. Aus <code>(name: String, age: int)</code> wird in Java <code>(String name, int age)</code>.</div>
+ <div hidden data-erkl="methode"><strong>Methodenname:</strong> klein geschrieben, im unteren Bereich unter dem Konstruktor, eine Methode pro Zeile. Die runden Klammern stehen auch, wenn es keine Parameter gibt: <code>groan()</code>.</div>
+ <div hidden data-erkl="rueck"><strong>Rückgabetyp:</strong> ganz hinten, nach dem Doppelpunkt hinter der Klammer. In Java steht er vor dem Namen: Aus <code>+ groan(): void</code> wird <code>public void groan()</code>.</div>
+ </div>
+
+ <div style="display:flex;justify-content:center;margin:16px 0">
+ <div class="class-card">
+ <div class="cc-head">Zombie</div>
+ <ul>
+ <li>- name: String</li>
+ <li>- color: String</li>
+ <li>- mood: String</li>
+ </ul>
+ <ul>
+ <li>+ Zombie(name, color, mood)</li>
+ <li>+ groan(): void</li>
+ </ul>
+ </div>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>- name: String</code></td><td>ein privates Attribut, in Java <code>private String name;</code>.</td></tr>
+ <tr><td><code>+ Zombie(name, color, mood)</code></td><td>der Konstruktor: öffentlich, mit drei Parametern und ohne Rückgabetyp.</td></tr>
+ <tr><td><code>+ groan(): void</code></td><td>eine öffentliche Methode ohne Parameter, die nichts zurückgibt. In Java steht <code>void</code> vor dem Namen.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Drei Bereiche: Name, Attribute, Methoden. <code>-</code> heißt <em>private</em>, <code>+</code> heißt <em>public</em>: die Kapselung vom Konto.</p>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Wenn Klassen sich kennen</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <ul>
+ <li>Kennen sich Klassen (eine Person <em>hat</em> einen Zombie), verbindet sie eine Linie, eine <strong>Assoziation</strong>.</li>
+ <li>Anzahlen an der Linie heißen „Kardinalitäten“: <code>1, 0..*</code> für eine Person mit 0 bis vielen Zombies.</li>
+ </ul>
+ </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Das reicht für jetzt</p>
+ <ul>
+ <li>Klasse = <strong>Bauplan</strong>, Objekt = <strong>konkretes Exemplar</strong>. Jedes <code>new</code> erzeugt ein neues, unabhängiges.</li>
+ <li><code>new Zombie(…)</code> ruft den <strong>Konstruktor</strong>: heißt wie die Klasse, kein Rückgabetyp. <code>this.name</code> meint das Attribut.</li>
+ <li><code>felix.name</code> = „Name von felix“: Der Punkt greift auf Attribute und Methoden zu.</li>
+ <li>Methoden ohne <code>static</code> stehen in der Klasse und benutzen die Attribute des Objekts, an dem sie aufgerufen werden.</li>
+ <li><code>private</code> + Getter/Setter schützen die Daten (<strong>Datenkapselung</strong>). In UML: <code>-</code> private, <code>+</code> public.</li>
+ <li>In der Variable steckt nur eine <strong>Referenz</strong>: <code>b = a</code> kopiert die Referenz, nicht das Objekt. Deshalb Strings mit <code>.equals()</code> vergleichen.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="baustein uebung quiz">
+ <h3>Checkpoint</h3>
+ <p class="widget-hinweis">6 Fragen zu Klassen und Objekten.</p>
+
+ <div class="qq">
+ <p class="qq-text">1. Klasse und Objekt, was stimmt?</p>
+ <div class="qq-opt">
+ <button data-why="Verständlicher Gedanke, aber es sind zwei Ebenen: Der Bauplan (Klasse) existiert einmal, Exemplare (Objekte) beliebig oft, jedes mit eigenen Werten.">Klasse und Objekt sind zwei Wörter für dasselbe</button>
+ <button data-ok>Die Klasse ist der Bauplan, Objekte sind die konkreten Exemplare davon</button>
+ <button data-why="Genau andersrum: Nach der Klasse entstehen Objekte, nicht umgekehrt.">Objekte sind Baupläne für Klassen</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Eine Klasse, beliebig viele Objekte, und jedes hat seine eigenen Attributwerte.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">2. Was passiert bei <code>Zombie mia = new Zombie("Mia", "gray", "relaxed");</code>?</p>
+ <div class="qq-opt">
+ <button data-why="Die Klasse bleibt unverändert. Es entsteht ein neues OBJEKT dieser Klasse.">Die Klasse Zombie wird umbenannt in mia</button>
+ <button data-ok>Es entsteht ein neues Zombie-Objekt, das über die Variable mia erreichbar ist</button>
+ <button data-why="Java prüft nichts dergleichen, new erzeugt IMMER ein neues Objekt. Zwei gleiche Aufrufe ergeben zwei getrennte Zombies.">Es wird geprüft, ob es der Zombie Mia schon gibt</button>
+ </div>
+ <p class="qq-erklaerung" hidden><code>new</code> erzeugt das Objekt, der Konstruktor setzt seine Attribute. In der Variable mia steht ab dann die Referenz auf dieses Objekt.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">3. Wie liest man <code>felix.mood</code>?</p>
+ <div class="qq-opt">
+ <button data-ok>„Die Laune von felix“, Zugriff auf ein Attribut des Objekts</button>
+ <button data-why="Multiplikation wäre der Stern *. Der Punkt hat in Java eine ganz eigene Bedeutung: Zugriff auf etwas, das zum Objekt gehört.">„felix mal mood“, eine Multiplikation</button>
+ <button data-why="Sieht nur aus wie eine Webadresse. In Java heißt der Punkt „von“: mood gehört zu felix.">„felix punkt mood“, eine Website</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Der Punkt-Operator = „von“. Damit greifst du auf Attribute und Methoden eines Objekts zu.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">4. Woran erkennst du einen Konstruktor in einer Klasse?</p>
+ <div class="qq-opt">
+ <button data-why="main ist der Startpunkt des PROGRAMMS. Der Konstruktor läuft, wenn ein OBJEKT erzeugt wird.">Er heißt immer main</button>
+ <button data-why="Das Wort constructor existiert in Java-Code gar nicht. Erkennbar ist er an zwei Merkmalen: Name = Klassenname, kein Rückgabetyp.">Er beginnt mit dem Wort constructor</button>
+ <button data-ok>Er heißt exakt wie die Klasse und hat keinen Rückgabetyp</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Klasse Zombie &rarr; Konstruktor public Zombie(…). Kein void, kein int davor, Konstruktoren „liefern“ immer das neue Objekt.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">5. Warum sollte <code>balance</code> im Konto <code>private</code> sein?</p>
+ <div class="qq-opt">
+ <button data-why="Speicherverbrauch ist bei private/public exakt gleich, das regelt nur, WER zugreifen darf, nicht WIE gespeichert wird.">Weil private Attribute weniger Speicher verbrauchen</button>
+ <button data-why="Java erlaubt public-Attribute durchaus (leider). Es ist keine Regel des Compilers, sondern gute Praxis beim Programmieren.">Weil Java public bei Attributen verbietet</button>
+ <button data-ok>Damit Änderungen nur kontrolliert über Methoden laufen, die Unsinn abfangen können</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Datenkapselung: Die Methode prüft jede Änderung und weist z. B. negative Einzahlungen ab. Direktzugriff = keine Kontrolle.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">6. Nach <code>Zombie a = felix;</code> setzt du <code>a.mood = "wild";</code>, was ist <code>felix.mood</code>?</p>
+ <div class="qq-opt">
+ <button data-why="Das wäre so, wenn a eine KOPIE des Zombies wäre. Aber kopiert wurde nur die Referenz, beide zeigen auf dasselbe Objekt im Heap.">Unverändert, a ist ja ein eigener Zombie</button>
+ <button data-ok>"wild", a und felix zeigen auf dasselbe Objekt</button>
+ <button data-why="Kein Fehler: Referenzen kopieren ist erlaubt und passiert in echtem Code ständig. Man muss nur wissen, was es bedeutet.">Compiler-Fehler, man darf Objekte nicht zuweisen</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Das Zwillings-Experiment: Ein Zombie, zwei Referenzen. Was du über die eine Variable änderst, siehst du auch über die andere.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+ <div class="kapitel-ende">
+ <div class="blaettern">
+      <a class="btn" href="08-arrays.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Kapitel 8</a>
+      <a class="btn btn-haupt" href="10-vererbung.html">Kapitel 10: Vererbung & abstrakte Klassen<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </div>
+ </div>
+
+</main>
+
+<footer class="seitenfuss">
+ <div class="seitenfuss-innen">
+ <p><strong>Cheat Sheet: Java</strong> ·
+      Java-Grundlagen für Lernfeld 5,
+ „Software zur Verwaltung von Daten anpassen“, IT-Berufe, Jahrgangsstufe 10.</p>
+ </div>
+</footer>
+
+<script src="../js/app.js"></script>
+<script>
+(function () {
+ var $ = CC.$, $$ = CC.$$;
+
+ /* ---------- Zombies-Fabrik ---------- */
+
+ var FARBEN = { orange: '#f5a24b', gray: '#b9b9b9', black: '#3a3a3a', 'white': '#ffffff' };
+ var STOEHNEN = { relaxed: 'Grrrh. ', hungry: 'GROAN! HUNGRY! NOW!', offended: '… (turns away)' };
+ var count = 0;
+ var last = null;
+
+ function catSvg(hex) {
+ return '<svg viewBox="0 0 90 80" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#17150f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="width:64px;display:block;margin:0 auto">'
+ + '<path d="M20 30 l-6 -16 14 7" fill="' + hex + '"/><path d="M70 30 l6 -16 -14 7" fill="' + hex + '"/>'
+ + '<circle cx="45" cy="42" r="26" fill="' + hex + '"/>'
+ + '<circle cx="36" cy="38" r="2.6" fill="#17150f" stroke="none"/><circle cx="54" cy="38" r="2.6" fill="#17150f" stroke="none"/>'
+ + '<path d="M41 48 q4 4 8 0" /><path d="M10 44 h14 M12 52 h13 M66 44 h14 M65 52 h13" stroke-width="2.5"/></svg>';
+ }
+
+ $('#kf-new').addEventListener('click', function () {
+ var name = $('#kf-name').value.trim() || 'NamelessZombie' + (count + 1);
+ var farbe = $('#kf-farbe').value;
+ var laune = $('#kf-laune').value;
+
+ if (count >= 5) {
+ $('#kf-msg').innerHTML = ' Fünf Zombies reichen, nicht dem Java-Speicher (der schafft Millionen), aber unserem Bildschirm.';
+ return;
+ }
+ count++;
+
+ var varName = name.charAt(0).toLowerCase() + name.slice(1).replace(/\s+/g, '');
+ var card = document.createElement('div');
+ card.className = 'obj-card pop';
+ card.innerHTML = '<span class="obj-title">' + CC.esc(varName) + ' : Zombie</span>'
+ + catSvg(FARBEN[farbe])
+ + '<ul><li>name = "' + CC.esc(name) + '"</li><li>color = "' + farbe + '"</li><li>mood = "' + laune + '"</li></ul>';
+ card.title = 'Klick mich!';
+ card.addEventListener('click', function () {
+ var old = card.querySelector('.speech');
+ if (old) old.remove();
+ var s = document.createElement('span');
+ s.className = 'speech pop';
+ s.textContent = STOEHNEN[laune];
+ card.appendChild(s);
+ setTimeout(function () { s.remove(); }, 2200);
+ });
+ $('#kf-heap').appendChild(card);
+
+ $('#kf-code').textContent = 'Zombie ' + varName + ' = new Zombie("' + name + '", "' + farbe + '", "' + laune + '");';
+ $('#kf-msg').innerHTML = ' Objekt Nr. ' + count + ' erzeugt. ' + (count > 1 ? 'Gleiche Klasse, eigenes Objekt, die anderen bleiben unverändert.' : 'Klick den Zombie im Speicher mal an!');
+
+ last = { varName: varName, name: name, farbe: farbe, laune: laune };
+ renderDot();
+ });
+
+ function renderDot() {
+ if (!last) return;
+ $('#kf-dot').style.display = 'block';
+ var btns = $('#kf-dot-btns');
+ btns.innerHTML = '';
+ [
+ { code: last.varName + '.name', out: '"' + last.name + '"' },
+ { code: last.varName + '.color', out: '"' + last.farbe + '"' },
+ { code: last.varName + '.mood', out: '"' + last.laune + '"' },
+ { code: last.varName + '.groan()', out: STOEHNEN[last.laune] }
+ ].forEach(function (d) {
+ var b = document.createElement('button');
+ b.className = 'btn btn-klein';
+ b.style.fontFamily = 'var(--f-mono)';
+ b.textContent = d.code;
+ b.addEventListener('click', function () {
+ $('#kf-dot-out').textContent = '> ' + d.code + '\n' + d.out;
+ });
+ btns.appendChild(b);
+ });
+ }
+
+ /* ---------- Zugriff von außen ---------- */
+
+ var saldo = 50.0;
+ var TRIES = [
+ function () {
+ return '<p style="margin:0"><strong>Compiler-Fehler:</strong> <code class="umbruch">balance has private access in Konto</code><br><code>balance</code> ist private, nur Code in der Klasse <code>Konto</code> selbst darf darauf zugreifen. Bei einem Compiler-Fehler startet das Programm gar nicht.</p>';
+ },
+ function () {
+ return '<p style="margin:0"><strong>Bitte sehr:</strong> <code>' + saldo.toFixed(1) + '</code><br>Der Getter ist public und gibt den Wert von <code>balance</code> zurück. Lesen über den Getter ist erlaubt, der direkte Zugriff auf das Attribut nicht.</p>';
+ },
+ function () {
+ saldo += 20;
+ return '<p style="margin:0"><strong>Einzahlung akzeptiert.</strong> Neuer Saldo: <code>' + saldo.toFixed(1) + '</code><br>Der Betrag war positiv: Die Bedingung <code class="umbruch">betrag &gt; 0</code> in der Methode war true, also wurde der Saldo erhöht.</p>';
+ },
+ function () {
+ return '<p style="margin:0"><strong>Abgefangen.</strong> Saldo bleibt bei <code>' + saldo.toFixed(1) + '</code><br>Die Methode hat den ungültigen Betrag abgefangen: <code class="umbruch">if (betrag &gt; 0)</code> war false, genau dafür ist Kapselung da. Wäre <code>balance</code> public, könnte jede Klasse ihn direkt auf einen ungültigen Wert setzen.</p>';
+ }
+ ];
+
+ $$('[data-try]').forEach(function (b) {
+ b.addEventListener('click', function () {
+ var info = $('#ts-info');
+ info.innerHTML = TRIES[+b.getAttribute('data-try')]();
+
+ });
+ });
+
+ /* ---------- Zwillings-Experiment (Referenzen) ---------- */
+
+ function rfInfo(html) {
+ var el = $('#rf-info');
+ el.innerHTML = '<p style="margin:0">' + html + '</p>';
+
+ }
+
+ $('#rf-1').addEventListener('click', function () {
+ this.disabled = true;
+ $('#rf-2').disabled = false;
+ $('#rf-tag2').style.visibility = 'visible';
+ rfInfo(' <strong>Schau genau:</strong> Es gibt KEINEN zweiten Zombie. Nur die Referenz wurde kopiert, <code>twin</code> zeigt auf denselben Zombie wie <code>felix</code>.');
+ });
+
+ $('#rf-2').addEventListener('click', function () {
+ this.disabled = true;
+ $('#rf-3').disabled = false;
+ var l = $('#rf-laune');
+ l.textContent = 'mood = "offended"';
+ l.style.background = 'var(--rot-flaeche)';
+ rfInfo(' Die Laune wurde <strong>über die Variable twin</strong> geändert. Aber es gibt ja nur EINEN Zombie … was zeigt jetzt wohl <code>felix.mood</code>?');
+ });
+
+ $('#rf-3').addEventListener('click', function () {
+ this.disabled = true;
+ $('#rf-out').textContent = '> System.out.println(felix.mood);\noffended';
+ rfInfo(' <strong>offended!</strong> Obwohl du „nur“ twin angefasst hast. Zwei Variablen, ein Objekt: Beide enthalten eine <strong>Referenz</strong> auf denselben Zombie. Wer das weiß, findet viele Fehler schneller.');
+ });
+
+ $('#rf-reset').addEventListener('click', function () {
+ $('#rf-1').disabled = false;
+ $('#rf-2').disabled = true;
+ $('#rf-3').disabled = true;
+ $('#rf-tag2').style.visibility = 'hidden';
+ var l = $('#rf-laune');
+ l.textContent = 'mood = "relaxed"';
+ l.style.background = '';
+ $('#rf-out').textContent = '';
+ rfInfo('Start: Es gibt EINEN Zombie und EINE Referenz darauf (Variable <code>felix</code>).');
+ });
+})();
+</script>
+</body>
+</html>

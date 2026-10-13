@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Big Java Cheat Sheet: Java Basics for Learning Field 5</title>
+<meta name="description" content="Java basics for vocational school, eleven chapters instead of one page: hands-on simulations, real programming exercises, and scenario tasks. Runs offline, no login, no cookies.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../img/favicon.svg">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Remember this: bookmark</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Quick think: question for you</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Exercise: pencil</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>ZombieApocalypse project task: zombie head</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Scenario task: stopwatch</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: flag</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Explained differently: repeat</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Answer: key</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>The key points: page with dog-eared corner</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Learning goals: target</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Console: prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>IDE: editor window with sidebar</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Error message: bug</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Correct: check mark</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Wrong: cross</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Duration: clock</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Chapter: open notebook</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Table of contents</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Next</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Back</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Down</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Expandable</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Opens a window</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Night shift</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Day view</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Clear progress</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Print</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Skip to content</a>
+
+<nav class="topbar" aria-label="Main navigation">
+  <div class="topbar-innen">
+    <a class="marke" href="index.html"> <img class="oakymarke" src="../img/kapitel/oaky.svg" alt="" width="128" height="148"> Java Cheat Sheet </a> <span class="topbar-titel">Java · Learning Field 5</span> <span class="topbar-rechts"> <a class="btn btn-klein" href="#lernpfad">Learning path</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Choose language"><span>EN</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="../index.html" lang="de" hreflang="de">Deutsch</a></li><li><a href="index.html" lang="en" hreflang="en" aria-current="true">English</a></li></ul></details><!--/sprache-->
+    </span>
+  </div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+  <header class="hero">
+    <p class="kicker">Java basics · IT careers · Grade 10</p>
+    <h1>The Big Java Cheat Sheet</h1>
+    <p class="lead">From the first line to exception handling.</p>
+    <p>Eleven chapters, lots of click experiments, no prior knowledge needed. You don’t read <em>about</em> Java, you watch Java at work.</p>
+    <p class="hero-knoepfe">
+      <a class="btn btn-haupt" href="kapitel/01-grundbegriffe.html">Let’s go <svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a> <a class="btn" href="#so-laeuft-das">How does this work?</a>
+    </p>
+  </header>
+
+  <section class="block" id="lernpfad">
+    <h2 id="der-lernpfad">The learning path</h2>
+    <p>From “What is a program?” to “I build classes with inheritance.” Best done in order, but skipping around is allowed.</p>
+    <p>The time shown covers the <strong>material</strong>: reading, thinking along, solving exercises.</p>
+
+    <ol class="pfad">
+      <li>
+        <a class="pfad-karte" href="kapitel/01-grundbegriffe.html">
+          <span class="pfad-nr" aria-hidden="true">1</span>
+          <span class="pfad-text">
+            <h3><span class="nur-sr">Chapter 1: </span>What is programming, anyway?</h3>
+            <p>Compiler versus interpreter, and why Java is strict enough to help you.</p>
+          </span> <span class="pfad-dauer">35 min</span> </a>
+      </li>
+      <li>
+        <a class="pfad-karte" href="kapitel/02-erstes-programm.html">
+          <span class="pfad-nr" aria-hidden="true">2</span>
+          <span class="pfad-text">
+            <h3><span class="nur-sr">Chapter 2: </span>Your first program</h3>
+            <p>Class, <code>main</code>, <code>println</code> and a search game: find errors before the compiler reports them.</p>
+          </span> <span class="pfad-dauer">40 min</span> </a>
+      </li>
+      <li>
+        <a class="pfad-karte" href="kapitel/03-variablen.html">
+          <span class="pfad-nr" aria-hidden="true">3</span>
+          <span class="pfad-text">
+            <h3><span class="nur-sr">Chapter 3: </span>Variables &amp; data types</h3>
+            <p>Variables and data types: <code>int</code>, <code>double</code>, <code>boolean</code> and the rest, to fill in right in the browser, with errors for you to provoke.</p>
+          </span> <span class="pfad-dauer">50 min</span> </a>
+      </li>
+      <li>
+        <a class="pfad-karte" href="kapitel/04-methoden.html">
+          <span class="pfad-nr" aria-hidden="true">4</span>
+          <span class="pfad-text">
+            <h3><span class="nur-sr">Chapter 4: </span>Methods</h3>
+            <p>Parameters, return values with <code>return</code>, overloading, and why copy-paste is off limits from here on.</p>
+          </span> <span class="pfad-dauer">45 min</span> </a>
+      </li>
+      <li>
+        <a class="pfad-karte" href="kapitel/05-strings-eingabe.html">
+          <span class="pfad-nr" aria-hidden="true">5</span>
+          <span class="pfad-text">
+            <h3><span class="nur-sr">Chapter 5: </span>Strings &amp; input</h3>
+            <p>Using ready-made methods, and the <code>Scanner</code>, which fetches input from the outside for the first time.</p>
+          </span> <span class="pfad-dauer">40 min</span> </a>
+      </li>
+      <li>
+        <a class="pfad-karte" href="kapitel/06-verzweigungen.html">
+          <span class="pfad-nr" aria-hidden="true">6</span>
+          <span class="pfad-text">
+            <h3><span class="nur-sr">Chapter 6: </span>Conditionals</h3>
+            <p><code>if</code>, <code>else</code>, <code>switch</code> and the ternary operator, plus the first structograms.</p>
+          </span> <span class="pfad-dauer">50 min</span> </a>
+      </li>
+      <li>
+        <a class="pfad-karte" href="kapitel/07-schleifen.html">
+          <span class="pfad-nr" aria-hidden="true">7</span>
+          <span class="pfad-text">
+            <h3><span class="nur-sr">Chapter 7: </span>Loops</h3>
+            <p><code>while</code>, <code>do-while</code>, <code>for</code>: step through them instead of guessing.</p>
+          </span> <span class="pfad-dauer">55 min</span> </a>
+      </li>
+      <li>
+        <a class="pfad-karte" href="kapitel/08-arrays.html">
+          <span class="pfad-nr" aria-hidden="true">8</span>
+          <span class="pfad-text">
+            <h3><span class="nur-sr">Chapter 8: </span>Arrays</h3>
+            <p>Many values under one name. Why Java starts counting at 0 and what happens if you forget it.</p>
+          </span> <span class="pfad-dauer">65 min</span> </a>
+      </li>
+      <li>
+        <a class="pfad-karte" href="kapitel/09-objekte-klassen.html">
+          <span class="pfad-nr" aria-hidden="true">9</span>
+          <span class="pfad-text">
+            <h3><span class="nur-sr">Chapter 9: </span>Classes &amp; objects</h3>
+            <p>Classes as blueprints, objects, constructors and encapsulation, plus the difference between value and reference.</p>
+          </span> <span class="pfad-dauer">50 min</span> </a>
+      </li>
+      <li>
+        <a class="pfad-karte" href="kapitel/10-vererbung.html">
+          <span class="pfad-nr" aria-hidden="true">10</span>
+          <span class="pfad-text">
+            <h3><span class="nur-sr">Chapter 10: </span>Inheritance &amp; abstract classes</h3>
+            <p><code>extends</code>, <code>super</code>, <code>abstract</code> and the moment when object-oriented programming suddenly makes sense.</p>
+          </span> <span class="pfad-dauer">40 min</span> </a>
+      </li>
+      <li>
+        <a class="pfad-karte" href="kapitel/11-ausnahmen.html">
+          <span class="pfad-nr" aria-hidden="true">11</span>
+          <span class="pfad-text">
+            <h3><span class="nur-sr">Chapter 11: </span>Exception handling</h3>
+            <p><code>try</code>, <code>catch</code>, <code>finally</code>: for errors that aren’t caused by your code but by whatever someone types in.</p>
+          </span> <span class="pfad-dauer">35 min</span> </a>
+      </li>
+    </ol>
+  </section>
+
+  <section class="block" id="so-laeuft-das">
+    <h2 id="so-laeuft-das">How this works</h2>
+    <div class="karten">
+      <div class="karte">
+        <h3>Think first, then click</h3>
+        <p>Before many experiments you make a prediction first: if you guess first, you learn twice as much from watching.</p>
+      </div>
+      <div class="karte">
+        <h3>Spot optional content at once</h3>
+        <p>Cards with a flag and the <span class="opt-marke">optional</span> tag open in their own window: level-ups, legendary exercises, other explanations. None of it is tested.</p>
+      </div>
+    </div>
+
+    <div class="oaky">
+      <img class="figur" src="../img/kapitel/oaky-winkt.svg" alt="" width="128" height="148">
+      <div class="text">
+        <p><b>I’m Oaky.</b> During development, Java was called <em>Oak</em>, but that name already existed, so it became coffee. I show up when something is easier than it looks: quite often.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="werkzeug">
+    <h2 id="werkzeug">Tools</h2>
+    <div class="karten">
+      <a class="karte" href="panik.html" style="text-decoration:none;color:inherit">
+        <h3><svg class="i" aria-hidden="true" focusable="false"><use href="#i-fehler"></use></svg>Panic glossary</h3>
+        <p>The error messages that are guaranteed to catch you, explained in plain English and with instant checks. Made for bookmarking.</p>
+      </a>
+      <a class="karte" href="einrichten.html" style="text-decoration:none;color:inherit">
+        <h3><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>The IDE</h3>
+        <p>VS Code or IntelliJ IDEA: get Java, create a project, run, stop, rename. Eight procedures, both programs side by side.</p>
+      </a>
+      <div class="karte">
+        <h3><svg class="i" aria-hidden="true" focusable="false"><use href="#i-drucken"></use></svg>The printed workbook</h3>
+        <p>The same material as a workbook to write in, with all exercises and a practice exam. Available from your teacher.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="seitenfuss">
+  <div class="seitenfuss-innen">
+    <p><strong>The Big Java Cheat Sheet</strong> · Java basics for Learning Field 5, “Adapting software for data management”, IT professions, grade 10.</p>
+  </div>
+</footer>
+
+<script src="../js/app.js"></script>
+</body>
+</html>

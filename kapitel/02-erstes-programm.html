@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 2 · Dein erstes Programm · Cheat Sheet: Java</title>
+<meta name="description" content="Die Bestandteile eines Java-Programms: Klasse, main-Methode und Ausgaben mit System.out.println.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../img/favicon.svg"><link rel="stylesheet" href="../css/style.css"></head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Merksatz: Lesezeichen</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kurz nachgedacht: Frage an dich</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufgabe: Stift</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Projektaufgabe ZombieApocalypse: Zombiekopf</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Handlungsorientierte Aufgabe: Stoppuhr</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: Fahne</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nochmal anders erklärt: Wiederholung</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Auflösung: Schlüssel</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Das Wichtigste in Kürze: Seite mit Eselsohr</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Lernziele: Zielscheibe</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Konsole: Prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Entwicklungsumgebung: Editorfenster mit Seitenleiste</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fehlermeldung: Käfer</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Richtig: Haken</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Falsch: Kreuz</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Dauer: Uhr</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kapitel: aufgeschlagenes Heft</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Inhaltsverzeichnis</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Weiter</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Zurück</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nach unten</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufklappbar</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Öffnet ein Fenster</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nachtschicht</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Tagesansicht</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fortschritt löschen</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Drucken</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Zum Inhalt springen</a>
+
+<nav class="topbar" aria-label="Hauptnavigation">
+ <div class="topbar-innen">
+ <a class="marke" href="../index.html">
+ <img class="oakymarke" src="../img/kapitel/oaky.svg" alt="" width="128" height="148">
+ Cheat Sheet: Java
+ </a>
+ <span class="topbar-titel">Kapitel 2 · Klasse, main, println</span>
+ <span class="topbar-rechts"><a class="btn btn-klein" href="../index.html">Lernpfad</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Sprache wählen"><span>DE</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="02-erstes-programm.html" lang="de" hreflang="de" aria-current="true">Deutsch</a></li><li><a href="../en/kapitel/02-erstes-programm.html" lang="en" hreflang="en">English</a></li></ul></details><!--/sprache--></span>
+ </div>
+ <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+ <header class="kapitel-kopf">
+ <p class="kicker">Kapitel 2 von 11 · Klasse, main, println</p>
+ <h1>Dein erstes Programm</h1>
+ <p class="vorspann">Jede Programmierlaufbahn beginnt mit demselben Satz auf dem Bildschirm. Deiner auch.</p>
+ <p class="kapitel-meta"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>ca. 45 min</span></p>
+ </header>
+
+ <section class="einstieg" aria-label="Einstieg: das Problem">
+ <p class="einstieg-kopf">DAS PROBLEM</p>
+ <p class="einstieg-frage">Ein Satz soll auf den Bildschirm. Reicht dafür eine Zeile?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>HelloWorld.java</p>
+<pre><code class="java">System.out.println("Hello World!");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein einstieg-zeige" type="button">Übersetzen</button>
+ </div>
+ <div class="konsole einstieg-ausgabe"><span class="absturz">HelloWorld.java:1: error: class, interface, annotation type, enum, record, method or field expected</span></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>Der Compiler meldet einen Fehler: Eine Anweisung darf in Java nicht allein in der Datei stehen.</p>
+ <button class="btn einstieg-knopf" type="button">Mit Klasse und main</button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-out="Hello World!">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>HelloWorld.java</p>
+<pre><code class="java">public class HelloWorld {
+
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">Außen die Klasse, darin die main-Methode, darin die Anweisung. Dieses Gerüst lernst du in diesem Kapitel, und es ist in jedem Programm gleich.</p>
+ </div>
+ </section>
+
+
+ <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Inhalt dieses Kapitels">
+ <h2 id="in-diesem-kapitel">In diesem Kapitel</h2>
+ </nav>
+
+ <details class="baustein ziele">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>Danach kannst du<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+   <div class="inhalt">
+     <ul>
+ <li>die Teile eines Java-Programms benennen: <strong>Klasse</strong>, <strong>main-Methode</strong>, Anweisungen</li>
+ <li>die drei häufigsten Anfängerfehler erkennen, bevor der Compiler es tut</li>
+ <li>Klassen, Variablen und Konstanten so benennen, wie es alle tun</li>
+ <li>mit <code>System.out.println()</code> Text auf der Konsole ausgeben</li>
+ </ul>
+   </div>
+ </details>
+
+
+ <section class="block">
+ <h2 id="hier-ist-es-das-beruehmteste-programm-der-welt"><span class="nr">2.1</span> Aufbau eines Java-Programms</h2>
+ <p class="wozu">Jedes Java-Programm steht im selben Gerüst: außen eine <strong>Klasse</strong>, darin die <strong>main-Methode</strong>, in der das Programm startet. Was es tun soll, steht als Anweisung in der main.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="klasse">public class</span> <var data-teil="name">{Klassenname}</var> <span data-teil="kl-klasse">{</span>
+
+    <span data-teil="main">public static void main(String[] args)</span> <span data-teil="kl-main">{</span>
+        <var data-teil="anw">{Anweisungen}</var>
+    <span data-teil="kl-main">}</span>
+
+<span data-teil="kl-klasse">}</span></code></pre>
+ <p class="aufbau-info">Die Datei heißt genau wie die Klasse, für <code>HelloWorld</code> also <code>HelloWorld.java</code>. Der Rest des Gerüsts ist jedes Mal gleich.</p>
+ <div hidden data-erkl="klasse"><strong><code>public class</code></strong> leitet die Klasse ein. Jedes Java-Programm steht in einer Klasse. <code>public</code> heißt: von überall erreichbar, auch für die JVM.</div>
+ <div hidden data-erkl="name"><strong>Klassenname:</strong> frei wählbar, beginnt mit einem Großbuchstaben, ohne Leerzeichen, etwa <code>HelloWorld</code>. Die Datei muss genauso heißen: <code>HelloWorld.java</code>, sonst meldet der Compiler einen Fehler.</div>
+ <div hidden data-erkl="kl-klasse"><strong>Die äußeren Klammern</strong> markieren Anfang und Ende der Klasse. Geschweifte Klammern stehen immer paarweise: Zu jeder <code>{</code> gehört eine <code>}</code>.</div>
+ <div hidden data-erkl="main"><strong>Die main-Methode:</strong> Hier beginnt die JVM das Programm. Die Zeile ist jedes Mal gleich, schreib sie auswendig oder lass sie von der IDE ergänzen. Was die einzelnen Wörter bedeuten, steht im Level-Up weiter unten.</div>
+ <div hidden data-erkl="kl-main"><strong>Die inneren Klammern</strong> markieren Anfang und Ende der main-Methode. Alles dazwischen läuft beim Start.</div>
+ <div hidden data-erkl="anw"><strong>Anweisungen:</strong> was das Programm tun soll, von oben nach unten, jede mit <code>;</code> am Ende. Zum Beispiel <code>System.out.println("Hello World!");</code></div>
+ </div>
+
+ <div class="codebox runner" data-out="Hello World!">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>HelloWorld.java</p>
+<pre><code class="java">public class HelloWorld {
+
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <p>Sieben Zeilen für einen Satz? Ja. Java ist förmlich, wie eine E-Mail, die mit
+ „Sehr geehrte Damen und Herren“ beginnt, nur um „ok“ zu sagen. Aber jede Zeile hat einen Job:</p>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>public class HelloWorld</code></td><td>Jedes Java-Programm steht in einer <strong>Klasse</strong>, hier mit dem Namen <code>HelloWorld</code>. Die Datei <strong>muss</strong> dann <code>HelloWorld.java</code> heißen.</td></tr>
+ <tr><td><code>public static void main(…)</code></td><td>Die <strong>main-Methode</strong>, der Einstiegspunkt: Die JVM sucht genau diese Methode und beginnt dort mit der Ausführung. Einfach auswendig hinschreiben, das machen Profis auch.</td></tr>
+ <tr><td><code>System.out.println("…")</code></td><td>Die Output: „System, gib auf dem Ausgabekanal (out) eine Zeile aus (println).“ Text steht <strong>immer in doppelten Anführungszeichen</strong>.</td></tr>
+ <tr><td><code>;</code></td><td>Das Semikolon beendet jede Anweisung, wie der Punkt am Satzende.</td></tr>
+ <tr><td><code>{ }</code></td><td>Geschweifte Klammern markieren Anfang und Ende eines <strong>Blocks</strong>, hier der Klasse und der main-Methode. <strong>Immer im Doppelpack</strong>.</td></tr>
+ </table>
+ </div>
+ </section>
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Ein Java-Programm steht in einer <strong>Klasse</strong> und startet in der <strong>main-Methode</strong>. Die Datei heißt wie die Klasse: <code>HelloWorld.java</code>.</p>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Was heißt eigentlich „public static void main“?</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Jedes Wort hat eine feste Bedeutung:</p>
+ <ul>
+ <li><code>public</code>: von überall aufrufbar, auch von der JVM beim Start</li>
+ <li><code>static</code>: gehört zur Klasse selbst, kein Objekt nötig (Kapitel 4 &amp; 9)</li>
+ <li><code>void</code>: die Methode gibt nichts zurück (Kapitel 4)</li>
+ <li><code>main</code>: der feste Name, nach dem die JVM beim Start sucht</li>
+ <li><code>String[] args</code>: Texte, die man beim Start mitgeben kann, als Array (Kapitel 8)</li>
+ </ul>
+ <p>Einfach auswendig hinschreiben. Profis lassen sie sich automatisch vervollständigen.</p>
+ </div>
+ </details>
+
+ <div class="parsons">
+ <p class="parsons-titel"><strong>Code-Puzzle:</strong> Ein gültiges Java-Programm, nur durchgeschüttelt. Sortiere die Zeilen mit den Pfeilen. (Die Einrückung hilft!)</p>
+ <div class="parsons-zeilen">
+ <div class="p-zeile">public class Greeting {</div>
+ <div class="p-zeile"> public static void main(String[] args) {</div>
+ <div class="p-zeile"> System.out.println("Moin!");</div>
+ <div class="p-zeile"> }</div>
+ <div class="p-zeile">}</div>
+ </div>
+ <button class="btn btn-klein parsons-check">Kompilieren </button>
+ <p class="parsons-meldung"></p>
+ </div>
+
+ <p>Zum Ausprobieren brauchst du in deiner IDE ein Projekt und darin eine Klasse:</p>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg> Projekt und Klasse anlegen: Schritt für Schritt<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+<!--ide:projekt-->
+<div class="handgriff" id="h-projekt">
+  <h4>Ein Projekt anlegen</h4>
+  <p class="handgriff-warum">Ein Projekt ist nur ein Ordner mit Ansage: Hier drin liegt Java-Code, und zwar in <code>src</code>. Für dieses Skript reicht eins, etwa mit dem Namen <code>ZombieApocalypse</code>: Darin bekommt jedes Programm seine eigene Klasse.</p>
+  <div class="ide-tafel" data-ide-tafel>
+    <div class="ide-blatt" data-ide="vscode">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>VS Code</p>
+      <ol>
+        <li>Befehlspalette: <code>Java: Create Java Project</code>.</li>
+        <li>Als Bauwerkzeug <em>No build tools</em> wählen. Maven und Gradle kommen später im Beruf, jetzt wären sie nur im Weg.</li>
+        <li>Ordner aussuchen, Name <code>ZombieApocalypse</code>. VS Code legt <code>src</code> gleich mit an.</li>
+      </ol>
+    </div>
+    <div class="ide-blatt" data-ide="intellij">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>IntelliJ IDEA</p>
+      <ol>
+        <li><em>File &rarr; New &rarr; Project</em>, links <em>Java</em> auswählen.</li>
+        <li>Als <em>Build system</em> die Einstellung <em>IntelliJ</em> lassen, Maven und Gradle kommen später im Beruf.</li>
+        <li>Name <code>ZombieApocalypse</code>, JDK auswählen, anlegen. Der Code gehört in <code>src</code>.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+<!--/ide:projekt-->
+<!--ide:klasse-->
+<div class="handgriff" id="h-klasse">
+  <h4>Eine Klasse anlegen</h4>
+  <p class="handgriff-warum">Jede Klasse steht in ihrer eigenen Datei, und die Datei heißt exakt wie die Klasse, <code>Zombie</code> also in <code>Zombie.java</code>. Sonst meldet der Compiler einen Fehler; die Meldung dazu steht im Panik-Wörterbuch.</p>
+  <div class="ide-tafel" data-ide-tafel>
+    <div class="ide-blatt" data-ide="vscode">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>VS Code</p>
+      <ol>
+        <li>Rechtsklick auf den Ordner <code>src</code>, dann <em>New File</em>.</li>
+        <li>Name mit Endung eintippen: <code>Zombie.java</code>. Die Endung vergisst man genau einmal.</li>
+        <li>In der leeren Datei <code>class</code> tippen und <kbd>Tab</kbd> drücken, die IDE ergänzt das Gerüst.</li>
+      </ol>
+    </div>
+    <div class="ide-blatt" data-ide="intellij">
+      <p class="ide-name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ide"></use></svg>IntelliJ IDEA</p>
+      <ol>
+        <li>Rechtsklick auf den Ordner <code>src</code>, dann <em>New &rarr; Java Class</em>.</li>
+        <li>Name ohne Endung eintippen: <code>Zombie</code>. Die Datei legt IntelliJ passend an.</li>
+        <li>Im Klassenrumpf <code>main</code> tippen und <kbd>Tab</kbd> drücken, die IDE ergänzt die main-Methode.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+<!--/ide:klasse-->
+ <p>Alle acht Handgriffe (starten, stoppen, umbenennen …) stehen auf der
+ <a href="../einrichten.html">Werkzeugseite</a>.</p>
+ </div>
+ </details>
+
+ </section>
+
+ <section class="block">
+ <h2 id="die-drei-regeln-die-dich-vor-90-aller-fehler-ret"><span class="nr">2.2</span> Syntaxregeln: Semikolon, Klammern, Groß- und Kleinschreibung</h2>
+ <p class="wozu">Am Anfang haben fast alle Fehlermeldungen dieselben drei Ursachen. Wer diese drei Regeln kennt, erkennt die meisten Fehler, bevor der Compiler sie meldet.</p>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <ol>
+ <li><strong>Jede Anweisung endet mit Semikolon <code>;</code></strong>, vergessen = Fehler.</li>
+ <li><strong>Groß-/Kleinschreibung zählt.</strong> <code>System</code> funktioniert, <code>system</code> kennt Java nicht.</li>
+ <li><strong>Geschweifte Klammern <code>{ }</code> kommen immer im Doppelpack.</strong> Jede geöffnete Klammer will wieder zu.</li>
+ </ol>
+ </div>
+ </section>
+
+ <section class="widget">
+ <h3>Aufgabe 2.2.1: Fehler-Jagd</h3>
+ <p class="widget-hinweis">Dieses Programm kompiliert nicht. Klick auf die falschen Stellen. (Falsche Klicks kosten nur Stolz.)</p>
+ <div class="codebox flach">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Broken.java</p>
+<pre class="bugcode"><code class="nohl" style="background:none;border:none;padding:0;white-space:pre;color:#f0eef7;font-size:0.9rem;line-height:1.9">public <span class="tok-click" data-bug="1">Class</span> Broken {
+
+    public static void <span class="tok-click">main</span>(String[] args) {
+        <span class="tok-click" data-bug="2">system</span>.out.<span class="tok-click">println</span>("Works on my machine!")<span class="tok-click" data-bug="3">   </span>
+        System.out.println(<span class="tok-click">"Or maybe not?"</span>);
+    <span class="tok-click" data-bug="4"> </span>
+
+}</code></pre>
+ </div>
+ <p class="statuszeile" id="bug-status">Gefundene Fehler: 0 von 4</p>
+ <div class="feld" id="bug-info" style="margin-top:10px">
+ <p style="margin:0;color:var(--ink-2)">Tipp: Vier Fehler, aber nur drei Regeln von oben: Eine wird zweimal gebrochen.</p>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="namen-die-man-wiedererkennt"><span class="nr">2.3</span> Bezeichner und Namenskonventionen</h2>
+ <p class="wozu">Der Compiler übersetzt jeden erlaubten Namen. Für Menschen, die den Code lesen, reicht das nicht. Deshalb gibt es
+ <strong>Konventionen</strong>: Regeln ohne Fehlermeldung, aber trotzdem verbindlich.</p>
+ <table>
+ <thead><tr><th>Was</th><th>Wie</th><th>Beispiel</th></tr></thead>
+ <tbody>
+ <tr><td>Klasse</td><td>erster Buchstabe groß, jedes weitere Wort auch (<strong>PascalCase</strong>)</td>
+ <td><code>HelloWorld</code>, <code>ZombieApocalypse</code></td></tr>
+ <tr><td>Variable, Methode</td><td>erster Buchstabe klein, jedes weitere Wort groß (<strong>camelCase</strong>)</td>
+ <td><code>age</code>, <code>maxWeight</code>, <code>makeSound()</code></td></tr>
+ <tr><td>Konstante</td><td>alles groß, Wörter mit Unterstrich getrennt</td>
+ <td><code>MAX_RESIDENTS</code>, <code>VAT</code></td></tr>
+ </tbody>
+ </table>
+ <p>Eine <strong>Konstante</strong> darf sich nie mehr ändern, erkennbar am <code>final</code> davor:
+ <code>static final double VAT = 0.19;</code>. Mehr zu <code>static</code> und <code>final</code>
+ in Kapitel 4, die Großschreibung gilt ab sofort.</p>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Bei Klassen ist es <strong>mehr</strong> als Konvention: Die Datei heißt genau wie die öffentliche
+ Klasse darin. <code>HelloWorld</code> steht in <code>HelloWorld.java</code>, Groß- und Kleinschreibung
+ inklusive. Klasse umbenannt, Datei vergessen? Dann klingt die Fehlermeldung nach etwas ganz anderem.</p>
+ </div>
+ <p>Und: <strong>Der Name sagt, was drin ist.</strong>
+ <code>int a</code> ist erlaubt und trotzdem falsch, sobald jemand anderes den Code liest, dein zukünftiges Ich eingeschlossen.</p>
+ <section class="baustein selbst quiz">
+ <h3>Aufgabe 2.3.1: Namen geradeziehen</h3>
+ <div class="qq">
+ <p class="qq-text">Wie heißt die Klasse richtig: <code>public class zombieList</code>?</p>
+ <div class="qq-opt">
+ <button data-ok>ZombieListe</button>
+ <button data-why="camelCase ist für Variablen und Methoden. Klassen fangen immer groß an.">zombieListe</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Und die Datei muss dann auch Zombieliste.java heißen.</p>
+ </div>
+ <div class="qq">
+ <p class="qq-text">Wie heißt die Konstante richtig: <code>static final double vat = 0.19;</code>?</p>
+ <div class="qq-opt">
+ <button data-why="Das wäre camelCase, richtig für normale Variablen, nicht für Konstanten.">mwSt</button>
+ <button data-ok>VAT</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Konstanten schreibt man ganz groß, mehrere Wörter mit Unterstrich: MAX_RESIDENTS.</p>
+ </div>
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+ </section>
+
+ <section class="block">
+ <h2 id="mehrere-ausgaben-hintereinander"><span class="nr">2.4</span> Ausgabe, Kommentare und Escape-Sequenzen</h2>
+ <p class="wozu"><code>println</code> gibt eine ganze Zeile aus. Mit <code>print</code> setzt du eine Zeile aus mehreren Stücken zusammen, mit Sonderzeichen bringst du Umbrüche und Anführungszeichen mitten in einen Text, und Kommentare sind Notizen, die Java überliest.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="system">System.out</span>.<span data-teil="println">println</span>(<var data-teil="was">was ausgegeben wird</var>)<span data-teil="semi">;</span>
+<span data-teil="system">System.out</span>.<span data-teil="print">print</span>(<var data-teil="was">was ausgegeben wird</var>)<span data-teil="semi">;</span></code></pre>
+ <p class="aufbau-info"><strong>println heißt „print line“</strong>: ausgeben, dann Zeilenumbruch. <code>print()</code> ohne „ln“ lässt den Umbruch weg, die nächste Ausgabe steht direkt dahinter.</p>
+ <div hidden data-erkl="system"><strong><code>System.out</code></strong> ist der Standard-Ausgabekanal: die Konsole. Groß geschriebenes <code>S</code>, sonst kennt der Compiler den Namen nicht.</div>
+ <div hidden data-erkl="println"><strong><code>println</code></strong> („print line“) gibt aus und beendet die Zeile. Die nächste Ausgabe beginnt in einer neuen Zeile.</div>
+ <div hidden data-erkl="print"><strong><code>print</code></strong> gibt aus, ohne die Zeile zu beenden. Die nächste Ausgabe steht direkt dahinter.</div>
+ <div hidden data-erkl="was"><strong>Was ausgegeben wird:</strong> ein Text in doppelten Anführungszeichen wie <code>"Hello"</code>, eine Zahl wie <code>42</code> oder eine Rechnung wie <code>1 + 1</code>. Text erscheint genau so, wie er zwischen den Anführungszeichen steht.</div>
+ <div hidden data-erkl="semi"><strong>Das Semikolon</strong> beendet die Anweisung. Fehlt es, meldet der Compiler <code>';' expected</code>.</div>
+ </div>
+
+ <p>Der Computer arbeitet stur von oben nach unten. Die Ausgaben kommen genau in dieser Reihenfolge:</p>
+
+ <div class="codebox runner" data-out="Line 1: Make coffee\nLine 2: Write code\nLine 3: Be puzzled\nLine 4: Refill coffee">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>DayPlan.java</p>
+<pre><code class="java">public class DayPlan {
+
+    public static void main(String[] args) {
+        System.out.println("Line 1: Make coffee");
+        System.out.println("Line 2: Write code");
+        System.out.println("Line 3: Be puzzled");
+        System.out.println("Line 4: Refill coffee");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="baustein selbst">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>Erst du, dann Java</p>
+ <p>Jetzt du: <code>print</code> <em>und</em> <code>println</code> gemischt. Sag die Ausgabe voraus,
+ <em>bevor</em> du sie siehst. So etwas kommt gern in Tests dran.</p>
+ </div>
+
+ <div class="codebox runner" data-trace data-out="JavaScript?\nNo.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Verwirrung.java</p>
+<pre><code class="java">System.out.print("Java");
+System.out.print("Script?");
+System.out.println();
+System.out.println("No.");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>System.out.print("Java");</code></td><td>gibt <code>Java</code> aus. Kein Umbruch: Die nächste Ausgabe landet in derselben Zeile.</td></tr>
+ <tr><td><code>System.out.print("Script?");</code></td><td>klebt direkt dahinter. Jetzt steht <code>JavaScript?</code> in der Zeile.</td></tr>
+ <tr><td><code>System.out.println();</code></td><td>gibt keinen Text aus, nur den Zeilenumbruch.</td></tr>
+ <tr><td><code>System.out.println("No.");</code></td><td>steht deshalb in der zweiten Zeile und bricht danach selbst um.</td></tr>
+ </table>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Sonderzeichen in Texten (Escape-Sequenzen)</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Manche Zeichen passen nicht direkt in einen String. Dafür gibt es den Backslash <code>\</code>:</p>
+ <ul>
+ <li><code>\n</code>: Zeilenumbruch mitten im Text</li>
+ <li><code>\"</code>: ein Anführungszeichen <em>im</em> Text (sonst hält der Compiler den String dort für beendet)</li>
+ <li><code>\\</code>: ein echter Backslash</li>
+ </ul>
+ <div class='codebox runner flach' data-out='Er sagte: "Java macht Spaß"&#10;Ehrlich.&#10;Pfad: C:\Programme\Java'>
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Escape.java (Ausschnitt)</p>
+<pre><code class="java">System.out.println("He said: \"Java is fun\"\nHonestly.");
+System.out.println("Path: C:\\Program Files\\Java");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ </details>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Kommentare: Notizen, die Java überliest</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Mit <code>//</code> schreibst du Notizen nur für Menschen. Java ignoriert sie <strong>komplett</strong>:</p>
+ <div class="codebox runner flach" data-out="I am code.\nMe too.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Kommentare.java (Ausschnitt)</p>
+<pre><code class="java">// Das hier ist ein Kommentar. Java tut so, als wäre es Luft.
+System.out.println("I am code.");    // geht auch hinter einer Anweisung
+
+/* Und so kommentiert man
+   gleich mehrere Zeilen am Stück. */
+System.out.println("Me too.");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE: was erscheint, was nicht?</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p>Wenige, aber gute Kommentare: Sie erklären das <em>Warum</em>, nicht das Offensichtliche.</p>
+ </div>
+ </details>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p><code>print</code> klebt, <code>println</code> bricht um. Kommentare (<code>//</code>) überliest der Compiler. Sonderzeichen im Text beginnen mit Backslash: <code>\n</code> für einen Umbruch, <code>\"</code> für ein Anführungszeichen.</p>
+ </div>
+
+ <h3 id="ausgabe-werkstatt">Aufgabe 2.4.1: Ausgabe-Werkstatt</h3>
+ <p>Neun Anweisungen untereinander in <em>einer</em> main. Schreib die komplette Konsole auf,
+ <strong>bevor</strong> du ausführst. Wo entsteht ein Umbruch, wo nicht?</p>
+ <div class="codebox runner" data-trace data-out="Hello\nHelloAB\n3\n12\nLine1\nLine2\nHe said &quot;Hello&quot;.\n\nEnd">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Output.java</p>
+<pre><code class="java">public class Output {
+
+    public static void main(String[] args) {
+        System.out.println("Hello");
+        System.out.print("Hello");
+        System.out.println("A" + "B");
+        System.out.println(1 + 2);
+        System.out.println("1" + 2);
+        System.out.println("Line1\nLine2");
+        System.out.println("He said \"Hello\".");
+        System.out.println();
+        System.out.println("End");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Die drei Stellen, an denen es hakt<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <ul>
+ <li><strong>Zeile 2 macht keinen Umbruch.</strong> <code>print</code> ohne „ln“, also steht das <code>AB</code> aus Zeile 3 direkt dahinter: <code>HelloAB</code>.</li>
+ <li><strong><code>1 + 2</code> rechnet, <code>"1" + 2</code> verkettet.</strong> Sobald ein String beteiligt ist, addiert <code>+</code> nicht mehr, sondern verkettet.</li>
+ <li><strong><code>\n</code> und <code>\"</code> sind Escape-Sequenzen.</strong> Das eine macht
+ einen Umbruch, das andere ein Anführungszeichen, beide <em>im</em> Text.</li>
+ </ul>
+ <p>Die vorletzte Zeile ist wirklich leer: <code>println()</code> ohne Text gibt nur den Umbruch aus.</p>
+ </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Das reicht für jetzt</p>
+ <ul>
+ <li>Ein Java-Programm steht in einer <strong>Klasse</strong> und startet in der <strong>main-Methode</strong>.</li>
+ <li><code>System.out.println("…")</code> gibt Text aus. <code>print</code> klebt, <code>println</code> bricht um.</li>
+ <li>90 % der Anfängerfehler: Semikolon vergessen, Groß-/Kleinschreibung verwechselt, Klammer nicht geschlossen.</li>
+ <li>Klassen in <strong>PascalCase</strong>, Variablen in <strong>camelCase</strong>, Konstanten ganz groß (<code>VAT</code>).</li>
+ <li>Die Datei heißt wie die Klasse: <code>HelloWorld.java</code>.</li>
+ <li>Kommentare (<code>//</code>) überliest der Compiler. Sonderzeichen im Text: <code>\n</code>, <code>\"</code>.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="baustein uebung quiz">
+ <h3>Checkpoint</h3>
+ <p class="widget-hinweis">4 Fragen zu Klasse, main und Ausgabe.</p>
+
+ <div class="qq">
+ <p class="qq-text">1. Wo startet jedes Java-Programm?</p>
+ <div class="qq-opt">
+ <button data-why="Klingt logisch, aber in der ersten Zeile steht meist nur die Klassen-Definition. Die JVM springt gezielt zur main-Methode, egal wo sie in der Datei steht.">In der ersten Zeile der Datei</button>
+ <button data-ok>In der main-Methode</button>
+ <button data-why="Die Länge des Namens spielt keine Rolle. Die JVM sucht beim Start nur nach einer Methode: main.">In der Methode mit dem kürzesten Namen</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Die JVM sucht beim Start immer exakt nach <code>public static void main(String[] args)</code>. Kein main, kein Start.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">2. Was ist an dieser Zeile falsch? <code>system.out.println("Hi");</code></p>
+ <div class="qq-opt">
+ <button data-why="Schau aufs erste Wort: kleines s. Für Java sind system und System zwei völlig verschiedene Namen, und nur einen davon kennt es.">Nichts, die läuft so</button>
+ <button data-why="Umgekehrt: Text MUSS in doppelte Anführungszeichen. Ohne sie hält der Compiler Hi für einen Namen, etwa einer Variable, und meldet einen Fehler.">„Hi“ müsste ohne Anführungszeichen stehen</button>
+ <button data-ok>system müsste großgeschrieben sein: System</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Java unterscheidet streng zwischen Groß- und Kleinschreibung. <code>System</code> ist eine Klasse, <code>system</code> kennt Java nicht.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">3. Was macht das <code>;</code> am Zeilenende?</p>
+ <div class="qq-opt">
+ <button data-ok>Es beendet eine Anweisung, wie ein Punkt am Satzende</button>
+ <button data-why="Verlockend, aber nein: Ohne Semikolon weiß der Compiler nicht, wo die Anweisung endet. Fehler garantiert.">Es ist reine Deko und kann wegbleiben</button>
+ <button data-why="Kommentare starten mit // (bis Zeilenende) oder /* … */. Das Semikolon macht das Gegenteil: Es beendet etwas.">Es startet einen Kommentar</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Ohne Semikolon weiß der Compiler nicht, wo die Anweisung aufhört. Das Dach <code>^</code> in der Meldung steht direkt hinter dem letzten Zeichen der Zeile, in der es fehlt.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">4. Was ist der Unterschied zwischen <code>print()</code> und <code>println()</code>?</p>
+ <div class="qq-opt">
+ <button data-why="Beide geben alles aus, was man ihnen gibt. Text, Zahlen, gemischt. Der Unterschied liegt woanders: im Zeilenumbruch danach.">println kann nur Zahlen ausgeben</button>
+ <button data-ok>println macht nach der Ausgabe einen Zeilenumbruch, print nicht</button>
+ <button data-why="print ist weder alt noch verboten, es ist absichtlich da, um Ausgaben in EINER Zeile zusammenzubauen (hast du in der Trace-Aufgabe gesehen!).">print ist die alte Version und verboten</button>
+ </div>
+ <p class="qq-erklaerung" hidden>„ln“ = line. println springt danach in die nächste Zeile, print bleibt in derselben Zeile.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+ <div class="kapitel-ende">
+ <div class="blaettern">
+      <a class="btn" href="01-grundbegriffe.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Kapitel 1</a>
+      <a class="btn btn-haupt" href="03-variablen.html">Kapitel 3: Variablen & Datentypen<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </div>
+ </div>
+
+</main>
+
+<footer class="seitenfuss">
+ <div class="seitenfuss-innen">
+ <p><strong>Cheat Sheet: Java</strong> ·
+      Java-Grundlagen für Lernfeld 5,
+ „Software zur Verwaltung von Daten anpassen“, IT-Berufe, Jahrgangsstufe 10.</p>
+
+ </div>
+</footer>
+
+<script src="../js/app.js"></script>
+<script>
+(function () {
+ var $ = CC.$, $$ = CC.$$;
+
+ /* ---------- Fehler-Finder ---------- */
+
+ var found = 0;
+ var BUGS = {
+ '1': { fix: 'class', why: '<strong>Bug 1: <code>Class</code> &rarr; <code>class</code>.</strong> Das Schlüsselwort wird kleingeschrieben. Groß-/Kleinschreibung ist in Java keine Stilfrage, sondern eine Regel, die der Compiler prüft.' },
+ '2': { fix: 'System', why: '<strong>Bug 2: <code>system</code> &rarr; <code>System</code>.</strong> Die Klasse System beginnt mit großem S. Für Java sind <code>system</code> und <code>System</code> zwei völlig verschiedene Dinge.' },
+ '3': { fix: ' ; ', why: '<strong>Bug 3: Das Semikolon fehlte!</strong> Jede Anweisung braucht ihr <code>;</code> am Ende. Sonst meldet der Compiler <code>&#39;;&#39; expected</code> am Ende genau dieser Zeile.' },
+ '4': { fix: '}', why: '<strong>Bug 4: Die schließende Klammer der main fehlte.</strong> Zwei <code>{</code> geöffnet, nur eine <code>}</code> geschlossen. Klammern kommen im Doppelpack, und dieser Fehler ist der fieseste, weil der Compiler ihn erst am Dateiende bemerkt und dort meldet, wo gar nichts falsch ist.' }
+ };
+
+ $$('.bugcode .tok-click').forEach(function (t) {
+ t.addEventListener('click', function () {
+ var info = $('#bug-info');
+ var bug = t.getAttribute('data-bug');
+ if (bug && !t.classList.contains('fixed')) {
+ t.classList.add('fixed');
+ t.textContent = BUGS[bug].fix;
+ found++;
+ $('#bug-status').textContent = 'Gefundene Fehler: ' + found + ' von 4';
+ info.innerHTML = '<p style="margin:0">' + BUGS[bug].why + '</p>';
+
+ if (found === 4) {
+ $('#bug-status').textContent = ' Alle 4 Fehler gefunden! Der Code kompiliert jetzt.';
+ }
+ } else if (!bug) {
+
+ setTimeout(function () { }, 450);
+ info.innerHTML = '<p style="margin:0">Da ist alles in Ordnung, diese Stelle übersetzt der Compiler ohne Fehler. Such weiter!</p>';
+ }
+ });
+ });
+})();
+</script>
+</body>
+</html>

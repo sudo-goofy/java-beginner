@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 4 · Methods · Cheat Sheet: Java</title>
+<meta name="description" content="Parameters, return values, and method calls, and why copy-paste stops here.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../../img/favicon.svg"><link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Remember this: bookmark</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Quick think: question for you</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Exercise: pencil</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>ZombieApocalypse project task: zombie head</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Scenario task: stopwatch</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: flag</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Explained differently: repeat</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Answer: key</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>The key points: page with dog-eared corner</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Learning goals: target</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Console: prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>IDE: editor window with sidebar</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Error message: bug</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Correct: check mark</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Wrong: cross</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Duration: clock</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Chapter: open notebook</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Table of contents</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Next</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Back</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Down</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Expandable</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Opens a window</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Night shift</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Day view</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Clear progress</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Print</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Skip to content</a>
+
+<nav class="topbar" aria-label="Main navigation">
+ <div class="topbar-innen">
+ <a class="marke" href="../index.html"> <img class="oakymarke" src="../../img/kapitel/oaky.svg" alt="" width="128" height="148"> Cheat Sheet: Java </a> <span class="topbar-titel">Chapter 4 · Parameters, return, overloading</span> <span class="topbar-rechts"><a class="btn btn-klein" href="../index.html">Learning path</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Choose language"><span>EN</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="../../kapitel/04-methoden.html" lang="de" hreflang="de">Deutsch</a></li><li><a href="04-methoden.html" lang="en" hreflang="en" aria-current="true">English</a></li></ul></details><!--/sprache--></span>
+ </div>
+ <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+ <header class="kapitel-kopf">
+ <p class="kicker">Chapter 4 of 11 · Parameters, return, overloading</p>
+ <h1>Methods</h1>
+ <p class="vorspann">Writing the same code three times is not diligent, it is expensive. Methods are the answer.</p>
+ <p class="kapitel-meta"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>approx. 45 min</span></p>
+ </header>
+
+ <section class="einstieg" aria-label="Intro: the problem">
+ <p class="einstieg-kopf">THE PROBLEM</p>
+ <p class="einstieg-frage">Three guests are supposed to be greeted. The code for it was copied. Do you notice anything in the output?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox runner" data-out="Hello Aylin!\nNice to have you here, Aylin.\nHello Mia!\nNice to have you here, Mia.\nHello Ben!\nNice to have you here, Mia.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Greeting.java</p>
+<pre><code class="java">System.out.println("Hello Aylin!");
+System.out.println("Nice to have you here, Aylin.");
+System.out.println("Hello Mia!");
+System.out.println("Nice to have you here, Mia.");
+System.out.println("Hello Ben!");
+System.out.println("Nice to have you here, Mia.");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>Ben is greeted as Mia: a name got left behind while copying. And you would have to make every change to the greeting three times.</p>
+ <button class="btn einstieg-knopf" type="button">With a method</button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-out="Hello Aylin!\nNice to have you here, Aylin.\nHello Mia!\nNice to have you here, Mia.\nHello Ben!\nNice to have you here, Ben.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Greeting.java</p>
+<pre><code class="java">public class Greeting {
+
+    static void greet(String name) {
+        System.out.println("Hello " + name + "!");
+        System.out.println("Nice to have you here, " + name + ".");
+    }
+
+    public static void main(String[] args) {
+        greet("Aylin");
+        greet("Mia");
+        greet("Ben");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">The greeting is written once and called three times, each time with a different name. This chapter shows how to write methods like that.</p>
+ </div>
+ </section>
+
+
+
+ <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Contents of this chapter">
+ <h2 id="in-diesem-kapitel">In this chapter</h2>
+ </nav>
+
+ <details class="baustein ziele">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>After this chapter you can<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+   <div class="inhalt">
+     <ul>
+ <li>read a method signature: return type, name, parameters</li>
+ <li>write and call methods, with and without <strong>parameters</strong>, with and without a <strong>return value</strong></li>
+ <li>replace repeated code with method calls, name and apply the <strong>DRY principle</strong></li>
+ <li>say where a variable is valid and why a method does not see the variables of main</li>
+ <li>recognize when two methods may have the same name (<strong>overloading</strong>)</li>
+ </ul>
+   </div>
+ </details>
+
+
+ <section class="block" id="das-copy-paste-problem">
+ <p>The profile card from Chapter 3: five lines for <em>one</em> resident. Now two more move in: select, copy, paste, change the name. Again. After a week: five copies. You find a typo and get to fix it five times.</p>
+ </section>
+
+ <section class="block">
+ <h2 id="eine-methode-ist-eine-kleine-maschine"><span class="nr">4.1</span> Method declaration and signature</h2>
+ <p class="wozu">The solution: <span class="hl">A method is a piece of code with a name.</span> Written once, <strong>called</strong> as often as you like, each time with different values. (Other languages say <em>function</em>.) It works like a small machine: <strong>parameters</strong> go in, a <strong>return value</strong> comes out.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="static">static</span> <var data-teil="rtyp">return type</var> <var data-teil="name">name</var>(<var data-teil="param">type</var> <var data-teil="param">parameter</var>) <span data-teil="rumpf">{</span>
+    <var data-teil="rumpf">statements</var>
+    <span data-teil="return">return</span> <var data-teil="wert">value</var>;
+<span data-teil="rumpf">}</span></code></pre>
+ <p class="aufbau-info">The first line is called the <strong>signature</strong>: it shows what the method needs and what it returns. If nothing comes back, <code>void</code> stands there, and the <code>return</code> with a value is dropped. Multiple parameters are separated by a comma; without parameters, the parentheses stay empty.</p>
+ <div hidden data-erkl="static"><strong><code>static</code></strong> goes in front of every method you write for now, because main is itself <code>static</code> and can only call other <code>static</code> methods directly. If it is missing, the compiler reports <code>non-static method … cannot be referenced from a static context</code> at the call. What exactly is behind it is explained in the Level-up further down.</div>
+ <div hidden data-erkl="rtyp"><strong>Return type:</strong> the type of the value the method gives back with <code>return</code>, such as <code>int</code>, <code>double</code>, <code>boolean</code>, or <code>String</code>. For <code>static double twice(…)</code>, the result of every call is a <code>double</code>.</div>
+ <div hidden data-erkl="name"><strong>Name:</strong> freely chosen, starts with a lowercase letter and says what the method does, preferably with a verb: <code>twice</code>, <code>sayHello</code>, <code>calculateSum</code>. The method is called by this name.</div>
+ <div hidden data-erkl="param"><strong>Parameter:</strong> type and name of a variable that only gets its value at the call, such as <code>double number</code>. Inside the method you use it like any other variable. Each parameter needs its own type: <code>(int a, int b)</code>, not <code>(int a, b)</code>.</div>
+ <div hidden data-erkl="rumpf"><strong>The method body</strong> stands between the curly braces: the statements that are executed from top to bottom at every call. There is no semicolon after the signature, just the <code>{</code> directly.</div>
+ <div hidden data-erkl="return"><strong><code>return</code></strong> gives the value back to the place of the call and ends the method immediately. Statements directly after it are never executed.</div>
+ <div hidden data-erkl="wert"><strong>Value:</strong> the result that is returned: a number, a variable, or a calculation like <code>number * 2</code>. Its type must match the return type.</div>
+ </div>
+
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Reading a signature</p>
+<pre><code class="java">static double twice(double number) {
+    return number * 2;
+}</code></pre>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">LINE BY LINE</p>
+ <table>
+ <tr><td><code>static</code></td><td>required in front of every method for now. What it means is explained in the Level-up further down.</td></tr>
+ <tr><td><code>double</code></td><td>the <strong>return type</strong>: The method returns a value of this type, here a decimal number.</td></tr>
+ <tr><td><code>twice</code></td><td>the name of the method. It is called by this name.</td></tr>
+ <tr><td><code>(double number)</code></td><td>the <strong>parameter</strong>: a variable that only gets its value at the call.</td></tr>
+ <tr><td><code>return number * 2;</code></td><td>returns the result and ends the method.</td></tr>
+ </table>
+ </div>
+
+ <p>Parameters and return value are optional. That gives <strong>exactly four kinds</strong>, all here in one program:</p>
+ </section>
+
+ <section class="widget">
+ <h3>Four kinds in one program</h3>
+ <p class="widget-hinweis">Click a method or its call: both light up together. Then “Run”.</p>
+ <div class="klickcode">
+ <div class="codebox runner" data-out="Welcome to the cinema!\nNow showing: Zombie Academy\nFree seats: 42\n3 tickets: 25.5 euros">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Cinema.java</p>
+<pre><code class="java klick">public class Cinema {
+
+    <span data-teil="s1">static void greet()</span> {
+        System.out.println("Welcome to the cinema!");
+    }
+
+    <span data-teil="s2">static void showMovie(String title)</span> {
+        System.out.println("Now showing: " + title);
+    }
+
+    <span data-teil="s3">static int freeSeats()</span> {
+        <span data-teil="ret">return</span> 42;
+    }
+
+    <span data-teil="s4">static double price(int tickets)</span> {
+        <span data-teil="ret">return</span> tickets * 8.5;
+    }
+
+    <span data-teil="main">public static void main(String[] args)</span> {
+        <span data-teil="s1">greet();</span>
+        <span data-teil="s2">showMovie("Zombie Academy");</span>
+        <span data-teil="s3">int free = freeSeats();</span>
+        System.out.println("Free seats: " + free);
+        <span data-teil="s4">double sum = price(3);</span>
+        System.out.println("3 tickets: " + sum + " euros");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="aufbau-info">Parameters and return value are each optional, which gives four kinds. The methods stand next to main, and they are called in main.</p>
+ <div hidden data-erkl="s1"><strong>Kind 1: nothing in, nothing out.</strong> Return type <code>void</code>, empty parentheses. It is called as a statement of its own: <code>greet();</code></div>
+ <div hidden data-erkl="s2"><strong>Kind 2: something in, nothing out.</strong> The parameter <code>String title</code> gets the value from the parentheses at the call: <code>showMovie("Zombie Academy");</code> Return type <code>void</code>, so nothing comes back.</div>
+ <div hidden data-erkl="s3"><strong>Kind 3: nothing in, something out.</strong> Empty parentheses, return type <code>int</code>. At the call, you store the return value in a variable of the same type: <code>int free = freeSeats();</code></div>
+ <div hidden data-erkl="s4"><strong>Kind 4: something in, something out.</strong> Parameter <code>int tickets</code>, return type <code>double</code>. <code>price(3)</code> calculates <code>3 * 8.5</code> and returns <code>25.5</code>, and the value ends up in <code>sum</code>.</div>
+ <div hidden data-erkl="ret"><strong><code>return</code></strong> returns the value after it and ends the method. The value must match the return type. Methods with <code>void</code> do not need <code>return</code>.</div>
+ <div hidden data-erkl="main"><strong>main</strong> calls the methods one after the other. The methods themselves stand next to it in the same class, not inside main.</div>
+ </div>
+ </section>
+
+ <section class="block">
+ <div class="oaky">
+ <img class="figur" src="../../img/kapitel/oaky-zeigt.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p><strong>You already know two methods:</strong> Java calls <code>main</code> automatically, and you have been calling <code>System.out.println(…)</code> yourself since Chapter 2. The only new thing: <strong>You build your own.</strong></p>
+ </div>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p>Reading a signature: <strong>return type · name · parameters.</strong> <code>void</code> means: nothing comes back.</p>
+ </div>
+
+ <div class="codebox cloze">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Tickets.java: complete the program</p>
+<pre><code class="nohl luecken">public class Tickets {
+
+    // returns nothing, takes a name
+    static <input class="cz" data-a="void" size="6"> greet(String name) {
+        System.out.println("Hello " + name + "!");
+    }
+
+    // takes a count, returns the price
+    static int price(<input class="cz" data-a="int" size="5"> count) {
+        <input class="cz" data-a="return" size="8"> count * 8;
+    }
+
+    public static void main(String[] args) {
+        greet("Mia");
+        <input class="cz" data-a="int" size="5"> sum = price(3);
+        System.out.println("3 tickets cost " + sum + " euros.");
+    }
+
+}</code></pre>
+ <div class="cloze-leiste">
+ <button class="btn btn-klein cloze-check" type="button">Check </button>
+ <p class="cloze-meldung"></p>
+ </div>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="wo-wohnen-methoden-direkt-neben-der-main"><span class="nr">4.2</span> Method calls and return values</h2>
+ <p class="wozu">A method only runs when someone <strong>calls</strong> it: with its name and the values in the parentheses. What it returns with <code>return</code>, you catch in a variable or keep calculating with directly.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><var data-teil="name">name</var>(<var data-teil="arg">arguments</var>);
+<var data-teil="typ">type</var> <var data-teil="variable">variable</var> <span data-teil="zuweisung">=</span> <var data-teil="name">name</var>(<var data-teil="arg">arguments</var>);</code></pre>
+ <p class="aufbau-info">You write your own methods <strong>in the same class as main</strong>: next to it, not inside it. The first line calls a method and lets it work, the second also catches its return value.</p>
+ <div hidden data-erkl="name"><strong>Name of the method:</strong> spelled exactly as in the signature, including uppercase and lowercase. The parentheses belong to every call, even without arguments: <code>rollDie()</code>.</div>
+ <div hidden data-erkl="arg"><strong>Arguments:</strong> the values for the parameters, separated by commas, such as <code>"Aylin"</code> or <code>2, 3</code>. Number, order, and types must match the parameter list. The type is not written in front at the call: <code>sayHello("Ben")</code>, not <code>sayHello(String "Ben")</code>.</div>
+ <div hidden data-erkl="typ"><strong>Type of the variable:</strong> must match the return type of the method. If <code>rollDie()</code> returns an <code>int</code>, you write <code>int pips = rollDie();</code>. A <code>void</code> method returns no value, so its call cannot stand to the right of the <code>=</code>.</div>
+ <div hidden data-erkl="variable"><strong>Variable:</strong> a freely chosen name under which the return value is stored. After that you work with it like any other variable, such as <code>System.out.println(pips);</code>.</div>
+ <div hidden data-erkl="zuweisung"><strong>The equals sign</strong> assigns: first the method is executed, then its return value is stored in the variable on the left.</div>
+ </div>
+
+ <div class="codebox runner" data-out="Hi, Aylin!\nHi, Ben!\nHi, Ben!">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>ZombieApocalypse.java</p>
+<pre><code class="java">public class ZombieApocalypse {
+
+    public static void main(String[] args) {
+        sayHello("Aylin");        // call 1
+        sayHello("Ben");          // call 2, same code, different value!
+        sayHello("Ben");          // works twice, too. Ben is happy.
+    }
+
+    static void sayHello(String name) {
+        System.out.println("Hi, " + name + "!");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">LINE BY LINE</p>
+ <table>
+ <tr><td><code>sayHello("Aylin");</code></td><td>the call: Java jumps into the method, and the parameter <code>name</code> gets the value <code>"Aylin"</code>. Then it continues in main.</td></tr>
+ <tr><td><code>sayHello("Ben");</code></td><td>the same code with a different value. One call instead of a copy, and twice is fine, too.</td></tr>
+ <tr><td><code>void sayHello(String name)</code></td><td>stands next to main, not in it. <code>void</code>: The method outputs something, nothing comes back.</td></tr>
+ </table>
+ </div>
+
+ <p>If the greeting changes, you change it in <strong>exactly one place</strong>.</p>
+ <p>The rule behind it is called <span class="hl">DRY, “Don't Repeat Yourself”</span>. It does not mean “type little”, but: <strong>Every piece of knowledge lives in exactly one place.</strong> If the profile card is in the code five times, you will eventually forget one place when changing it. Not maybe: for sure.</p>
+ </section>
+
+ <section class="widget">
+ <h3>The jump stepper: What REALLY happens at a call?</h3>
+ <p class="widget-hinweis">The hardest part is invisible: Java <em>jumps</em> into the method at the call and back afterwards. Here in slow motion.</p>
+
+ <div class="wflex">
+ <div style="flex:2 1 300px">
+ <div class="codebox flach" style="margin:0">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Sprung.java</p>
+<pre><code class="nohl" style="background:none;border:none;padding:0;white-space:pre;color:#f0eef7;font-size:0.88rem;line-height:2">public static void main(String[] args) {
+    <span id="js-l1" class="st-part">int a = twice(5);</span>
+    <span id="js-l2" class="st-part">System.out.println(a);</span>
+}
+
+<span id="js-sig" class="st-part">static int twice(int x)</span> {
+    <span id="js-ret" class="st-part">return x * 2;</span>
+}</code></pre>
+ </div>
+ <p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-klein" id="js-step">Step </button>
+ <button class="btn btn-klein" id="js-reset"> Reset</button></p>
+ </div>
+ <div style="flex:1 1 200px">
+ <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+ <div class="var-box" style="width:110px;min-height:80px">
+ <span class="var-type">int</span> <span class="var-name">a (in main)</span> <span class="var-value" id="js-a">: </span>
+ </div>
+ <div class="var-box" style="width:110px;min-height:80px">
+ <span class="var-type" style="background:var(--ueber)">int</span> <span class="var-name">x (parameter)</span> <span class="var-value" id="js-x">: </span>
+ </div>
+ </div>
+ <p class="statuszeile" id="js-status" style="text-align:center;margin-top:12px">Ready. Press “Step”.</p>
+ </div>
+ </div>
+ <div class="sim-konsole" id="js-out" style="margin-top:14px"></div>
+ </section>
+
+ <section class="block">
+ <div class="baustein selbst">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>You first, then Java</p>
+ <p>Return values can be <strong>used in further calculations</strong>, right inside println. What comes out? Write down your prediction before you run it.</p>
+ </div>
+
+ <div class="codebox runner" data-trace data-out="10\n9">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Square.java (excerpt)</p>
+<pre><code class="java">static int square(int x) {
+    return x * x;
+}
+
+System.out.println(square(3) + 1);      // ???
+System.out.println(square(2 + 1));      // ??? (watch the parentheses!)</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <p><code>10</code> and <code>9</code>. With <code>square(3) + 1</code>, the squaring comes first (9), then the addition. With <code>square(2 + 1)</code>, the parentheses come first (3), and <strong>then</strong> it is squared.</p>
+
+ <div class="baustein kern" id="merksaetze-zu-den-vier-sorten">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <ul>
+ <li><code>void</code>: <span class="hl">Nothing comes back.</span> The method only <em>does</em> something (e.g. output). Nothing can be stored, there is no result.</li>
+ <li>A type instead of void (e.g. <code>int</code>): The method <strong>must</strong> deliver a matching value with <code>return</code>. You catch it: <code>int pips = rollDie();</code></li>
+ <li>Parameters are variables that get their value <strong>at the call</strong>. The values you pass are called <strong>arguments</strong>. The compiler checks their types as strictly as with any assignment.</li>
+ <li><code>return</code> ends the method <strong>immediately</strong>. The compiler rejects code directly after it (<code>unreachable statement</code>).</li>
+ </ul>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-up: What is this static doing everywhere?</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p><code>static</code> means “belongs firmly to the class, works without preparation”. main is static and can only call other static methods directly: that is why it stands in front of every method. An example from the Java world: <code>Math.random()</code>.</p>
+ <p>Methods <em>without</em> static belong to individual <strong>objects</strong> and access their data (Chapter 9).</p>
+ <p>And <strong><code>final</code></strong>? You know it from Chapter 3: constants.</p>
+ <div class="codebox flach">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Constants</p>
+<pre><code class="java">static final double VAT = 0.19;   // convention: ALL CAPS
+// VAT = 0.25;   compiler error. final means final.</code></pre>
+ </div>
+ </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <h2 id="wo-eine-variable-gilt"><span class="nr">4.3</span> Scope of variables</h2>
+ <p class="wozu">A variable is valid in the block <code>{ … }</code> in which it was declared: from its line to the closing brace. That is its <strong>scope</strong>. It explains why parameters and <code>return</code> are needed.</p>
+ <div class="klickcode">
+ <div class="codebox runner" data-out="10">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Zone.java</p>
+<pre><code class="java klick"><span class="zl">public class Zone {
+</span><span class="zl">
+</span><span class="zl">    static int doubleIt(<span data-teil="wert">int value</span>) {
+</span><span class="zl">        <span data-teil="ergebnis">int result</span> = <span data-teil="wert">value</span> * 2;
+</span><span class="zl">        return <span data-teil="ergebnis">result</span>;
+</span><span class="zl">    }
+</span><span class="zl">
+</span><span class="zl">    public static void main(String[] args) {
+</span><span class="zl">        <span data-teil="vorrat">int supply</span> = 5;
+</span><span class="zl">        System.out.println(doubleIt(<span data-teil="vorrat">supply</span>));
+</span><span class="zl">    }
+</span><span class="zl">
+</span><span class="zl">}
+</span></code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="aufbau-info">Click a variable in the code. The lines where it is valid stay highlighted: its <strong>scope</strong>.</p>
+ <div hidden data-erkl="wert" data-gilt="3-6"><strong><code>value</code></strong> is a parameter and is valid in <code>doubleIt</code>, up to its closing brace. main does not know it. At the call it gets a <strong>copy</strong> of the argument, here the 5 from <code>supply</code>.</div>
+ <div hidden data-erkl="ergebnis" data-gilt="4-6"><strong><code>result</code></strong> is valid from its declaration to the end of <code>doubleIt</code>. With <code>return</code>, only the <strong>value</strong> 10 leaves the method, the variable itself does not exist outside.</div>
+ <div hidden data-erkl="vorrat" data-gilt="9-11"><strong><code>supply</code></strong> is valid in main, from its line to the closing brace of main. <code>doubleIt</code> does not know the name, but calculates with the 5: It was passed as a copy.</div>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p>Between methods there are only <strong>two ways</strong> for values: in through the <strong>parameters</strong>, out through <code>return</code>. All other variables are valid only in their own method.</p>
+ </div>
+
+ <h3>Exercise 4.3.1: What is valid where?</h3>
+ <p>Two more lines, and it does not compile. What does <code>javac</code> say?</p>
+ <div class="codebox runner" data-fehler="Zone.java:13: error: cannot find symbol&#10;        System.out.println(result);&#10;                           ^&#10;  symbol:   variable result&#10;  location: class Zone&#10;1 error">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Zone.java: two more lines</p>
+<pre><code class="java">public class Zone {
+
+    static int doubleIt(int value) {
+        int result = value * 2;
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int supply = 5;
+        int doubled = doubleIt(supply);
+
+        System.out.println(doubled);
+        System.out.println(result);
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Compile</button>
+ <span class="run-hinweis">JAVAC</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="oaky">
+ <img class="figur" src="../../img/kapitel/oaky-finger.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p>The most common cause of <code>cannot find symbol</code> (rank 3 in the <a href="../panik.html">Panic glossary</a>): The name is spelled correctly, but is not valid at this point.</p>
+ </div>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="ueberladen"><span class="nr">4.4</span> Overloading methods</h2>
+ <p class="wozu">Two methods may have the same name if the compiler can tell them apart by the <strong>parameter list</strong>. This is called <strong>overloading</strong>. You have been using it since Chapter 2: <code>System.out.println</code> accepts text, integers, decimal numbers, <code>boolean</code>. No magic: <code>println</code> exists <strong>ten times</strong>, once for each kind.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code>static <var data-teil="typ">type</var> <var data-teil="name">name</var>(<var data-teil="liste-a">parameter list A</var>) <span data-teil="rumpf">{ … }</span>
+static <var data-teil="typ">type</var> <var data-teil="name">name</var>(<var data-teil="liste-b">parameter list B</var>) <span data-teil="rumpf">{ … }</span></code></pre>
+ <p class="aufbau-info">The parameter lists must differ in number, types, or order. Which version runs is decided by the compiler at the <strong>call</strong>, based on the number and type of the arguments.</p>
+ <div hidden data-erkl="typ"><strong>Return type:</strong> may be the same or different in both versions. But it alone does not tell them apart: The compiler rejects two methods with the same name and the same parameter list, even if their return types differ.</div>
+ <div hidden data-erkl="name"><strong>Same name</strong> in both lines, spelled exactly the same. That is overloading: one name for the same task with different parameters, such as <code>add</code> for two or for three numbers.</div>
+ <div hidden data-erkl="liste-a"><strong>Parameter list A:</strong> the parameters of the first version, such as <code>int a, int b</code>. The call <code>add(2, 3)</code> runs this version.</div>
+ <div hidden data-erkl="liste-b"><strong>Parameter list B:</strong> must differ from A, such as <code>int a, int b, int c</code> or <code>double a, double b</code>. Different parameter names alone are not enough: <code>int x, int y</code> counts as the same list as <code>int a, int b</code>.</div>
+ <div hidden data-erkl="rumpf"><strong>The method body</strong> <code>{ … }</code>: Each version is a complete method with its own body. The dots are only placeholders for the statements here.</div>
+ </div>
+
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Adder.java (excerpt)</p>
+<pre><code class="java">static int add(int a, int b) {
+    return a + b;
+}
+
+static int add(int a, int b, int c) {
+    return a + b + c;
+}
+
+static double add(double a, double b) {
+    return a + b;
+}</code></pre>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">LINE BY LINE</p>
+ <table>
+ <tr><td><code>add(int a, int b)</code></td><td>two integers. Runs for <code>add(2, 3)</code>.</td></tr>
+ <tr><td><code>add(int a, int b, int c)</code></td><td>three integers. Runs for <code>add(2, 3, 4)</code>.</td></tr>
+ <tr><td><code>add(double a, double b)</code></td><td>two decimal numbers. Runs for <code>add(2.5, 3.5)</code>.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <ul>
+ <li>What counts is the <strong>parameter list</strong>: number, types, order.</li>
+ <li>The <strong>return type does not count.</strong> If two methods differ only in that, it is not overloading but a compile error.</li>
+ </ul>
+ </div>
+ <p>Why? The compiler picks the version at the <strong>call site</strong>, and only the arguments are there.</p>
+
+ <h3>Exercise 4.4.1: Which one is called?</h3>
+ <p>Predict the console. The last line is the interesting one: There is no <code>add(int, double)</code> at all.</p>
+ <div class="codebox runner" data-trace data-out="5\n9\n6.0\n5.5">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Adder.java</p>
+<pre><code class="java">public class Adder {
+
+    static int add(int a, int b) {
+        return a + b;
+    }
+
+    static int add(int a, int b, int c) {
+        return a + b + c;
+    }
+
+    static double add(double a, double b) {
+        return a + b;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(add(2, 3));
+        System.out.println(add(2, 3, 4));
+        System.out.println(add(2.5, 3.5));
+        System.out.println(add(2, 3.5));
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p>At the last call <code>add(2, 3.5)</code>, the third version runs as well: Java turns the <code>2</code> into a <code>2.0</code>.</p>
+ </section>
+
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>That's enough for now</p>
+ <ul>
+ <li>Method = code with a name: write it once, call it as often as you like. House rule (<strong>DRY</strong>): If you want to copy code, write a method.</li>
+ <li>Reading a signature: return type · name · parameters.</li>
+ <li>void = nothing comes back. Otherwise <code>return</code> delivers the value and ends the method immediately.</li>
+ <li>Return values can be caught and used in further calculations.</li>
+ <li>A variable is valid only in its block. Values get in only via parameters and out only via <code>return</code>.</li>
+ <li><strong>Overloading</strong>: same name, different <strong>parameter list</strong>. The return type does not count.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="baustein uebung quiz">
+ <h3>Checkpoint</h3>
+ <p class="widget-hinweis">4 questions about methods.</p>
+
+ <div class="qq">
+ <p class="qq-text">1. What does <code>static int countZombies()</code> tell you about the method?</p>
+ <div class="qq-opt">
+ <button data-ok>It returns an int and needs no parameters</button>
+ <button data-why="Almost read in reverse: The type BEFORE the name is the return type. Parameters would be INSIDE the parentheses, and those are empty.">It returns nothing and needs an int as a parameter</button>
+ <button data-why="How often a method may be called is nowhere in the signature. Methods can be used as often as you like. That is the whole point.">It can only be called once</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Return type int (before the name), empty parentheses = no parameters.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">2. A method is declared as <code>void</code>. What follows from that?</p>
+ <div class="qq-opt">
+ <button data-why="void and parameters have nothing to do with each other: void sayHello(String name) is perfectly fine. Parameters are allowed, only a return value is missing.">It must not have any parameters</button>
+ <button data-ok>It returns nothing, and you cannot store its result in a variable</button>
+ <button data-why="Whether a method can be used from everywhere is governed by other keywords. void only concerns the return value: There is none.">It is secret and can only be used internally</button>
+ </div>
+ <p class="qq-erklaerung" hidden>void = no return value. The method does something but returns nothing. It may still have parameters.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">3. Given: <code>static void sayHello(String name)</code>. What happens with <code>sayHello(42);</code>?</p>
+ <div class="qq-opt">
+ <button data-why="With a method call, an int does not turn into a String by itself. The compiler checks arguments as strictly as any assignment.">Java automatically turns the 42 into the text "42"</button>
+ <button data-ok>Compiler error: 42 is an int, but the parameter requires a String</button>
+ <button data-why="It does not even get that far: The compiler reports the error when compiling, not only when running.">The method runs, but outputs nothing</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Arguments must match the parameter types. Wrong type &rarr; the program does not even compile.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">4. What does <code>return</code> do?</p>
+ <div class="qq-opt">
+ <button data-why="return restarts nothing, quite the opposite, it is the endpoint: return the value, end the method.">It restarts the method</button>
+ <button data-ok>It returns the value and ends the method immediately</button>
+ <button data-why="Only System.out.println prints to the console. return hands the value invisibly to the caller, and whether that prints it, stores it, or keeps calculating with it is the caller's business.">It prints the value to the console</button>
+ </div>
+ <p class="qq-erklaerung" hidden>return gives the result back to the caller and ends the method. Printing is the job of System.out.println.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+ <div class="kapitel-ende">
+ <div class="blaettern">
+      <a class="btn" href="03-variablen.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Chapter 3</a> <a class="btn btn-haupt" href="05-strings-eingabe.html">Chapter 5: Strings &amp; input<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </div>
+ </div>
+
+</main>
+
+<footer class="seitenfuss">
+ <div class="seitenfuss-innen">
+ <p><strong>Cheat Sheet: Java</strong> · Java basics for Learning Field 5, “Adapting software for data management”, IT professions, grade 10.</p>
+ </div>
+</footer>
+
+<script src="../../js/app.js"></script>
+<script>
+(function () {
+ var $ = CC.$, $$ = CC.$$;
+
+ /* ---------- Sprung-Stepper ---------- */
+
+ var JS_STEPS = [
+ { line: 'js-l1', a: ', ', x: ', ', status: '1 main reaches the call: twice(5). The value 5 is passed as an argument.' },
+ { line: 'js-sig', a: ', ', x: '5', status: '2 JUMP! Java jumps into the method. The parameter x gets the value 5.' },
+ { line: 'js-ret', a: ', ', x: '5', status: '3 Calculate: x * 2 = 10. return returns the 10 and ends the method.' },
+ { line: 'js-l1', a: '10', x: '', status: '4 JUMP BACK! The 10 is stored in a. The parameter x no longer exists, it was only valid during this call.' },
+ { line: 'js-l2', a: '10', x: '', status: '5 Continue in main: println outputs a.', print: '10' }
+ ];
+ var jsPos = 0;
+
+ function jsRender() {
+ ['js-l1', 'js-l2', 'js-sig', 'js-ret'].forEach(function (id) {
+ var el = $('#' + id);
+ var on = jsPos > 0 && JS_STEPS[jsPos - 1].line === id;
+ el.style.background = on ? 'var(--blau-ink)' : 'transparent';
+ el.style.color = on ? '#fff' : '';
+ el.style.borderRadius = '6px';
+ el.style.padding = '1px 4px';
+ });
+ if (jsPos > 0) {
+ var st = JS_STEPS[jsPos - 1];
+ $('#js-a').textContent = st.a;
+ $('#js-x').textContent = st.x;
+ $('#js-status').textContent = st.status;
+ if (st.print) $('#js-out').textContent = st.print;
+ } else {
+ $('#js-a').textContent = ', ';
+ $('#js-x').textContent = ', ';
+ $('#js-status').textContent = 'Ready. Press “Step”.';
+ $('#js-out').textContent = '';
+ }
+ }
+
+ $('#js-step').addEventListener('click', function () {
+ if (jsPos >= JS_STEPS.length) {
+ $('#js-status').textContent = ' Done. Call, jump, return, jump back. That is exactly what happens at EVERY method call.';
+ return;
+ }
+ jsPos++;
+ jsRender();
+ var box = $('#js-' + (jsPos === 2 ? 'x' : jsPos === 4 ? 'a' : ''));
+ 
+ });
+ $('#js-reset').addEventListener('click', function () { jsPos = 0; jsRender(); });
+ jsRender();
+})();
+</script>
+</body>
+</html>

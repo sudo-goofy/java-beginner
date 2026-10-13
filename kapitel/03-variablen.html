@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 3 · Variablen & Datentypen · Cheat Sheet: Java</title>
+<meta name="description" content="int, double, boolean, char und String, welcher Typ wofür, und die berühmteste Falle beim Rechnen.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../img/favicon.svg"><link rel="stylesheet" href="../css/style.css"></head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Merksatz: Lesezeichen</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kurz nachgedacht: Frage an dich</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufgabe: Stift</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Projektaufgabe ZombieApocalypse: Zombiekopf</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Handlungsorientierte Aufgabe: Stoppuhr</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: Fahne</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nochmal anders erklärt: Wiederholung</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Auflösung: Schlüssel</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Das Wichtigste in Kürze: Seite mit Eselsohr</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Lernziele: Zielscheibe</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Konsole: Prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Entwicklungsumgebung: Editorfenster mit Seitenleiste</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fehlermeldung: Käfer</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Richtig: Haken</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Falsch: Kreuz</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Dauer: Uhr</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kapitel: aufgeschlagenes Heft</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Inhaltsverzeichnis</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Weiter</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Zurück</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nach unten</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufklappbar</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Öffnet ein Fenster</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nachtschicht</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Tagesansicht</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fortschritt löschen</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Drucken</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Zum Inhalt springen</a>
+
+<nav class="topbar" aria-label="Hauptnavigation">
+ <div class="topbar-innen">
+ <a class="marke" href="../index.html">
+ <img class="oakymarke" src="../img/kapitel/oaky.svg" alt="" width="128" height="148">
+ Cheat Sheet: Java
+ </a>
+ <span class="topbar-titel">Kapitel 3 · Typ, Name, Wert</span>
+ <span class="topbar-rechts"><a class="btn btn-klein" href="../index.html">Lernpfad</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Sprache wählen"><span>DE</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="03-variablen.html" lang="de" hreflang="de" aria-current="true">Deutsch</a></li><li><a href="../en/kapitel/03-variablen.html" lang="en" hreflang="en">English</a></li></ul></details><!--/sprache--></span>
+ </div>
+ <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+ <header class="kapitel-kopf">
+ <p class="kicker">Kapitel 3 von 11 · Typ, Name, Wert</p>
+ <h1>Variablen &amp; Datentypen</h1>
+ <p class="vorspann">Eine Variable kannst du dir als Box mit Etikett vorstellen: Auf dem Etikett stehen Typ und Name, in der Box liegt der Wert. Der Typ entscheidet, was hineinpasst.</p>
+ <p class="kapitel-meta"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>ca. 55 min</span></p>
+ </header>
+
+ <section class="einstieg" aria-label="Einstieg: das Problem">
+ <p class="einstieg-kopf">DAS PROBLEM</p>
+ <p class="einstieg-frage">Ein Kinoticket kostet jetzt 13 statt 12 Euro. Jemand hat das Programm angepasst. Stimmen die Preise?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox runner" data-out="1 ticket: 13 euros\n2 tickets: 26 euros\n3 tickets: 36 euros">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Cinema.java</p>
+<pre><code class="java">System.out.println("1 ticket: " + 13 + " euros");
+System.out.println("2 tickets: " + 2 * 13 + " euros");
+System.out.println("3 tickets: " + 3 * 12 + " euros");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>3 Tickets für 36 Euro? Der Preis steht dreimal im Code, und an einer Stelle wurde er vergessen.</p>
+ <button class="btn einstieg-knopf" type="button">Mit einer Variablen</button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-out="1 ticket: 13 euros\n2 tickets: 26 euros\n3 tickets: 39 euros">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Cinema.java</p>
+<pre><code class="java">int price = 13;
+System.out.println("1 ticket: " + price + " euros");
+System.out.println("2 tickets: " + 2 * price + " euros");
+System.out.println("3 tickets: " + 3 * price + " euros");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">Jetzt steht der Preis an genau einer Stelle. Ändert er sich, änderst du eine Zeile. Wie Variablen funktionieren, zeigt dieses Kapitel.</p>
+ </div>
+ </section>
+
+
+ <figure class="opener weit">
+ <img src="../img/kapitel/datentypen.svg" alt="Ein Handy mit einer Musik-App. Pfeile führen von jedem Element zu seinem Datentyp: Titel und Artist sind String, die Songlänge double, Shuffle und Wiederholung boolean, die Lautstärke und die Likes int, die Playlist eine ArrayList." width="2596" height="1460">
+ <figcaption>Hinter jedem Teil einer App steckt ein Datentyp.</figcaption>
+ </figure>
+
+ <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Inhalt dieses Kapitels">
+ <h2 id="in-diesem-kapitel">In diesem Kapitel</h2>
+ </nav>
+
+ <details class="baustein ziele">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>Danach kannst du<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+   <div class="inhalt">
+     <ul>
+ <li>Variablen <strong>deklarieren</strong> und ihnen Werte <strong>zuweisen</strong>, für jeden der Typen</li>
+ <li>die wichtigsten Datentypen unterscheiden: <code>int</code>, <code>double</code>, <code>boolean</code>, <code>char</code>, <code>String</code></li>
+ <li>den Wertebereich eines Typs einschätzen und sagen, was bei einem Überlauf passiert</li>
+ <li>Konstanten mit <code>final</code> festnageln</li>
+ <li>mit Variablen rechnen und kennst danach die fieseste Divisions-Falle von ganz Java</li>
+ <li>mit einem <strong>Cast</strong> den Typ eines Werts wechseln und die Divisions-Falle damit entschärfen</li>
+ <li>die Kurzformen <code>+=</code> und <code>++</code> lesen und die Rangfolge der Operatoren anwenden</li>
+ </ul>
+   </div>
+ </details>
+
+
+ <section class="block">
+ <h2 id="eine-variable-ist-eine-box-mit-etikett"><span class="nr">3.1</span> Variablen deklarieren und Werte zuweisen</h2>
+ <p class="wozu">Programme müssen sich Dinge merken: Punktestände, Namen, Preise. Dafür gibt es <strong>Variablen</strong>: benannte Speicherplätze für je einen Wert.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><var data-teil="typ">Typ</var> <var data-teil="name">name</var> <span data-teil="zuweisung">=</span> <var data-teil="wert">Wert</var><span data-teil="semi">;</span></code></pre>
+ <p class="aufbau-info">Vorne der <strong>Typ</strong>, also welche Werte die Variable aufnehmen kann, dann ihr <strong>Name</strong>, hinter dem <code>=</code> der <strong>Wert</strong>. Einen neuen Wert weist du später ohne Typ zu: <code>age = 21;</code>.</p>
+ <div hidden data-erkl="typ"><strong>Typ:</strong> legt fest, welche Werte die Variable speichern kann: <code>int</code> für ganze Zahlen, <code>double</code> für Kommazahlen, <code>String</code> für Text. Er steht nur bei der Deklaration. Schreibst du ihn vor denselben Namen ein zweites Mal, meldet der Compiler <code>variable age is already defined</code>.</div>
+ <div hidden data-erkl="name"><strong>Name:</strong> frei wählbar, beginnt mit einem Kleinbuchstaben, ohne Leerzeichen. Jedes weitere Wort beginnt groß: <code>zombieCount</code>. Groß- und Kleinschreibung zählt, <code>age</code> und <code>Age</code> sind zwei verschiedene Variablen.</div>
+ <div hidden data-erkl="zuweisung"><strong>Das Gleichheitszeichen</strong> ist der Zuweisungsoperator: Der Wert rechts wird in der Variablen links gespeichert. Deshalb steht die Variable immer links: <code>age = 20;</code>, nicht <code>20 = age;</code>.</div>
+ <div hidden data-erkl="wert"><strong>Wert:</strong> muss zum Typ passen, etwa <code>20</code> für <code>int</code>, <code>4.99</code> für <code>double</code> (mit Punkt, nicht mit Komma) oder <code>"Aylin"</code> für <code>String</code>. Rechts darf auch eine Rechnung stehen, etwa <code>age + 1</code>.</div>
+ <div hidden data-erkl="semi"><strong>Das Semikolon</strong> beendet die Anweisung, wie jede Anweisung in Java. Fehlt es, meldet der Compiler <code>';' expected</code>.</div>
+ </div>
+
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>so geht's</p>
+<pre><code class="java">int age = 20;
+//  ^      ^
+//  |      '-- der Wert, der in die Box kommt
+//  '-- der Name der Box (suchst du dir aus)
+//
+// und ganz vorne: der TYP, was die Box aufnehmen darf</code></pre>
+ </div>
+
+ <p>Diese eine Zeile macht drei Dinge auf einmal:</p>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>int</code></td><td><strong>Deklaration:</strong> Java legt eine Variable für ganze Zahlen (<code>int</code>) an.</td></tr>
+ <tr><td><code>age</code></td><td><strong>Benennung:</strong> Die Variable heißt <code>age</code>.</td></tr>
+ <tr><td><code>= 20;</code></td><td><strong>Zuweisung:</strong> Sie bekommt den Wert 20.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p><code>=</code> heißt nicht „ist gleich“,
+ sondern <span class="hl">„nimm den Wert rechts und speichere ihn in der Variablen links“</span>.
+ Deshalb ist <code>age = age + 1;</code> völlig okay: alten Wert lesen, 1 addieren, das Ergebnis wieder in <code>age</code> speichern.</p>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Nochmal anders erklärt: eine Variable, ein Wert</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Jede Variable hat einen festen <strong>Typ</strong> und einen <strong>Namen</strong>,
+ und sie speichert immer genau <strong>einen</strong> Wert.</p>
+ <ul>
+ <li><code>int number = 20;</code> &rarr; Java legt eine <code>int</code>-Variable namens <code>number</code> an und speichert darin die 20.</li>
+ <li><code>number = 99;</code> &rarr; Die 99 überschreibt die 20. <strong>Eine Variable, ein Wert.</strong></li>
+ <li><code>number = "ninety-nine";</code> &rarr; Ein Text passt nicht zum Typ <code>int</code>. Der Compiler meldet <code>incompatible types</code>.</li>
+ </ul>
+ <p><strong>Mini-Übung zum Festigen</strong>: welcher Typ passt? Füll die Lücken:</p>
+ <div class="codebox cloze flach" style="margin-bottom:0">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Uebung.java</p>
+<pre><code class="nohl luecken"><input class="cz" data-a="int" size="8"> zombieCount = 12;
+<input class="cz" data-a="double" size="8"> brainCost = 3.49;
+<input class="cz" data-a="boolean" size="8"> isFull = false;</code></pre>
+ <div class="cloze-leiste">
+ <button class="btn btn-klein cloze-check" type="button">Prüfen </button>
+ <p class="cloze-meldung"></p>
+ </div>
+ </div>
+ </div>
+ </details>
+
+ <h3 id="zuweisungs-raetsel-haengen-x-und-y-zusammen">Zuweisungs-Rätsel: Hängen x und y zusammen?</h3>
+ <p><code>y</code> bekommt den Wert von <code>x</code>, <em>danach</em> ändert sich <code>x</code>. Hängen die beiden Variablen jetzt zusammen? Erst tippen, dann ausführen:</p>
+
+ <div class="codebox runner" data-trace data-out="5">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Kopie.java (Ausschnitt)</p>
+<pre><code class="java">int x = 5;
+int y = x;        // y bekommt … ja, was eigentlich genau?
+x = 10;           // x ändert sich …
+
+System.out.println(y);   // … und y?</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Auflösung: erst ausführen, dann aufklappen!<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <p><code>y</code> bleibt bei 5: Es hat eine <strong>Kopie</strong> des Werts bekommen und hängt nicht an <code>x</code>.
+ <span class="hl">Zuweisungen kopieren Werte, keine Verbindungen.</span> (Merk dir das: In Kapitel 9 is es anders.)</p>
+ </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <h2 id="die-fuenf-typen-mit-denen-du-anfaengst"><span class="nr">3.2</span> Grundlegende Datentypen</h2>
+ <p class="wozu">Jede Variable hat einen <strong>Typ</strong>, und der legt fest, was hineinpasst: ganze Zahlen, Kommazahlen, Ja oder Nein, ein einzelnes Zeichen oder Text. Mit diesen fünf fängst du an.</p>
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>DieBigFive.java</p>
+<pre><code class="java">int    points   = 1337;        // ganze Zahlen
+double price    = 4.99;        // Kommazahlen (mit PUNKT, nicht Komma!)
+boolean hunger  = true;        // nur true oder false
+char   grade     = 'A';         // EIN einzelnes Zeichen, in 'einfachen' Quotes
+String name     = "Aylin";     // Text, in "doppelten" Quotes</code></pre>
+ </div>
+ <ul>
+ <li><code>int</code>: ganze Zahlen: Age, Punktestand, Anzahl Kaffee heute (4)</li>
+ <li><code>double</code>: Kommazahlen: Preise, Noten, Temperaturen</li>
+ <li><code>boolean</code>: Ja/Nein-Fragen: eingeloggt? volljährig? WLAN da?</li>
+ <li><code>char</code>: ein einzelnes Zeichen: 'A', '?', '7'</li>
+ <li><code>String</code>: Text beliebiger Länge: Namen, Nachrichten, Passwörter (bitte nicht im Klartext)</li>
+ </ul>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Warum schreibt man String groß?</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p><code>int</code>, <code>double</code>, <code>boolean</code>, <code>char</code> sind <strong>primitive Typen</strong>,
+ schlichte Werte. <code>String</code> ist eine <strong>Klasse</strong>, ein Objekt mit eingebauten Methoden:</p>
+ <div class="codebox flach">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>StringKannWas.java</p>
+<pre><code class="java">String name = "Aylin";
+System.out.println(name.length());   // 5, wie lang ist der Text?</code></pre>
+ </div>
+ <p>Der Punkt hinter <code>name</code> ist ein Methodenaufruf. Die wichtigsten zeigt
+ <a href="05-strings-eingabe.html#methoden-die-es-schon-gibt">Kapitel 5</a>, Klassen und Objekte Kapitel 9.</p>
+ </div>
+ </details>
+ </section>
+
+ <section class="widget">
+ <h3>Variablen selbst befüllen</h3>
+ <p class="widget-hinweis">Typ wählen, Wert eintippen, zuweisen. Der Compiler prüft den Typ wie in Kapitel 1. Provozier ruhig einen Fehler!</p>
+
+ <div class="machine-tabs" id="vb-tabs">
+ <button data-t="int" class="active">int</button>
+ <button data-t="double">double</button>
+ <button data-t="boolean">boolean</button>
+ <button data-t="char">char</button>
+ <button data-t="String">String</button>
+ </div>
+
+ <div class="wflex" style="align-items:center">
+ <div style="flex:1 1 240px">
+ <p style="margin-bottom:6px"><label for="vb-input"><strong>Wert eingeben:</strong></label></p>
+ <p style="display:flex;gap:10px;flex-wrap:wrap"><input type="text" id="vb-input" placeholder="z. B. 42" style="flex:1">
+ <button class="btn btn-klein" id="vb-store">Zuweisen &rarr;</button></p>
+ <p class="statuszeile" id="vb-msg">Noch kein Wert zugewiesen.</p>
+ </div>
+ <div style="flex:0 0 auto;display:flex;justify-content:center">
+ <div class="var-box" id="vb-box">
+ <span class="var-type" id="vb-type">int</span>
+ <span class="var-name" id="vb-name">myValue</span>
+ <span class="var-value leer" id="vb-value">leer*</span>
+ </div>
+ </div>
+ </div>
+ <div class="codebox" style="margin-bottom:0">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>dein Code (schreibt sich live)</p>
+ <pre><code class="nohl" id="vb-code" style="background:none;border:none;padding:0;white-space:pre;color:#f0eef7;font-size:0.9rem">int myValue;   // deklariert, aber noch leer</code></pre>
+ </div>
+ <p class="widget-hinweis" style="margin-top:10px">* Genau genommen ist sie nicht „leer“, sondern <em>nicht initialisiert</em>: Der Compiler lässt sie erst lesen, wenn ihr ein Wert zugewiesen wurde.</p>
+ </section>
+
+ <section class="block">
+ <h2 id="jeder-typ-hat-eine-grenze"><span class="nr">3.3</span> Wertebereiche der Datentypen</h2>
+ <p class="wozu">Jeder Typ belegt eine feste Zahl an Bytes. Was nicht hineinpasst, passt nicht. Für Zahlen jenseits von gut 2 Milliarden gibt es deshalb <code>long</code>.</p>
+ <table>
+ <thead><tr><th>Typ</th><th>Größe</th><th>Wertebereich</th></tr></thead>
+ <tbody>
+ <tr><td><code>int</code></td><td>4 Byte</td><td>−2 147 483 648 bis 2 147 483 647, knapp ±2,1 Milliarden</td></tr>
+ <tr><td><code>long</code></td><td>8 Byte</td><td>rund ±9,2 Trillionen, für alles, was in kein <code>int</code> passt</td></tr>
+ <tr><td><code>double</code></td><td>8 Byte</td><td>riesig, dafür nicht beliebig <em>genau</em></td></tr>
+ <tr><td><code>boolean</code></td><td>1 Bit</td><td><code>true</code> oder <code>false</code>, im Speicher meist 1 Byte</td></tr>
+ <tr><td><code>char</code></td><td>2 Byte</td><td>genau ein Zeichen</td></tr>
+ </tbody>
+ </table>
+ <p>Und an der Grenze? Passiert nichts Lautes. Genau das ist das Problem:</p>
+ <div class="codebox runner" data-out="2147483647\n-2147483648">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Limit.java</p>
+<pre><code class="java">public class Limit {
+
+    public static void main(String[] args) {
+        int big = 2147483647;
+
+        System.out.println(big);
+        System.out.println(big + 1);
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>int big = 2147483647;</code></td><td>der größte Wert, der in ein <code>int</code> passt.</td></tr>
+ <tr><td><code>System.out.println(big);</code></td><td>gibt ihn unverändert aus.</td></tr>
+ <tr><td><code>System.out.println(big + 1);</code></td><td>Eins mehr passt nicht hinein. Java meldet nichts, der Wert kippt ans untere Ende des Bereichs: <code>-2147483648</code>.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <ul>
+ <li>Ein <code>int</code> läuft bei gut 2,1 Milliarden <strong>über</strong> und kippt ins Negative:
+ kein Absturz, keine Meldung, nur eine falsche Zahl. Ein <strong>Logikfehler</strong>
+ (<a href="01-grundbegriffe.html#drei-sorten-fehler">Kapitel 1</a>).</li>
+ <li>Für alles, was groß werden kann, nimmt man <code>long</code>: Einwohnerzahlen, große Centbeträge, Zeitstempel in Millisekunden.</li>
+ <li>Große Zahlen im Quelltext brauchen ein <strong><code>L</code></strong>: <code>long population = 8200000000L;</code>.
+ Sonst meldet der Compiler <code>integer number too large</code>.</li>
+ </ul>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Woher kommen die 2 147 483 647?</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>4 Byte sind <strong>32 Bit</strong>, also 32 Schalter. Einer trägt das Vorzeichen, 31 bleiben
+ für den Betrag: 2 hoch 31 minus 1 = 2 147 483 647. Ausgerechnet, nicht ausgedacht.</p>
+ <p>Mit den Bits kann man auch direkt arbeiten. Zwei Operatoren <strong>schieben</strong> sie:</p>
+ <div class="codebox runner" data-out="8 2\n1010\n2147483647">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Bits.java</p>
+<pre><code class="java">public class Bits {
+
+    public static void main(String[] args) {
+        int eight = 1 &lt;&lt; 3;
+        int two = 8 &gt;&gt; 2;
+
+        System.out.println(eight + " " + two);
+        System.out.println(Integer.toBinaryString(10));
+        System.out.println(Integer.MAX_VALUE);
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p><code>1 &lt;&lt; 3</code>: aus <code>00000001</code> wird <code>00001000</code>, also 8. Jede Stelle
+ nach links verdoppelt, nach rechts halbiert (und schneidet ab). Im Alltag multipliziert man mit <code>*</code>,
+ aber so erklärt sich, warum Speichergrößen 8, 16, 32, 64 heißen.</p>
+ </div>
+ </details>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Es gibt noch mehr Zahlentypen (und einen berühmten Überlauf)</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Alle Zahlentypen im Überblick: <code>byte</code> (winzig), <code>short</code> (klein), <code>int</code> (Standard),
+ <code>long</code> (riesig), <code>float</code> (Komma, ungenauer), <code>double</code> (Komma, Standard).</p>
+ <p>Fun Fact: 2014 musste YouTube den Zähler von „Gangnam Style“ auf <code>long</code> umstellen,
+ weil das Video die int-Grenze überschritten hat.</p>
+ </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <h2 id="konstanten"><span class="nr">3.4</span> Konstanten mit final</h2>
+ <p class="wozu">Manche Werte stehen fest: Mehrwertsteuer, Höchstbelegung, Zahl der Wochentage. Eine normale
+ Variable könnte jede Zeile überschreiben, auch aus Versehen. <code>final</code> verbietet das.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="final">final</span> <var data-teil="typ">Typ</var> <var data-teil="name">NAME</var> = <var data-teil="wert">Wert</var>;</code></pre>
+ <p class="aufbau-info">Eine ganz normale Deklaration, nur mit <code>final</code> davor.</p>
+ <div hidden data-erkl="final"><strong><code>final</code></strong> macht die Variable zur Konstante: Nach der ersten Zuweisung lässt sich ihr Wert nicht mehr ändern. Ein späteres <code>VAT = 0.07;</code> lehnt der Compiler ab.</div>
+ <div hidden data-erkl="typ"><strong>Typ:</strong> wie bei jeder Variable, etwa <code>double</code> für einen Steuersatz wie <code>0.19</code> oder <code>int</code> für die Zahl der Wochentage.</div>
+ <div hidden data-erkl="name"><strong>NAME:</strong> Konstanten schreibt man ganz groß, mehrere Wörter mit Unterstrich: <code>VAT</code>, <code>MAX_RESIDENTS</code>. Der Compiler verlangt das nicht, aber so sieht man beim Lesen sofort, dass sich der Wert nicht ändert.</div>
+ <div hidden data-erkl="wert"><strong>Wert:</strong> wird gleich bei der Deklaration zugewiesen und bleibt danach gleich. Ändert sich der Steuersatz doch einmal, änderst du ihn an genau dieser einen Stelle im Code.</div>
+ </div>
+
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>eine Konstante</p>
+<pre><code class="java">final double VAT = 0.19;</code></pre>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>final</code></td><td>macht die Variable unveränderlich. Ein späteres <code>VAT = 0.07;</code> übersetzt gar nicht erst: <code>cannot assign a value to final variable VAT</code>.</td></tr>
+ <tr><td><code>double VAT = 0.19;</code></td><td>sonst eine Deklaration wie jede andere: Typ, Name, Wert.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Konstanten schreibt man <strong>ganz groß</strong>, Wörter mit Unterstrich:
+ <code>VAT</code>, <code>MAX_RESIDENTS</code> (<a href="02-erstes-programm.html#namen-die-man-wiedererkennt">Kapitel 2</a>).
+ So sieht man beim Lesen sofort: Hier ändert sich nichts.</p>
+ </div>
+
+ <h3>Aufgabe 3.4.1: Deklarations-Werkstatt</h3>
+ <p>Schreib jede Zeile <strong>komplett</strong>: Typ, Name, <code>=</code>, Wert, Semikolon. Den Namen wählst du selbst.
+ Drei der sieben haben eine Falle, genau ein Zeichen groß.</p>
+ <div class="codebox cloze">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Werkstatt.java: jede Zeile komplett</p>
+<pre><code class="nohl luecken">// die ganze Zahl 17
+<input class="cz" data-a="int age = 17;" data-muster="int\s+[A-Za-z_$][A-Za-z0-9_$]*\s*=\s*17\s*;" size="32">
+
+// der Betrag 4,99 Euro
+<input class="cz" data-a="double price = 4.99;" data-muster="double\s+[A-Za-z_$][A-Za-z0-9_$]*\s*=\s*4\.99\s*;" size="32">
+
+// ja
+<input class="cz" data-a="boolean vaccinated = true;" data-muster="boolean\s+[A-Za-z_$][A-Za-z0-9_$]*\s*=\s*true\s*;" size="32">
+
+// das einzelne Zeichen B
+<input class="cz" data-a="char grade = 'B';" data-muster="char\s+[A-Za-z_$][A-Za-z0-9_$]*\s*=\s*'B'\s*;" size="32">
+
+// der Text Aylin
+<input class="cz" data-a="String name = &quot;Aylin&quot;;" data-muster="String\s+[A-Za-z_$][A-Za-z0-9_$]*\s*=\s*&quot;Aylin&quot;\s*;" size="32">
+
+// die Zahl 8 200 000 000
+<input class="cz" data-a="long population = 8200000000L;~long population = 8200000000l;" data-muster="long\s+[A-Za-z_$][A-Za-z0-9_$]*\s*=\s*8_?200_?000_?000[lL]\s*;" size="32">
+
+// 19 Prozent Mehrwertsteuer, unveränderlich
+<input class="cz" data-a="final double VAT = 0.19;" data-muster="final\s+double\s+[A-Za-z_$][A-Za-z0-9_$]*\s*=\s*0\.19\s*;" size="32"></code></pre>
+ <div class="cloze-leiste">
+ <button class="btn btn-klein cloze-check" type="button">Prüfen</button>
+ <p class="cloze-meldung"></p>
+ </div>
+ </div>
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Die drei Ein-Zeichen-Fallen<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <ul>
+ <li><strong><code>price</code></strong>: ein <em>Punkt</em>, kein Komma. <code>4,99</code> ist
+ für Java keine Zahl.</li>
+ <li><strong><code>grade</code></strong>: <em>einfache</em> Anführungszeichen.
+ <code>"B"</code> wäre ein String mit einem Zeichen, kein <code>char</code>.</li>
+ <li><strong><code>population</code></strong>: das <em>L</em> am Ende, sonst <code>integer number too large</code>.</li>
+ </ul>
+ <p>Außerdem: <code>true</code> schreibt sich klein, die Konstante groß.</p>
+ </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <h2 id="rechnen-und-die-beruehmteste-java-falle"><span class="nr">3.5</span> Arithmetische Operatoren und Ganzzahldivision</h2>
+ <p class="wozu">Mit Variablen rechnet Java wie ein Taschenrechner, mit einer berühmten Ausnahme beim Teilen. Und <code>+</code> kann mehr als rechnen: Es <strong>verkettet</strong> auch Texte, hängt sie also aneinander.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><var data-teil="a">a</var> <span data-teil="plus">+</span> <var data-teil="b">b</var>    <var data-teil="a">a</var> <span data-teil="minus-mal">-</span> <var data-teil="b">b</var>    <var data-teil="a">a</var> <span data-teil="minus-mal">*</span> <var data-teil="b">b</var>    <var data-teil="a">a</var> <span data-teil="geteilt">/</span> <var data-teil="b">b</var>
+<var data-teil="a">a</var> <span data-teil="modulo">%</span> <var data-teil="b">b</var>    Modulo: der Rest beim Teilen</code></pre>
+ <p class="aufbau-info"><code>10 % 3</code> ist <code>1</code>, denn 10 = 3·3 + <strong>1</strong>. Gerade Zahl? <code>number % 2 == 0</code></p>
+ <div hidden data-erkl="a"><strong>a (linker Operand):</strong> eine Zahl, eine Variable oder eine Rechnung, etwa <code>7</code> oder <code>price</code>. Der Typ der beiden Operanden bestimmt den Typ des Ergebnisses: <code>int</code> mit <code>int</code> ergibt <code>int</code>, ist ein <code>double</code> beteiligt, ergibt es <code>double</code>.</div>
+ <div hidden data-erkl="b"><strong>b (rechter Operand):</strong> bei <code>/</code> und <code>%</code> der Teiler. Sind beide Operanden <code>int</code> und ist <code>b</code> gleich <code>0</code>, bricht das Programm mit der Meldung <code>/ by zero</code> ab.</div>
+ <div hidden data-erkl="plus"><strong><code>+</code> (Addition)</strong> addiert zwei Zahlen. Ist einer der Operanden ein <code>String</code>, verkettet <code>+</code> stattdessen: <code>"Points: " + 5</code> ergibt den Text <code>Points: 5</code>.</div>
+ <div hidden data-erkl="minus-mal"><strong><code>-</code> und <code>*</code></strong> subtrahieren und multiplizieren. Das Malzeichen ist in Java der Stern <code>*</code>, nicht <code>x</code> oder <code>·</code>. Es gilt Punkt vor Strich: <code>2 + 3 * 4</code> ergibt <code>14</code>.</div>
+ <div hidden data-erkl="geteilt"><strong><code>/</code> (Division):</strong> Sind beide Operanden <code>int</code>, ist auch das Ergebnis ein <code>int</code>. Die Nachkommastellen werden abgeschnitten, nicht gerundet: <code>7 / 2</code> ergibt <code>3</code>, erst <code>7.0 / 2</code> ergibt <code>3.5</code>.</div>
+ <div hidden data-erkl="modulo"><strong><code>%</code> (Modulo)</strong> liefert den Rest der ganzzahligen Division: <code>7 % 2</code> ergibt <code>1</code>, <code>12 % 4</code> ergibt <code>0</code>. Damit prüfst du, ob eine Zahl durch eine andere teilbar ist: Dann ist der Rest <code>0</code>.</div>
+ </div>
+
+ <p>Und jetzt halt dich fest:</p>
+
+ <div class="codebox runner" data-trace data-out="3\n1\n3.5">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Surprise.java</p>
+<pre><code class="java">public class Surprise {
+
+    public static void main(String[] args) {
+        System.out.println(7 / 2);      // int / int   ???
+        System.out.println(7 % 2);      // der Rest beim Teilen
+        System.out.println(7.0 / 2);    // double im Spiel  ???
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Auflösung: erst ausführen, dann aufklappen!<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <p><code>7 / 2</code> ergibt <strong>3</strong>, nicht 3,5.
+ <span class="hl">Teilen sich zwei ints, wird das Komma abgehackt</span>, nicht gerundet.
+ Ist eine Kommazahl beteiligt (<code>7.0 / 2</code>), rechnet Java „richtig“.
+ Diese Falle kostet weltweit jedes Jahr tausende Stunden Fehlersuche.</p>
+ </div>
+ </details>
+
+ <p><code>+</code> verkettet auch Texte:</p>
+ <div class="codebox runner" data-out="Aylin is 20 years old.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Verketten.java</p>
+<pre><code class="java">String name = "Aylin";
+int age = 20;
+System.out.println(name + " is " + age + " years old.");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <p>Damit hat <code>+</code> <strong>zwei Aufgaben</strong>, rechnen und verketten. Java entscheidet
+ von links nach rechts. In Prüfungen sehr beliebt:</p>
+
+ <div class="codebox runner" data-trace data-out="2\n11\n21\n111">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>PlusZwilling.java (Ausschnitt)</p>
+<pre><code class="java">System.out.println(1 + 1);         // Zahl + Zahl
+System.out.println("1" + 1);       // Text + Zahl
+System.out.println(1 + 1 + "1");   // ???
+System.out.println("1" + 1 + 1);   // ???</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Auflösung: erst ausführen, dann aufklappen!<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <p><code>2</code>, <code>11</code>, <code>21</code>, <code>111</code>.
+ <span class="hl">Sobald Text im Spiel ist, verkettet <code>+</code>, und ab da alles Weitere auch.</span>
+ Steht die Rechnung <em>vor</em> dem Text (<code>1 + 1 + "1"</code>), wird erst gerechnet (2), dann verkettet (21).</p>
+ </div>
+ </details>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <ul>
+ <li>Falle 1: <code>int / int</code> hackt das Komma ab, es wird nicht gerundet.</li>
+ <li>Falle 2: Hängt Text am <code>+</code>, wird verkettet statt gerechnet.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="casting"><span class="nr">3.6</span> Typumwandlung (Casting)</h2>
+ <p class="wozu">Zurück zur Falle: <code>7 / 2</code> ergibt <code>3</code>, weil beide Zahlen <code>int</code> sind.
+ Die Rettung heißt <strong>Casting</strong>: Zieltyp in Klammern vor den Wert, und Java rechnet in diesem Typ weiter.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="klammern">(</span><var data-teil="zieltyp">Zieltyp</var><span data-teil="klammern">)</span> <var data-teil="wert">Wert</var></code></pre>
+ <p class="aufbau-info">Casting macht aus Zahl Zahl. Aus <em>Text</em> eine Zahl machen (<code>"17"</code> von der Tastatur) heißt Parsen:
+ <a href="05-strings-eingabe.html#casten-oder-parsen">Kapitel 5</a>.</p>
+ <div hidden data-erkl="klammern"><strong>Die runden Klammern</strong> um den Zieltyp machen ihn zum Cast-Operator. Sie sind Pflicht: <code>(int) price</code>, nicht <code>int price</code>.</div>
+ <div hidden data-erkl="zieltyp"><strong>Zieltyp:</strong> der Typ, den der Wert danach haben soll, etwa <code>int</code> oder <code>double</code>. Von <code>double</code> nach <code>int</code> werden die Nachkommastellen abgeschnitten, nicht gerundet: <code>(int) 4.99</code> ergibt <code>4</code>.</div>
+ <div hidden data-erkl="wert"><strong>Wert:</strong> eine Zahl, eine Variable oder eine Rechnung. Der Cast gilt nur für den Wert direkt dahinter: <code>(double) 7 / 2</code> ergibt <code>3.5</code>, <code>(double) (7 / 2)</code> dagegen <code>3.0</code>.</div>
+ </div>
+
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Casting.java</p>
+<pre><code class="java">double price = 4.99;
+int rough = (int) price;        //  4 (abgeschnitten, nicht gerundet!)
+
+int a = 7;
+double exact = a;              //  7.0 (geht automatisch, verliert nichts)
+
+double correct = (double) 7 / 2;   //  3.5 (so rettest du die Division!)</code></pre>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>(int) price</code></td><td>macht aus <code>4.99</code> ein <code>int</code>: <code>4</code>. Die Nachkommastellen werden abgeschnitten, nicht gerundet.</td></tr>
+ <tr><td><code>double exact = a;</code></td><td>Klein nach groß geht von selbst: Aus der <code>7</code> in <code>a</code> wird <code>7.0</code>, nichts geht verloren.</td></tr>
+ <tr><td><code>(double) 7 / 2</code></td><td>Erst wird die 7 zur <code>7.0</code>, dann wird mit Komma geteilt: <code>3.5</code>.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <ul>
+ <li><strong>Klein nach groß</strong> (int &rarr; double): macht Java automatisch, nichts geht verloren.</li>
+ <li><strong>Groß nach klein</strong> (double &rarr; int): nur mit <code>(int)</code>, die Nachkommastellen fallen weg, abgeschnitten, nicht gerundet.</li>
+ </ul>
+ </div>
+ <p>Der Cast gilt nur für den Wert <strong>direkt dahinter</strong>:</p>
+ <ul>
+ <li><code>(double) 7 / 2</code>: aus 7 wird 7.0, dann wird mit Komma geteilt. Ergebnis <code>3.5</code>.</li>
+ <li><code>(double) (7 / 2)</code>: erst <code>int</code>-Division, dann Cast. Ergebnis <code>3.0</code>, die Nachkommastelle war schon weg.</li>
+ </ul>
+ </section>
+
+ <section class="block">
+ <h2 id="kurzschreibweisen-und-rangfolge"><span class="nr">3.7</span> Zuweisungsoperatoren und Operatorrangfolge</h2>
+ <p class="wozu">Aufsummieren, herunterzählen, doubleIt: Das kommt so oft vor, dass Java dafür Kurzformen hat. Und stehen mehrere Operatoren in einer Zeile, entscheidet die Rangfolge, was zuerst gerechnet wird.</p>
+ <p>Diese Kurzformen begegnen dir ab jetzt überall:</p>
+ <table>
+ <thead><tr><th>Kurzform</th><th>heißt ausgeschrieben</th><th>typisch für</th></tr></thead>
+ <tbody>
+ <tr><td><code>points += 5</code></td><td><code>points = points + 5</code></td><td>aufsummieren</td></tr>
+ <tr><td><code>life -= 1</code></td><td><code>life = life - 1</code></td><td>herunterzählen</td></tr>
+ <tr><td><code>price *= 2</code></td><td><code>price = price * 2</code></td><td>doubleIt</td></tr>
+ <tr><td><code>i++</code></td><td><code>i = i + 1</code></td><td>den Zähler einer Schleife (Kapitel 7)</td></tr>
+ <tr><td><code>i--</code></td><td><code>i = i - 1</code></td><td>rückwärts zählen</td></tr>
+ </tbody>
+ </table>
+ <p>Ein Unterschied: Kurzformen <strong>casten stillschweigend</strong>. <code>x += 2.7;</code> klappt bei
+ <code>int x = 5;</code> und ergibt <code>7</code>, <code>x = x + 2.7;</code> lehnt der Compiler ab.
+ Genauso wird mit <code>c++</code> aus <code>'A'</code> ein <code>'B'</code>.</p>
+ <p>Bei <code>++</code> zählt außerdem, ob es <em>vor</em> oder <em>hinter</em> der Variablen steht.
+ Sag die Ausgabe voraus:</p>
+ <div class="codebox runner" data-trace data-out="15\n3\n4\n5">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Shorthand.java</p>
+<pre><code class="java">public class Shorthand {
+
+    public static void main(String[] args) {
+        int points = 10;
+        points += 5;
+        System.out.println(points);
+
+        int i = 3;
+        System.out.println(i++);
+        System.out.println(i);
+        System.out.println(++i);
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>points += 5;</code></td><td>kurz für <code>points = points + 5</code>: Aus 10 wird 15.</td></tr>
+ <tr><td><code>System.out.println(i++);</code></td><td><strong>Postform:</strong> gibt den alten Wert <code>3</code> aus und erhöht danach auf 4.</td></tr>
+ <tr><td><code>System.out.println(i);</code></td><td>zeigt die <code>4</code>.</td></tr>
+ <tr><td><code>System.out.println(++i);</code></td><td><strong>Präform:</strong> erhöht zuerst auf 5 und gibt dann die <code>5</code> aus.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <ul>
+ <li><code>i++</code> (<strong>Postform</strong>): gibt den <em>alten</em> Wert heraus, erhöht danach.</li>
+ <li><code>++i</code> (<strong>Präform</strong>): erhöht zuerst, gibt den <em>neuen</em> Wert heraus.</li>
+ <li>Steht es allein in einer Zeile, ist es egal. Deshalb schreibt man in Schleifen einfach <code>i++</code>.</li>
+ </ul>
+ </div>
+ <p>Mehrere Operatoren in einer Zeile? Es gilt die Rangfolge aus Mathe:</p>
+ <ol>
+ <li><strong>Klammern</strong> <code>( )</code> zuerst</li>
+ <li><strong>Punktrechnung</strong> <code>*</code> <code>/</code> <code>%</code></li>
+ <li><strong>Strichrechnung</strong> <code>+</code> <code>-</code></li>
+ <li><strong>Zuweisung</strong> <code>=</code> ganz zum Schluss</li>
+ </ol>
+ <p>Also ist <code>2 + 3 * 4</code> gleich <span class="hl">14</span>, nicht 20. Wer unsicher ist,
+ klammert: kostet nichts, spart Diskussionen.</p>
+ </section>
+
+ <section class="block">
+ <h2 id="ausgeben-println-schluckt-alles"><span class="nr">3.8</span> Ausgabe verschiedener Datentypen</h2>
+ <p class="wozu">Fünf Typen, <strong>ein</strong> Befehl zum Anzeigen: <span class="hl"><code>println</code> erkennt
+ den Typ selbst und macht Text daraus.</span></p>
+
+ <div class="baustein selbst">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>Erst du, dann Java</p>
+ <p>Fünf Variablen, fünf Ausgaben. Schreib auf, was die Konsole zeigt, <em>bevor</em> du
+ ausführst. Bei der zweiten Zeile lohnt sich eine Wette.</p>
+ </div>
+
+ <div class="codebox runner" data-out="3\n4.0\ntrue\nB\nZombiefelix">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Printing.java</p>
+<pre><code class="java">public class Printing {
+
+    public static void main(String[] args) {
+        int age = 3;
+        double weight = 4;
+        boolean infected = true;
+        char zone = 'B';
+        String name = "Zombiefelix";
+
+        System.out.println(age);
+        System.out.println(weight);
+        System.out.println(infected);
+        System.out.println(zone);
+        System.out.println(name);
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Auflösung: erst ausführen, dann aufklappen!<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <ul>
+ <li><code>double weight = 4;</code> zeigt <strong>4.0</strong>: <span class="hl">Ein double hat immer eine Nachkommastelle.</span></li>
+ <li><code>B</code> und <code>Zombiefelix</code> erscheinen <strong>ohne</strong> Hochkommas und Anführungszeichen. Die gehören zum Quelltext, nicht zum Wert.</li>
+ </ul>
+ </div>
+ </details>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p><strong>println zeigt den Wert, nicht den Quelltext.</strong> Anführungszeichen gehören zum Quelltext: Sie zeigen dem Compiler, wo ein Text anfängt und aufhört.</p>
+ </div>
+
+ <p>Bei einem Typ lohnt sich ein zweiter Blick: <code>char</code> ist Zeichen und Zahl zugleich. Rate wieder mit:</p>
+
+ <div class="codebox runner" data-out="B\n67\nZone B">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>ZeichenOderZahl.java (Ausschnitt)</p>
+<pre><code class="java">char zone = 'B';
+System.out.println(zone);             // ?
+System.out.println(zone + 1);         // ???
+System.out.println("Zone " + zone);   // ?</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Auflösung: was ist da passiert?<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Intern ist ein <code>char</code> eine <strong>Zahl</strong>: <code>'B'</code> ist 66.
+ Rechnest du damit, rechnet Java: 67, nicht <code>C</code>. Kommt Text dazu, verkettet <code>+</code>.
+ <span class="hl">Text im Spiel &rarr; verkettet. Sonst gerechnet.</span></p>
+ </div>
+ </details>
+
+ <div class="oaky">
+ <img class="figur" src="../img/kapitel/oaky-zeigt.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p><b>Schau, was du seit Kapitel 2 tippst:</b> <strong>Name</strong>, <strong>Klammern</strong>,
+ <strong>Wert</strong> dazwischen, <code>println(age)</code>. So ruft man eine <strong>Methode</strong> auf.
+ <code>println</code> hat jemand anderes geschrieben. Im nächsten Kapitel baust du deine erste eigene.</p>
+ </div>
+ </div>
+ </section>
+
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Das reicht für jetzt</p>
+ <ul>
+ <li>Variable = Speicherplatz mit <strong>Typ</strong>, <strong>Name</strong> und <strong>Wert</strong>. <code>=</code> ist eine <strong>Zuweisung</strong>, kein „ist gleich“.</li>
+ <li><code>int</code> ganze Zahl · <code>double</code> Kommazahl (Punkt!) · <code>boolean</code> true/false · <code>char</code> ein Zeichen · <code>String</code> Text</li>
+ <li>Zuweisungen <strong>kopieren Werte</strong>. <code>final</code> macht eine Variable zur Konstante.</li>
+ <li><code>int</code> läuft bei 2,1 Milliarden über, für Großes <code>long</code>.</li>
+ <li>Falle 1: <code>int / int</code> hackt das Komma ab. Rettung: <code>(double) 7 / 2</code>.</li>
+ <li>Falle 2: Hängt Text am <code>+</code>, wird verkettet statt gerechnet.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="baustein uebung quiz">
+ <h3>Checkpoint</h3>
+ <p class="widget-hinweis">5 Fragen: Nummer 4 ist die Falle aus diesem Kapitel.</p>
+
+ <div class="qq">
+ <p class="qq-text">1. Welcher Typ passt für den Preis 2.50 €?</p>
+ <div class="qq-opt">
+ <button data-why="int speichert nur GANZE Zahlen, bei 2.50 meldet der Compiler sofort einen Fehler.">int</button>
+ <button data-ok>double</button>
+ <button data-why="char speichert genau EIN Zeichen wie 'A', für Zahlen zum Rechnen ist er nicht gedacht.">char</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Kommazahl &rarr; double. Einer int-Variablen kann man 2.50 gar nicht zuweisen.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">2. Was macht diese Zeile? <code>points = points + 10;</code></p>
+ <div class="qq-opt">
+ <button data-why="Das wäre in Mathe so, aber = ist hier keine Gleichung, sondern eine Zuweisung: rechts ausrechnen, links speichern. Völlig legal.">Compiler-Fehler: eine Variable kann nicht gleich sich selbst plus 10 sein</button>
+ <button data-ok>Sie erhöht den Wert der Variablen „points“ um 10</button>
+ <button data-why="Neue Variablen entstehen nur bei einer Deklaration mit Typ davor (int points = …). Hier bekommt nur die bestehende Variable einen neuen Wert.">Sie erstellt eine zweite Variable namens points</button>
+ </div>
+ <p class="qq-erklaerung" hidden>= heißt „nimm den Wert rechts und speichere ihn links“: alten Wert lesen, 10 addieren, Ergebnis wieder in points speichern. In Mathe illegal, in Java Alltag.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">3. Welche Deklaration ist korrekt?</p>
+ <div class="qq-opt">
+ <button data-why="Ein boolean kennt nur true und false, ohne Anführungszeichen. „yes“ ist ein String, der Compiler meldet einen Typfehler.">boolean hunger = "yes";</button>
+ <button data-why="Fast! Aber Strings brauchen DOPPELTE Anführungszeichen. Die einfachen ' ' sind für char.">String name = 'Aylin';</button>
+ <button data-ok>char note = 'A';</button>
+ </div>
+ <p class="qq-erklaerung" hidden>char nimmt EIN Zeichen in einfachen Quotes. boolean nimmt nur true/false (ohne Anführungszeichen), String braucht doppelte Quotes.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">4. Was gibt <code>System.out.println(9 / 2);</code> aus?</p>
+ <div class="qq-opt">
+ <button data-why="4.5 käme nur raus, wenn ein double mitspielt (9.0 / 2). Hier teilen zwei ints, und int-Division hackt das Komma ab.">4.5</button>
+ <button data-why="Java rundet nicht auf, es rundet gar nicht. Es schneidet ab: 4.5 wird zu 4, gnadenlos.">5</button>
+ <button data-ok>4</button>
+ </div>
+ <p class="qq-erklaerung" hidden>int / int &rarr; Komma wird abgehackt (nicht gerundet!). 9 / 2 = 4 Rest 1. Für 4.5 bräuchtest du z. B. 9.0 / 2.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">5. Was ergibt <code>10 % 3</code>?</p>
+ <div class="qq-opt">
+ <button data-why="Du hast normal geteilt. % liefert aber nur den Rest, also was ÜBRIG bleibt: 10 = 3·3, Rest 1.">3,333…</button>
+ <button data-ok>1</button>
+ <button data-why="% ist kein Prozentzeichen und multipliziert auch nicht, es liefert den REST beim Teilen.">30</button>
+ </div>
+ <p class="qq-erklaerung" hidden>% ist der Rest beim Teilen: 10 = 3·3 + <strong>1</strong>. Praktisch z. B. um zu prüfen, ob eine Zahl gerade ist: <code>number % 2 == 0</code>.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+ <div class="kapitel-ende">
+ <div class="blaettern">
+      <a class="btn" href="02-erstes-programm.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Kapitel 2</a>
+      <a class="btn btn-haupt" href="04-methoden.html">Kapitel 4: Methoden<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </div>
+ </div>
+
+</main>
+
+<footer class="seitenfuss">
+ <div class="seitenfuss-innen">
+ <p><strong>Cheat Sheet: Java</strong> ·
+      Java-Grundlagen für Lernfeld 5,
+ „Software zur Verwaltung von Daten anpassen“, IT-Berufe, Jahrgangsstufe 10.</p>
+ </div>
+</footer>
+
+<script src="../js/app.js"></script>
+<script>
+(function () {
+ var $ = CC.$, $$ = CC.$$;
+
+ var type = 'int';
+ var stored = null;
+
+ var PLACEHOLDER = { int: 'z. B. 42', double: 'z. B. 3.14', boolean: 'true oder false', char: 'z. B. A', String: 'z. B. Hallo du' };
+
+ $$('#vb-tabs button').forEach(function (b) {
+ b.addEventListener('click', function () {
+ $$('#vb-tabs button').forEach(function (x) { x.classList.remove('active'); });
+ b.classList.add('active');
+ type = b.getAttribute('data-t');
+ stored = null;
+ $('#vb-type').textContent = type;
+ $('#vb-input').placeholder = PLACEHOLDER[type];
+ $('#vb-input').value = '';
+ var v = $('#vb-value');
+ v.textContent = 'leer*'; v.classList.add('empty');
+ $('#vb-msg').textContent = 'Neue Variable vom Typ ' + type + '. Weise ihr einen Wert zu!';
+ $('#vb-code').textContent = type + ' myValue; // deklariert, aber noch leer';
+ });
+ });
+
+ function fail(msg) {
+ var box = $('#vb-box');
+
+ $('#vb-msg').innerHTML = ' ' + msg;
+ }
+
+ function ok(displayVal, codeVal) {
+ var v = $('#vb-value');
+ var hadValue = stored !== null;
+ v.textContent = displayVal;
+ v.classList.remove('empty');
+
+ $('#vb-msg').innerHTML = hadValue
+ ? ' Neuer Wert zugewiesen. <strong>Der alte Wert ist überschrieben</strong>, eine Variable speichert immer nur den neuesten.'
+ : ' Passt. Die Variable hat jetzt einen Wert.';
+ $('#vb-code').textContent = type + ' myValue = ' + codeVal + ';';
+ stored = displayVal;
+ }
+
+ $('#vb-store').addEventListener('click', function () {
+ var raw = $('#vb-input').value.trim();
+ if (raw === '') { fail('Erst einen Wert eintippen, dann zuweisen.'); return; }
+
+ if (type === 'int') {
+ if (/^-?\d+$/.test(raw)) ok(raw, raw);
+ else if (/^-?\d+[.,]\d+$/.test(raw)) fail('Ein <code>int</code> speichert nur <strong>ganze</strong> Zahlen. Für Kommazahlen nimmst du <code>double</code>.');
+ else fail('„' + CC.esc(raw) + '“? Das ist keine ganze Zahl. Der Compiler meldet einen Typfehler.');
+ } else if (type === 'double') {
+ if (/^-?\d+,\d+$/.test(raw)) fail('Fast! Aber in Java steht ein <strong>Punkt statt Komma</strong>. Probier ' + CC.esc(raw.replace(',', '.')) + '');
+ else if (/^-?\d+(\.\d+)?$/.test(raw)) ok(raw.indexOf('.') >= 0 ? raw : raw + '.0', raw.indexOf('.') >= 0 ? raw : raw + '.0');
+ else fail('Ein <code>double</code> will eine Zahl, mit oder ohne Punkt. Das da war keine.');
+ } else if (type === 'boolean') {
+ var low = raw.toLowerCase();
+ if (low === 'true' || low === 'false') {
+ if (raw !== low) fail('Knapp daneben: Java kennt nur klein geschriebenes <code>true</code>/<code>false</code>. Groß-/Kleinschreibung, du erinnerst dich …');
+ else ok(raw, raw);
+ }
+ else if (low === 'yes' || low === 'no' || low === 'yes' || low === 'no' || low === 'maybe') fail('Ein <code>boolean</code> kennt genau zwei Werte: <code>true</code> oder <code>false</code>. Kein „maybe“, kein „yes“.');
+ else fail('Ein <code>boolean</code> nimmt nur <code>true</code> oder <code>false</code>. Sonst nichts. Wirklich gar nichts.');
+ } else if (type === 'char') {
+ if (raw.length === 1) ok("'" + raw + "'", "'" + raw + "'");
+ else fail('Ein <code>char</code> speichert genau <strong>EIN</strong> Zeichen. „' + CC.esc(raw) + '“ sind ' + raw.length + ', dafür gibt es <code>String</code>.');
+ } else {
+ ok('"' + (raw.length > 12 ? raw.slice(0, 12) + '…' : raw) + '"', '"' + raw + '"');
+ }
+ });
+
+ $('#vb-input').addEventListener('keydown', function (e) {
+ if (e.key === 'Enter') $('#vb-store').click();
+ });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 7 · Loops · Cheat Sheet: Java</title>
+<meta name="description" content="Loops in Java: while, do-while and for, stepped through one step at a time, plus infinite loops and the structogram for repetition.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../../img/favicon.svg">
+<link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Remember this: bookmark</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Quick think: question for you</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Exercise: pencil</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>ZombieApocalypse project task: zombie head</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Scenario task: stopwatch</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: flag</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Explained differently: repeat</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Answer: key</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>The key points: page with dog-eared corner</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Learning goals: target</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Console: prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>IDE: editor window with sidebar</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Error message: bug</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Correct: check mark</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Wrong: cross</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Duration: clock</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Chapter: open notebook</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Table of contents</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Next</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Back</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Down</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Expandable</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Opens a window</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Night shift</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Day view</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Clear progress</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Print</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Skip to content</a>
+
+<nav class="topbar" aria-label="Main navigation">
+  <div class="topbar-innen">
+    <a class="marke" href="../index.html"> <img class="oakymarke" src="../../img/kapitel/oaky.svg" alt="" width="128" height="148"> Cheat Sheet: Java </a> <span class="topbar-titel">Chapter 7 · Loops</span> <span class="topbar-rechts"> <a class="btn btn-klein" href="../index.html">Learning path</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Choose language"><span>EN</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="../../kapitel/07-schleifen.html" lang="de" hreflang="de">Deutsch</a></li><li><a href="07-schleifen.html" lang="en" hreflang="en" aria-current="true">English</a></li></ul></details><!--/sprache-->
+    </span>
+  </div>
+  <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+  <header class="kapitel-kopf">
+    <p class="kicker">Chapter 7 of 11 · while, do-while, for</p>
+    <h1>Loops</h1>
+    <p class="vorspann">Nobody writes the same line a hundred times. That's what loops are for, and there are three ways to build them.</p>
+    <p class="kapitel-meta">
+      <span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>approx. 55 min</span>
+    </p>
+  </header>
+
+ <section class="einstieg" aria-label="Intro: the problem">
+ <p class="einstieg-kopf">THE PROBLEM</p>
+ <p class="einstieg-frage">The program should count from 1 to 10. How many lines does that take?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox runner" data-out="1\n2\n3">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Zaehlen.java</p>
+<pre><code class="java">System.out.println(1);
+System.out.println(2);
+System.out.println(3);
+// and so on: seven more lines up to 10</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>Three lines for three numbers. Up to 10 that would be ten lines, up to 1,000 a thousand.</p>
+ <button class="btn einstieg-knopf" type="button">With a loop</button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-out="1\n2\n3\n4\n5\n6\n7\n8\n9\n10">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Zaehlen.java</p>
+<pre><code class="java">for (int i = 1; i &lt;= 10; i++) {
+    System.out.println(i);
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">Three lines, whether up to 10 or up to 1,000: you only change the number in the condition. This chapter shows how loops work.</p>
+ </div>
+ </section>
+
+
+
+  <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Contents of this chapter">
+    <h2 id="in-diesem-kapitel">In this chapter</h2>
+  </nav>
+
+  <details class="baustein ziele">
+    <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>After this chapter you can<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+    <div class="inhalt">
+      <ul>
+      <li>tell the three loops apart: <code>while</code>, <code>do-while</code> and <code>for</code></li>
+      <li>spot an infinite loop before it hangs your program</li>
+      <li>run a for loop step by step in your head</li>
+      <li>explain when a loop doesn't run at all and when it runs exactly once</li>
+      <li>draw a repetition as a structogram</li>
+      <li>put a loop inside a loop and say how often the inner body runs</li>
+      <li>use <code>break</code> and <code>continue</code> to leave a single round or the whole loop</li>
+    </ul>
+    </div>
+  </details>
+
+
+  <section class="block">
+    <h2 id="schleifen-dinge-wiederholen-ohne-durchzudrehen"><span class="nr">7.1</span> Pre-test loop: while</h2>
+    <p class="wozu">A loop repeats a block instead of you writing it out a hundred times. <code>while</code> means “as long as”: the block runs again and again as long as the condition is <code>true</code>.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="while">while</span> (<var data-teil="bed">condition</var>) <span data-teil="kl">{</span>
+    <var data-teil="rumpf">statements to repeat</var>
+<span data-teil="kl">}</span></code></pre>
+      <p class="aufbau-info">The block in the curly braces is called the <strong>body</strong>. The condition is checked <strong>before</strong> every round, as with <code>if</code>: it evaluates to <code>true</code> or <code>false</code>.</p>
+      <div hidden data-erkl="while"><strong><code>while</code></strong> means “as long as” and introduces the loop. No semicolon goes after the parenthesis: with <code>while (i &lt; 5);</code> the body is empty, and the block below no longer belongs to the loop.</div>
+      <div hidden data-erkl="bed"><strong>Condition:</strong> a comparison like <code>battery &lt; 100</code> or a <code>boolean</code> variable. If you check for equality, write <code>==</code>, not <code>=</code>.</div>
+      <div hidden data-erkl="kl"><strong>The curly braces</strong> mark the start and end of the body. If the condition evaluates to <code>false</code>, execution continues with the first line after the closing brace.</div>
+      <div hidden data-erkl="rumpf"><strong>Loop body:</strong> the statements for one round, such as <code>charge();</code>. At least one of them must change a variable from the condition, for example with <code>i++</code>. Otherwise the condition never evaluates to <code>false</code>, and the loop runs forever.</div>
+    </div>
+
+    <div class="codebox">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>DieDreiSchleifen.java (1 of 3)</p>
+<pre><code class="java">// while, "WHILE condition: repeat" (checks BEFORE)
+while (battery < 100) {
+    charge();
+}</code></pre>
+    </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">LINE BY LINE</p>
+      <table>
+        <tr><td><code>while (battery &lt; 100)</code></td><td>checks before every round whether the battery is not yet full. If that is <code>true</code>, the body runs.</td></tr>
+        <tr><td><code>charge();</code></td><td>the body. After that it goes back up to the check. For the loop to ever end, <code>charge()</code> has to increase the value of <code>battery</code>.</td></tr>
+        <tr><td><code>}</code></td><td>If the condition is <code>false</code>, execution continues after this brace.</td></tr>
+      </table>
+    </div>
+
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+      <p>Something in the body has to move the condition toward <code>false</code>, otherwise the loop runs forever.</p>
+    </div>
+
+ <div class="oaky">
+ <img class="figur" src="../../img/kapitel/oaky-erschrickt.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p><strong>Watch out, infinite loop:</strong> If the condition never becomes false (for example because <code>i++</code> is missing), the loop runs forever. Then the only thing that helps is the stop button of your IDE. Happens to everyone, once a week.</p>
+ </div>
+ </div>
+
+ <div class="widget" style="margin-top:20px">
+ <h3>The Infinite Loop Simulator</h3>
+ <p class="widget-hinweis">You have to experience it once, and here it's safe. Start the loop and find the way out. (Spoiler: the red button. In your IDE: <!--ide:kurz-stoppen-->
+<em>VS Code:</em> red square in the terminal · <kbd>Ctrl</kbd> + <kbd>C</kbd> · <em>IntelliJ IDEA:</em> red square in the Run window · <kbd>Ctrl</kbd> + <kbd>F2</kbd>
+<!--/ide:kurz-stoppen-->)</p>
+ <div class="codebox flach">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Ups.java (excerpt)</p>
+<pre><code class="java">while (true) {                       // true NEVER becomes false. Never.
+    System.out.println("Help, I can't get out of here!");
+}</code></pre>
+ </div>
+ <p style="display:flex;gap:10px;margin:12px 0"><button class="btn btn-klein" id="inf-run"> Run</button>
+ <button class="btn btn-klein" id="inf-stop"> STOP (the red button)</button></p>
+ <div class="sim-konsole" id="inf-out" style="max-height:150px;overflow:auto"></div>
+ <p class="statuszeile" id="inf-status" style="margin-top:10px">Go ahead. We have a red button.</p>
+ </div>
+
+ <p>First a puzzle: the countdown got scrambled.</p>
+
+ <div class="parsons">
+ <p class="parsons-titel"><strong>Code puzzle:</strong> Sort the lines so that the program prints 3, 2, 1 and then “Start!”. Remember: What has to exist BEFORE the loop? What has to happen IN it so that it ends?</p>
+ <div class="parsons-zeilen">
+ <div class="p-zeile">int rakete = 3;</div>
+ <div class="p-zeile">while (rakete > 0) {</div>
+ <div class="p-zeile"> System.out.println(rakete);</div>
+ <div class="p-zeile"> rakete = rakete - 1;</div>
+ <div class="p-zeile">}</div>
+ <div class="p-zeile">System.out.println("Start!");</div>
+ </div>
+ <button class="btn btn-klein parsons-check">Compile </button>
+ <p class="parsons-meldung"></p>
+ </div>
+  </section>
+
+  <section class="block">
+    <h2 id="kurz-ueben-schleifen-selbst-bauen-und-lesen"><span class="nr">7.2</span> Counting loop: for</h2>
+    <p class="wozu">If it is known beforehand how often something should run, <code>for</code> is the right loop. Everything organizational is in one line: where the counter starts, how long it keeps going and what happens after each round.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="for">for</span> (<var data-teil="start">start</var><span data-teil="semi">;</span> <var data-teil="bed">condition</var><span data-teil="semi">;</span> <var data-teil="schritt">Step</var>) <span data-teil="kl">{</span>
+    <var data-teil="rumpf">statements to repeat</var>
+<span data-teil="kl">}</span></code></pre>
+      <p class="aufbau-info">A semicolon separates the three parts in the parentheses. The start runs once, the condition is checked before every round, the step is executed after every round.</p>
+      <div hidden data-erkl="for"><strong><code>for</code></strong> introduces the counting loop. The parentheses after it contain everything that controls the counter. As with <code>while</code>, no semicolon goes after the closing parenthesis.</div>
+      <div hidden data-erkl="start"><strong>Start:</strong> declares the counter and gives it its initial value, for example <code>int i = 0</code>. The counter only exists in the loop, after its closing brace it is gone.</div>
+      <div hidden data-erkl="semi"><strong>The two semicolons</strong> separate start, condition and step from one another. There is none after the step: the compiler reports <code>for (int i = 0; i &lt; 3; i++;)</code> as an error.</div>
+      <div hidden data-erkl="bed"><strong>Condition:</strong> usually a comparison with the counter, for example <code>i &lt; 3</code>. Watch for <code>&lt;</code> or <code>&lt;=</code>: with start <code>0</code>, <code>i &lt; 3</code> gives three rounds, <code>i &lt;= 3</code> four.</div>
+      <div hidden data-erkl="schritt"><strong>Step:</strong> changes the counter, usually with <code>i++</code>, which increases it by 1. It has to change the counter so that the condition eventually evaluates to <code>false</code>, otherwise the loop runs forever.</div>
+      <div hidden data-erkl="kl"><strong>The curly braces</strong> mark the start and end of the body. If the condition evaluates to <code>false</code>, execution continues with the first line after the closing brace.</div>
+      <div hidden data-erkl="rumpf"><strong>Loop body:</strong> the statements for one round. Here you can use the current value of the counter, for example <code>System.out.println("Round " + i);</code>.</div>
+    </div>
+
+    <div class="codebox">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>DieDreiSchleifen.java (2 of 3)</p>
+<pre><code class="java">// for, the counting loop: everything organizational in one line
+for (int i = 0; i < 3; i++) {
+    System.out.println("Round " + i);
+}</code></pre>
+    </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">LINE BY LINE</p>
+      <table>
+        <tr><td><code>int i = 0</code></td><td><strong>Start:</strong> creates the counter <code>i</code> and sets it to 0. Runs exactly once, before the first round. Counting “from 0” becomes important in Chapter 8.</td></tr>
+        <tr><td><code>i &lt; 3</code></td><td><strong>Keep going as long as?</strong> Checked before every round. On <code>false</code> it is over.</td></tr>
+        <tr><td><code>i++</code></td><td><strong>After every round:</strong> increase <code>i</code> by 1.</td></tr>
+        <tr><td><code>System.out.println("Round " + i);</code></td><td>the body, each time with the current value of <code>i</code>.</td></tr>
+      </table>
+    </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">DESK CHECK · ROUND BY ROUND</p>
+      <table>
+        <tr><td><strong><code>i</code></strong></td><td><strong><code>i &lt; 3</code> ?</strong></td><td><strong>what happens</strong></td></tr>
+        <tr><td><code>0</code></td><td><code>true</code></td><td>Output “Round 0”, then <code>i++</code> turns the 0 into a 1</td></tr>
+        <tr><td><code>1</code></td><td><code>true</code></td><td>Output “Round 1”, then <code>i</code> becomes 2</td></tr>
+        <tr><td><code>2</code></td><td><code>true</code></td><td>Output “Round 2”, then <code>i</code> becomes 3</td></tr>
+        <tr><td><code>3</code></td><td><code>false</code></td><td>Done: The loop is finished after 3 rounds, execution continues after the closing brace</td></tr>
+      </table>
+    </div>
+    <p>It gets even clearer in the stepper below.</p>
+  </section>
+
+ <section class="widget">
+ <h3>The Loop Stepper</h3>
+ <p class="widget-hinweis">The for loop step by step: Each click on “Step” executes exactly one part, the start, the check, the body or the step. This is how pros go through their code in the debugger.</p>
+
+ <div class="wflex">
+ <div style="flex:2 1 300px">
+ <div class="codebox flach" style="margin:0">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Schleife.java</p>
+<pre><code class="nohl" style="background:none;border:none;padding:0;white-space:pre;color:#f0eef7;font-size:0.92rem;line-height:2">for (<span id="st-init" class="st-part">int i = 0</span>; <span id="st-cond" class="st-part">i &lt; 3</span>; <span id="st-inc" class="st-part">i++</span>) {
+    <span id="st-body" class="st-part">System.out.println("Round " + i);</span>
+}
+<span id="st-end" class="st-part">// fertig, hier geht's weiter</span></code></pre>
+ </div>
+ <p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-klein" id="st-step">Step </button>
+ <button class="btn btn-klein" id="st-auto">Auto </button>
+ <button class="btn btn-klein" id="st-reset"> Reset</button></p>
+ </div>
+ <div style="flex:1 1 200px">
+ <div style="display:flex;justify-content:center;margin-bottom:14px">
+ <div class="var-box" style="width:120px;min-height:90px">
+ <span class="var-type">int</span> <span class="var-name">i</span> <span class="var-value" id="st-i">: </span>
+ </div>
+ </div>
+ <p class="statuszeile" id="st-status" style="text-align:center">Ready. Press “Step”.</p>
+ </div>
+ </div>
+ <div class="sim-konsole" id="st-out" style="margin-top:14px"></div>
+ </section>
+
+  <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p>The <code>i</code> from the for line only exists <em>in</em> the loop, after the closing brace it is gone (<a href="04-methoden.html#wo-eine-variable-gilt">Chapter 4</a>). What is supposed to <strong>survive</strong> the loop (sum, counter, flag) you therefore declare <strong>before</strong> it.</p>
+ </div>
+
+ <p>And now <strong>reading</strong> code, the supreme discipline. What does this loop print?</p>
+
+ <div class="codebox runner" data-trace data-out="6">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Summe.java (excerpt)</p>
+<pre><code class="java">int sum = 0;
+for (int i = 1; i <= 3; i++) {
+    sum = sum + i;
+}
+System.out.println(sum);   // println comes AFTER the loop!</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <p>Finally <strong>loop and if together</strong>: the clapping game from elementary school in Java (with <code>%</code> from Chapter 3):</p>
+
+ <div class="codebox runner" data-out="1\n2\n3 CLAP! \n4\n5\n6 CLAP! \n7\n8\n9 CLAP! \n10">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Klatschspiel.java (excerpt)</p>
+<pre><code class="java">for (int i = 1; i <= 10; i++) {
+    if (i % 3 == 0) {                       // Remainder 0 when dividing by 3?
+        System.out.println(i + " CLAP! ");
+    } else {
+        System.out.println(i);
+    }
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+  </section>
+
+  <section class="block">
+    <h2 id="while-vs-do-while-der-schwarzfahrer-test"><span class="nr">7.3</span> Post-test loop: do-while</h2>
+    <p class="wozu">Sometimes the body has to run before there is anything to check at all: you only know whether a PIN is wrong once it has been entered. <code>do-while</code> therefore puts the check at the end.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="do">do</span> <span data-teil="kl">{</span>
+    <var data-teil="rumpf">statements to repeat</var>
+<span data-teil="kl">}</span> <span data-teil="while">while</span> (<var data-teil="bed">condition</var>)<span data-teil="semi">;</span></code></pre>
+      <p class="aufbau-info">A semicolon follows the condition. The check happens only <strong>after</strong> the body, so it runs at least once.</p>
+      <div hidden data-erkl="do"><strong><code>do</code></strong> means “do” and introduces the loop. Nothing is checked here, the program goes straight into the body.</div>
+      <div hidden data-erkl="kl"><strong>The curly braces</strong> mark the start and end of the body. Directly after the closing brace comes the check with <code>while</code>.</div>
+      <div hidden data-erkl="rumpf"><strong>Loop body:</strong> the statements for one round, such as <code>enterPin();</code>. Here, too, something in the body has to make sure the condition eventually evaluates to <code>false</code>.</div>
+      <div hidden data-erkl="while"><strong><code>while</code></strong> introduces the check at the end here. It is the same keyword as in the while loop, only it comes after the body instead of before.</div>
+      <div hidden data-erkl="bed"><strong>Condition:</strong> for example <code>pinWrong</code>. If it evaluates to <code>true</code>, the next round starts again at <code>do</code>. On <code>false</code>, execution continues with the line below.</div>
+      <div hidden data-erkl="semi"><strong>The semicolon</strong> ends the do-while loop. If it is missing, the compiler reports <code>';' expected</code>. With the while loop, by contrast, there is none after the condition.</div>
+    </div>
+
+    <div class="codebox">
+      <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>DieDreiSchleifen.java (3 of 3)</p>
+<pre><code class="java">// do-while, "do FIRST, check AFTER" (runs at least once)
+do {
+    enterPin();
+} while (pinWrong);</code></pre>
+    </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">LINE BY LINE</p>
+      <table>
+        <tr><td><code>do {</code></td><td>enters the body without a check.</td></tr>
+        <tr><td><code>enterPin();</code></td><td>the body: The first input always happens.</td></tr>
+        <tr><td><code>} while (pinWrong);</code></td><td>only now the check. If the PIN is wrong, execution goes back to <code>do</code>, otherwise it continues below this line.</td></tr>
+      </table>
+    </div>
+
+ <p>Two <strong>almost identical</strong> loops. The only difference: the condition is checked <em>before</em> or <em>after</em> the body. Does that make a difference?</p>
+
+ <div class="predict" data-target="#wd-while, #wd-do">
+ <p class="predict-q"><strong>Decide first:</strong> <code>hasTicket</code> is <code>false</code>. What does the <strong>while</strong> block (variant A) print?</p>
+ <div class="predict-opts">
+ <button>Nothing at all</button>
+ <button>Once “rode one station”</button>
+ <button>It runs forever</button>
+ </div>
+ <p class="predict-notiz" hidden>Decided! Now run both blocks and compare.</p>
+ </div>
+
+ <div class="wflex">
+ <div class="feld">
+ <h4>Variant A: while</h4>
+ <div class="codebox flach" style="margin:10px 0">
+<pre><code class="java">boolean hasTicket = false;
+while (hasTicket) {
+    rideOneStop();
+}</code></pre>
+ </div>
+ <button class="btn btn-klein" id="wd-while"> Run</button>
+ <div class="sim-konsole" id="wd-while-out" style="margin-top:10px"></div>
+ </div>
+ <div class="feld">
+ <h4>Variant B: do-while</h4>
+ <div class="codebox flach" style="margin:10px 0">
+<pre><code class="java">boolean hasTicket = false;
+do {
+    rideOneStop();
+} while (hasTicket);</code></pre>
+ </div>
+ <button class="btn btn-klein" id="wd-do"> Run</button>
+ <div class="sim-konsole" id="wd-do-out" style="margin-top:10px"></div>
+ </div>
+ </div>
+
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Answer: run both first, then expand!<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Without a ticket, A rides <strong>no</strong> station, B <strong>exactly one</strong>.</p>
+ <ul>
+ <li><strong>while</strong> checks <em>before</em> the body: <code>hasTicket</code> is <code>false</code> from the start, so the body runs zero times.</li>
+ <li><strong>do-while</strong> checks only <em>after</em> the body: <code>rideOneStop()</code> runs once, and only then does the check evaluate to <code>false</code>.</li>
+ </ul>
+ </div>
+ </details>
+
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+      <p><code>while</code> checks <strong>beforehand</strong>, so it may never run. <code>do-while</code> checks <strong>afterward</strong>, so it runs at least once.</p>
+    </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Explained differently: the three loops compared</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <ul>
+ <li><strong>while</strong> checks <em>before</em> the body (pre-test). If the condition is <code>false</code> right the first time, the body runs zero times.</li>
+ <li><strong>do-while</strong> checks <em>after</em> the body (post-test). The body always runs at least once, for example with a PIN input.</li>
+ <li><strong>for</strong> also checks <em>before</em> every round. Start, condition and step are in one line: the counting loop.</li>
+ </ul>
+ <p>Rule of thumb: <strong>Number known &rarr; for. Number unknown &rarr; while.</strong> “Do first, then check” &rarr; do-while (the rarest).</p>
+ </div>
+ </details>
+  </section>
+
+
+  <section class="block">
+    <h2 id="struktogramm-wiederholung"><span class="nr">7.4</span> Repetition in the structogram</h2>
+    <p class="wozu">You know three basic forms from Chapter 6, the fourth is repetition. It gets an <strong>L-shaped frame</strong>: the bar with the condition and a narrow strip at the side enclose the body. Whether <code>while</code> or <code>do-while</code>, you can <em>see</em> it immediately: the condition bar sits at the top or at the bottom.</p>
+
+    <figure class="opener weit">
+      <img src="../../img/en/kapitel/struktogramm-wiederholung.svg" width="520" height="214"
+           alt="Two structograms side by side: on the left the pre-test loop with the condition bar at the top, on the right the post-test loop with the condition bar at the bottom.">
+      <figcaption>Top or bottom, that is the whole difference, and it is exactly the one that decides.</figcaption>
+    </figure>
+
+    <p>On the left the condition is <strong>above</strong> the body: checked first, and if in doubt the body never runs (pre-test). On the right it is <strong>below</strong> the body: the body runs at least once (post-test). That is the difference between variant A and B from the ticket example, just drawn.</p>
+
+    <div class="baustein kern">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+      <p>Four basic forms are enough for any program: sequence, branch, multi-way selection, repetition.</p>
+    </div>
+
+    <div class="baustein selbst">
+      <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>You first, then Java</p>
+      <p>Draw the countdown from the code puzzle above as a structogram. Which basic form is in it, and what goes in the condition bar?</p>
+    </div>
+  </section>
+
+
+  <section class="block">
+    <h2 id="schleife-in-der-schleife"><span class="nr">7.5</span> Nested loops</h2>
+    <p class="wozu">The body of a loop can contain anything, including a second loop. The outer one then counts the <strong>rows</strong>, the inner one what happens within a row.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="aussen">for</span> (<var data-teil="start">outer start</var>; <var data-teil="bed">condition</var>; <var data-teil="schritt">Step</var>) <span data-teil="aussen">{</span>
+    <span data-teil="innen">for</span> (<var data-teil="start">inner start</var>; <var data-teil="bed">condition</var>; <var data-teil="schritt">Step</var>) <span data-teil="innen">{</span>
+        <var data-teil="eintrag">statements for one entry of the row</var>
+    <span data-teil="innen">}</span>
+    <var data-teil="zeilenende">statements at the end of the row</var>
+<span data-teil="aussen">}</span></code></pre>
+      <p class="aufbau-info">For each run of the outer loop, the inner one runs through <strong>completely</strong>.</p>
+      <div hidden data-erkl="aussen"><strong>The outer loop</strong> extends from the first <code>for</code> to the last closing brace. One round of the outer loop produces one row, in the times table <code>row</code> counts from 1 to 3.</div>
+      <div hidden data-erkl="innen"><strong>The inner loop</strong> sits in the body of the outer one. It counts the entries of a row, in the times table <code>column</code> from 1 to 4.</div>
+      <div hidden data-erkl="start"><strong>Outer and inner start:</strong> The outer one runs exactly once, the inner one anew in every round of the outer one. So the inner counter starts from the beginning again in every row. The two counters need different names, for example <code>row</code> and <code>column</code>.</div>
+      <div hidden data-erkl="bed"><strong>Condition:</strong> Each loop has its own, for example <code>row &lt;= 3</code> on the outside and <code>column &lt;= 4</code> on the inside. The inner condition may also use the counter of the outer loop, then each row has a different length.</div>
+      <div hidden data-erkl="schritt"><strong>Step:</strong> changes the counter of its own loop, so <code>row++</code> on the outside and <code>column++</code> on the inside. A common mistake is <code>row++</code> in the inner loop: then <code>column</code> never changes, and the inner loop runs forever.</div>
+      <div hidden data-erkl="eintrag"><strong>Statements for one entry:</strong> the body of the inner loop, for example <code>line = line + (row * column) + " ";</code>. Here you can use both counters, the outer and the inner one.</div>
+      <div hidden data-erkl="zeilenende"><strong>Statements at the end of the row:</strong> They come after the inner loop, but still inside the outer one, and therefore run once per row. An example is printing the finished row with <code>System.out.println(line.trim());</code>.</div>
+    </div>
+
+ <div class="codebox runner" data-trace data-out="1 2 3 4\n2 4 6 8\n3 6 9 12">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>TimesTable.java</p>
+<pre><code class="java">public class TimesTable {
+
+    public static void main(String[] args) {
+        for (int row = 1; row &lt;= 3; row++) {
+            String line = "";
+
+            for (int column = 1; column &lt;= 4; column++) {
+                line = line + (row * column) + " ";
+            }
+
+            System.out.println(line.trim());
+        }
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">LINE BY LINE</p>
+      <table>
+        <tr><td><code>for (int row = 1; row &lt;= 3; row++)</code></td><td>the outer loop: three rounds, one per output line.</td></tr>
+        <tr><td><code>String line = "";</code></td><td>is in the outer loop: Each row starts with an empty String.</td></tr>
+        <tr><td><code>for (int column = 1; column &lt;= 4; column++)</code></td><td>the inner loop: runs four times in <strong>every</strong> round of the outer one.</td></tr>
+        <tr><td><code>line = line + (row * column) + " ";</code></td><td>appends the product and a space. In row 2, <code>line</code> grows to “2 4 6 8 ” this way.</td></tr>
+        <tr><td><code>System.out.println(line.trim());</code></td><td>comes after the inner loop, but still in the outer loop: once per row. <code>trim()</code> cuts off the last space.</td></tr>
+      </table>
+    </div>
+
+ <p>The counters are deliberately named <code>row</code> and <code>column</code>, not <code>i</code> and <code>j</code>. With two loops inside each other, a descriptive name decides between “readable” and “guessing”.</p>
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <p>The rounds <strong>multiply</strong>: 3 outer times 4 inner is <strong>twelve</strong> runs of the inner body, not seven. With 1,000 entries each, that is a million steps, and you notice it.</p>
+ </div>
+  </section>
+
+
+  <section class="block">
+    <h2 id="break-und-continue"><span class="nr">7.6</span> Jump statements: break and continue</h2>
+    <p class="wozu">Sometimes you don't want to count to the end: What you were looking for has been found, or a round should be skipped. There are two words for that.</p>
+
+    <div class="aufbau">
+      <p class="aufbau-kopf">STRUCTURE · CLICK A PART</p>
+<pre><code><span data-teil="break">break</span><span data-teil="semi">;</span>       leave the loop immediately
+<span data-teil="continue">continue</span><span data-teil="semi">;</span>    skip this round</code></pre>
+      <p class="aufbau-info">After <code>break</code>, execution continues after the closing brace of the loop, after <code>continue</code> with the next round. Both go in the body, usually inside an <code>if</code>.</p>
+      <div hidden data-erkl="break"><strong><code>break</code></strong> ends the whole loop, even if its condition still evaluates to <code>true</code>. In nested loops it only affects the innermost one it is in. <code>break</code> is typically used after a match: <code>if (number == searchValue) { break; }</code></div>
+      <div hidden data-erkl="continue"><strong><code>continue</code></strong> skips the rest of the body. In a for loop, the step follows, for example <code>i++</code>, then the check. Careful in a while loop: if the <code>i++</code> comes after the <code>continue</code>, it is skipped, and the loop runs forever.</div>
+      <div hidden data-erkl="semi"><strong>The semicolon:</strong> <code>break</code> and <code>continue</code> are statements of their own and end with <code>;</code> like every statement. If another statement follows in the same block, the compiler reports <code>unreachable statement</code>, because it could never run.</div>
+    </div>
+
+ <div class="codebox runner" data-trace data-out="1\n2\n4">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>EmergencyExit.java</p>
+<pre><code class="java">public class EmergencyExit {
+
+    public static void main(String[] args) {
+        for (int i = 1; i &lt;= 6; i++) {
+            if (i == 3) {
+                continue;
+            }
+            if (i == 5) {
+                break;
+            }
+            System.out.println(i);
+        }
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Run</button>
+ <span class="run-hinweis">CONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+    <div class="zeilenweise">
+      <p class="zeilenweise-kopf">DESK CHECK · ROUND BY ROUND</p>
+      <table>
+        <tr><td><strong><code>i</code></strong></td><td><strong><code>i == 3</code> ?</strong></td><td><strong><code>i == 5</code> ?</strong></td><td><strong>Output</strong></td></tr>
+        <tr><td><code>1</code></td><td><code>false</code></td><td><code>false</code></td><td><code>1</code></td></tr>
+        <tr><td><code>2</code></td><td><code>false</code></td><td><code>false</code></td><td><code>2</code></td></tr>
+        <tr><td><code>3</code></td><td><code>true</code>: <code>continue</code></td><td>not checked anymore</td><td>none: <code>continue</code> skips the rest of <em>this</em> round, then <code>i++</code></td></tr>
+        <tr><td><code>4</code></td><td><code>false</code></td><td><code>false</code></td><td><code>4</code></td></tr>
+        <tr><td><code>5</code></td><td><code>false</code></td><td><code>true</code>: <code>break</code></td><td>none: <code>break</code> ends the whole loop, the <code>6</code> is never checked</td></tr>
+      </table>
+    </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Remember this</p>
+ <ul>
+ <li><code>break</code> means “get out of here”, <code>continue</code> means “skip this round”.</li>
+ <li>In nested loops, <code>break</code> only affects the <strong>innermost</strong> loop it is in.</li>
+ </ul>
+ </div>
+ <div class="oaky">
+ <img class="figur" src="../../img/kapitel/oaky-finger.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p>Use both sparingly: If the exit condition is at the top in the parentheses, you can read the loop in one go. Rule of thumb: <code>break</code> when you have found what you were looking for, otherwise better adjust the condition.</p>
+ </div>
+ </div>
+  </section>
+
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>That's enough for now</p>
+ <ul>
+ <li><code>while</code> checks <strong>beforehand</strong>, so it may never run. <code>do-while</code> checks <strong>afterward</strong>, so it runs at least once.</li>
+ <li><code>for</code> counts: start / condition / step in one line. Number known: <code>for</code>. Unknown: <code>while</code>.</li>
+ <li>Something in the body has to move the condition toward <code>false</code>, otherwise the loop runs forever.</li>
+ <li>The <code>i</code> from the for line only exists in the loop. Declare sums and counters before it.</li>
+ <li>Structogram: L-frame, condition bar at the top (<code>while</code>) or at the bottom (<code>do-while</code>).</li>
+ <li>When nested, the rounds multiply. <code>break</code> leaves the loop, <code>continue</code> skips a round.</li>
+ </ul>
+ </div>
+ </section>
+ <section class="baustein uebung quiz">
+ <h3>Checkpoint</h3>
+ <p class="widget-hinweis">6 questions: for number 3, the stepper above helps.</p>
+
+ <div class="qq">
+ <p class="qq-text">1. What goes inside the parentheses of an if?</p>
+ <div class="qq-opt">
+ <button data-why="A number on its own is not a condition. The parentheses need an expression that evaluates to true or false (e.g. number > 10).">Any number</button>
+ <button data-ok>An expression that evaluates to true or false</button>
+ <button data-why='“age > 18” in quotation marks would only be text, and Java would not evaluate it. The condition stands there without quotation marks.'>A String containing the condition as text</button>
+ </div>
+ <p class="qq-erklaerung" hidden>The condition is always a boolean expression: comparisons, combined with &amp;&amp;, ||, !.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">2. Which loop is guaranteed to run at least once?</p>
+ <div class="qq-opt">
+ <button data-why="while checks BEFORE the body: if the condition is false right away, the body runs zero times.">while</button>
+ <button data-ok>do-while</button>
+ <button data-why="for also checks BEFORE every round, so with for (int i = 5; i < 3; …) exactly nothing happens.">for</button>
+ </div>
+ <p class="qq-erklaerung" hidden>do-while checks the condition only AFTER the first round. So the body always runs at least once.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">3. How many times does this loop print? <code>for (int i = 0; i &lt; 4; i++) { System.out.println(i); }</code></p>
+ <div class="qq-opt">
+ <button data-why="You started counting at 1, but i starts at 0! The 0 is a full-fledged round.">3 times (1, 2, 3)</button>
+ <button data-why="When i = 4, the condition i < 4 is FALSE, so the 4 is never printed. The < is not a <=.">5 times (0, 1, 2, 3, 4)</button>
+ <button data-ok>4 times (0, 1, 2, 3)</button>
+ </div>
+ <p class="qq-erklaerung" hidden>i starts at 0 and runs as long as i &lt; 4: so 0, 1, 2, 3. When i = 4 the condition is false, and that is the end. Counting “from 0” becomes important in Chapter 8.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">4. What is the difference between <code>=</code> and <code>==</code>?</p>
+ <div class="qq-opt">
+ <button data-ok>= assigns a value, == compares two values</button>
+ <button data-why="They are two completely different operators: = assigns a value, == compares and returns true or false.">No difference, == is just an emphatic =</button>
+ <button data-why="Tempting, but you compare Strings with .equals(), not with ==. And = assigns for ALL types.">== is for Strings, = is for numbers</button>
+ </div>
+ <p class="qq-erklaerung" hidden>= stores a value in the variable, == checks whether two values are equal. Mixing them up is THE classic mistake.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">5. When is <code>(age >= 18 &amp;&amp; hasTicket)</code> true?</p>
+ <div class="qq-opt">
+ <button data-why="“One is enough” would be || (OR). && is stricter: BOTH conditions must be true.">If at least one of the two is true</button>
+ <button data-ok>Only if BOTH are true: of age AND has a ticket</button>
+ <button data-why="“Exactly one” (either-or) exists too, that would be != from Chapter 6 (or ^). && simply means: both.">Only if exactly one of the two is true</button>
+ </div>
+ <p class="qq-erklaerung" hidden>&amp;&amp; = AND: both conditions must be true. For “one is enough” there would be || (OR).</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">6. <code>input</code> is a String with the content "yes". How do you check that correctly?</p>
+ <div class="qq-opt">
+ <button data-why='== does not check the content of Strings, but whether it is exactly the same object in memory (Chapter 9 explains why). Result: sometimes true, sometimes false. Creepy.'>if (input == "yes")</button>
+ <button data-ok>if (input.equals("yes"))</button>
+ <button data-why="A single = in the condition assigns instead of comparing, and with Strings that gives a compiler error right away.">if (input = "yes")</button>
+ </div>
+ <p class="qq-erklaerung" hidden>You compare Strings (and all objects) with .equals(), which checks the CONTENT. == only checks whether it is the same object.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+  <div class="kapitel-ende">
+    <div class="blaettern">
+      <a class="btn" href="06-verzweigungen.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Chapter 6</a> <a class="btn btn-haupt" href="08-arrays.html">Chapter 8: Arrays<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </div>
+  </div>
+
+</main>
+
+<footer class="seitenfuss">
+  <div class="seitenfuss-innen">
+    <p><strong>Cheat Sheet: Java</strong> · Java basics for Learning Field 5, “Adapting software for data management”, IT professions, grade 10.</p>
+  </div>
+</footer>
+
+<script src="../../js/app.js"></script>
+<script>
+(function () {
+  var $ = CC.$, $$ = CC.$$;
+
+  /* ---------- Schleifen-Stepper ---------- */
+
+ var stI = null, stPhase = 'start', stAuto = null;
+
+ function stHighlight(id) {
+ ['st-init', 'st-cond', 'st-body', 'st-inc', 'st-end'].forEach(function (x) {
+ var el = $('#' + x);
+ el.style.background = x === id ? 'var(--blau-ink)' : 'transparent';
+ el.style.color = x === id ? '#fff' : '';
+ el.style.borderRadius = '6px';
+ el.style.padding = '1px 4px';
+ });
+ }
+
+ function stStep() {
+ var status = $('#st-status'), iBox = $('#st-i'), out = $('#st-out');
+ if (stPhase === 'start') {
+ stI = 0; stPhase = 'cond';
+ stHighlight('st-init');
+ iBox.textContent = '0';
+
+ status.textContent = '1 Start: The variable i is declared and initialized with 0. (Happens only ONCE!)';
+ } else if (stPhase === 'cond') {
+ stHighlight('st-cond');
+ if (stI < 3) {
+ status.textContent = '2 Check: Is ' + stI + ' < 3? Evaluates to true. So: run the body!';
+ stPhase = 'body';
+ } else {
+ status.textContent = '2 Check: Is ' + stI + ' < 3? Evaluates to false! The loop is DONE.';
+ stPhase = 'done';
+ }
+ } else if (stPhase === 'body') {
+ stHighlight('st-body');
+ out.textContent += 'Round ' + stI + '\n';
+ status.textContent = '3 Body: println runs, with the current i (' + stI + ').';
+ stPhase = 'inc';
+ } else if (stPhase === 'inc') {
+ stHighlight('st-inc');
+ stI++;
+ iBox.textContent = String(stI);
+
+ status.textContent = '4 Step: i++ increases i to ' + stI + '. Back to the check!';
+ stPhase = 'cond';
+ } else if (stPhase === 'done') {
+ stHighlight('st-end');
+ status.textContent = ' Done. i reached 3, the condition was false, execution continues after the loop.';
+ if (stAuto) { clearInterval(stAuto); stAuto = null; $('#st-auto').textContent = 'Auto '; }
+ }
+ }
+
+ function stReset() {
+ stI = null; stPhase = 'start';
+ if (stAuto) { clearInterval(stAuto); stAuto = null; $('#st-auto').textContent = 'Auto '; }
+ stHighlight('');
+ $('#st-i').textContent = ', ';
+ $('#st-out').textContent = '';
+ $('#st-status').textContent = 'Ready. Press “Step”.';
+ }
+
+ $('#st-step').addEventListener('click', stStep);
+ $('#st-reset').addEventListener('click', stReset);
+ $('#st-auto').addEventListener('click', function () {
+ if (stAuto) { clearInterval(stAuto); stAuto = null; this.textContent = 'Auto '; return; }
+ if (stPhase === 'done') stReset();
+ var b = this; b.textContent = ' Pause';
+ stAuto = setInterval(function () { stStep(); }, 900);
+ });
+
+
+  /* ---------- while vs do-while ---------- */
+
+ $('#wd-while').addEventListener('click', function () {
+ var out = $('#wd-while-out');
+ out.textContent = '';
+ setTimeout(function () {
+ out.textContent = '(nothing happens)\n// The condition was already false before the first round.\n// The body ran zero times.';
+ }, 300);
+ });
+ $('#wd-do').addEventListener('click', function () {
+ var out = $('#wd-do-out');
+ out.textContent = '';
+ setTimeout(function () { out.textContent = ' rode one station!'; }, 300);
+ setTimeout(function () {
+ out.textContent += '\n// Only AFTERWARD the check: false, the loop ends.\n// The body still ran exactly ONCE.';
+ }, 1000);
+ });
+
+
+  /* ---------- Endlosschleifen-Simulator ---------- */
+
+ var infTimer = null, infCount = 0;
+ $('#inf-run').addEventListener('click', function () {
+ if (infTimer) return;
+ infCount = 0;
+ var out = $('#inf-out');
+ out.textContent = '';
+ $('#inf-status').textContent = ' Running … and running … and running … (your fan: wrrrRRRR)';
+ infTimer = setInterval(function () {
+ for (var i = 0; i < 4; i++) {
+ infCount++;
+ out.textContent += 'Help, I can\'t get out of here! (' + infCount + ')\n';
+ }
+ var lines = out.textContent.split('\n');
+ if (lines.length > 50) out.textContent = lines.slice(lines.length - 50).join('\n');
+ out.scrollTop = out.scrollHeight;
+ }, 80);
+ });
+ $('#inf-stop').addEventListener('click', function () {
+ if (!infTimer) {
+ $('#inf-status').textContent = 'Nothing is running (yet). Start first, then stop heroically.';
+ return;
+ }
+ clearInterval(infTimer);
+ infTimer = null;
+ $('#inf-out').textContent += '\n Process terminated.';
+ $('#inf-status').innerHTML = '‍ Stopped after <strong>' + infCount + '</strong> lines. A real computer could have managed MILLIONS per second. Remember: Something in the body has to move the condition toward false, otherwise only the red button helps.';
+  });
+})();
+</script>
+</body>
+</html>

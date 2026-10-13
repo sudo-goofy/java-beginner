@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 4 · Methoden · Cheat Sheet: Java</title>
+<meta name="description" content="Parameter, Rückgabewerte und Methodenaufrufe, und warum Copy-Paste ab hier aufhört.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../img/favicon.svg"><link rel="stylesheet" href="../css/style.css"></head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Merksatz: Lesezeichen</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kurz nachgedacht: Frage an dich</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufgabe: Stift</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Projektaufgabe ZombieApocalypse: Zombiekopf</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Handlungsorientierte Aufgabe: Stoppuhr</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: Fahne</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nochmal anders erklärt: Wiederholung</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Auflösung: Schlüssel</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Das Wichtigste in Kürze: Seite mit Eselsohr</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Lernziele: Zielscheibe</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Konsole: Prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Entwicklungsumgebung: Editorfenster mit Seitenleiste</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fehlermeldung: Käfer</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Richtig: Haken</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Falsch: Kreuz</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Dauer: Uhr</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kapitel: aufgeschlagenes Heft</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Inhaltsverzeichnis</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Weiter</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Zurück</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nach unten</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufklappbar</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Öffnet ein Fenster</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nachtschicht</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Tagesansicht</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fortschritt löschen</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Drucken</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Zum Inhalt springen</a>
+
+<nav class="topbar" aria-label="Hauptnavigation">
+ <div class="topbar-innen">
+ <a class="marke" href="../index.html">
+ <img class="oakymarke" src="../img/kapitel/oaky.svg" alt="" width="128" height="148">
+ Cheat Sheet: Java
+ </a>
+ <span class="topbar-titel">Kapitel 4 · Parameter, return, Überladen</span>
+ <span class="topbar-rechts"><a class="btn btn-klein" href="../index.html">Lernpfad</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Sprache wählen"><span>DE</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="04-methoden.html" lang="de" hreflang="de" aria-current="true">Deutsch</a></li><li><a href="../en/kapitel/04-methoden.html" lang="en" hreflang="en">English</a></li></ul></details><!--/sprache--></span>
+ </div>
+ <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+ <header class="kapitel-kopf">
+ <p class="kicker">Kapitel 4 von 11 · Parameter, return, Überladen</p>
+ <h1>Methoden</h1>
+ <p class="vorspann">Denselben Code dreimal schreiben ist nicht fleißig, sondern teuer. Methoden sind die Antwort.</p>
+ <p class="kapitel-meta"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>ca. 45 min</span></p>
+ </header>
+
+ <section class="einstieg" aria-label="Einstieg: das Problem">
+ <p class="einstieg-kopf">DAS PROBLEM</p>
+ <p class="einstieg-frage">Drei Gäste sollen begrüßt werden. Der Code dafür ist kopiert. Fällt dir in der Ausgabe etwas auf?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox runner" data-out="Hello Aylin!\nNice to have you here, Aylin.\nHello Mia!\nNice to have you here, Mia.\nHello Ben!\nNice to have you here, Mia.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Greeting.java</p>
+<pre><code class="java">System.out.println("Hello Aylin!");
+System.out.println("Nice to have you here, Aylin.");
+System.out.println("Hello Mia!");
+System.out.println("Nice to have you here, Mia.");
+System.out.println("Hello Ben!");
+System.out.println("Nice to have you here, Mia.");</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>Ben wird als Mia begrüßt: Beim Kopieren blieb ein Name stehen. Und jede Änderung an der Begrüßung müsstest du dreimal machen.</p>
+ <button class="btn einstieg-knopf" type="button">Mit einer Methode</button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-out="Hello Aylin!\nNice to have you here, Aylin.\nHello Mia!\nNice to have you here, Mia.\nHello Ben!\nNice to have you here, Ben.">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Greeting.java</p>
+<pre><code class="java">public class Greeting {
+
+    static void greet(String name) {
+        System.out.println("Hello " + name + "!");
+        System.out.println("Nice to have you here, " + name + ".");
+    }
+
+    public static void main(String[] args) {
+        greet("Aylin");
+        greet("Mia");
+        greet("Ben");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">Die Begrüßung steht einmal da und wird dreimal aufgerufen, jedes Mal mit einem anderen Namen. Wie du solche Methoden schreibst, zeigt dieses Kapitel.</p>
+ </div>
+ </section>
+
+
+
+ <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Inhalt dieses Kapitels">
+ <h2 id="in-diesem-kapitel">In diesem Kapitel</h2>
+ </nav>
+
+ <details class="baustein ziele">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>Danach kannst du<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+   <div class="inhalt">
+     <ul>
+ <li>eine Methodensignatur lesen: Rückgabetyp, Name, Parameter</li>
+ <li>Methoden schreiben und aufrufen, mit und ohne <strong>Parameter</strong>, mit und ohne <strong>Rückgabewert</strong></li>
+ <li>Code-Wiederholungen durch Methodenaufrufe ersetzen, das <strong>DRY-Prinzip</strong> benennen und anwenden</li>
+ <li>sagen, wo eine Variable gilt und warum eine Methode die Variablen der main nicht sieht</li>
+ <li>erkennen, wann zwei Methoden denselben Namen tragen dürfen (<strong>Überladen</strong>)</li>
+ </ul>
+   </div>
+ </details>
+
+
+ <section class="block" id="das-copy-paste-problem">
+ <p>Der Steckbrief aus Kapitel 3: fünf Zeilen für <em>einen</em> Bewohner. Jetzt ziehen zwei
+ weitere ein: markieren, kopieren, einfügen, Namen ändern. Nochmal. Nach einer Woche: fünf Kopien.
+ Du findest einen Tippfehler und darfst ihn fünfmal beheben.</p>
+ </section>
+
+ <section class="block">
+ <h2 id="eine-methode-ist-eine-kleine-maschine"><span class="nr">4.1</span> Methodendeklaration und Signatur</h2>
+ <p class="wozu">Die Lösung: <span class="hl">Eine Methode ist ein Stück Code mit Namen.</span> Einmal geschrieben,
+ beliebig oft <strong>aufgerufen</strong>, jedes Mal mit anderen Werten. (Andere Sprachen sagen <em>Funktion</em>.)
+ Sie arbeitet wie eine kleine Maschine: Hinein gehen <strong>Parameter</strong>, heraus kommt ein <strong>Rückgabewert</strong>.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><span data-teil="static">static</span> <var data-teil="rtyp">Rückgabetyp</var> <var data-teil="name">name</var>(<var data-teil="param">Typ</var> <var data-teil="param">parameter</var>) <span data-teil="rumpf">{</span>
+    <var data-teil="rumpf">Anweisungen</var>
+    <span data-teil="return">return</span> <var data-teil="wert">Wert</var>;
+<span data-teil="rumpf">}</span></code></pre>
+ <p class="aufbau-info">Die erste Zeile heißt <strong>Signatur</strong>: Sie zeigt, was die Methode braucht und was sie liefert. Kommt nichts zurück, steht dort <code>void</code>, und das <code>return</code> mit Wert fällt weg. Mehrere Parameter trennt ein Komma, ohne Parameter bleiben die Klammern leer.</p>
+ <div hidden data-erkl="static"><strong><code>static</code></strong> steht vorerst vor jeder eigenen Methode, denn die main ist selbst <code>static</code> und kann nur andere <code>static</code>-Methoden direkt aufrufen. Fehlt es, meldet der Compiler beim Aufruf <code>non-static method … cannot be referenced from a static context</code>. Was genau dahintersteckt, steht im Level-Up weiter unten.</div>
+ <div hidden data-erkl="rtyp"><strong>Rückgabetyp:</strong> der Typ des Werts, den die Methode mit <code>return</code> zurückgibt, etwa <code>int</code>, <code>double</code>, <code>boolean</code> oder <code>String</code>. Bei <code>static double twice(…)</code> ist das Ergebnis jedes Aufrufs ein <code>double</code>.</div>
+ <div hidden data-erkl="name"><strong>Name:</strong> frei wählbar, beginnt mit einem Kleinbuchstaben und sagt, was die Methode tut, am besten mit einem Verb: <code>twice</code>, <code>sayHello</code>, <code>calculateSum</code>. Unter diesem Namen wird sie aufgerufen.</div>
+ <div hidden data-erkl="param"><strong>Parameter:</strong> Typ und Name einer Variablen, die erst beim Aufruf ihren Wert bekommt, etwa <code>double number</code>. In der Methode benutzt du sie wie jede andere Variable. Jeder Parameter braucht seinen eigenen Typ: <code>(int a, int b)</code>, nicht <code>(int a, b)</code>.</div>
+ <div hidden data-erkl="rumpf"><strong>Der Methodenrumpf</strong> steht zwischen den geschweiften Klammern: die Anweisungen, die bei jedem Aufruf von oben nach unten ausgeführt werden. Hinter die Signatur gehört kein Semikolon, sondern direkt die <code>{</code>.</div>
+ <div hidden data-erkl="return"><strong><code>return</code></strong> gibt den Wert an die Stelle des Aufrufs zurück und beendet die Methode sofort. Anweisungen direkt dahinter werden nie ausgeführt.</div>
+ <div hidden data-erkl="wert"><strong>Wert:</strong> das Ergebnis, das zurückgegeben wird: eine Zahl, eine Variable oder eine Rechnung wie <code>number * 2</code>. Sein Typ muss zum Rückgabetyp passen.</div>
+ </div>
+
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Signatur lesen</p>
+<pre><code class="java">static double twice(double number) {
+    return number * 2;
+}</code></pre>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>static</code></td><td>vorerst Pflicht vor jeder Methode. Was es bedeutet, steht im Level-Up weiter unten.</td></tr>
+ <tr><td><code>double</code></td><td>der <strong>Rückgabetyp</strong>: Die Methode gibt einen Wert dieses Typs zurück, hier eine Kommazahl.</td></tr>
+ <tr><td><code>twice</code></td><td>der Name der Methode. Mit ihm wird sie aufgerufen.</td></tr>
+ <tr><td><code>(double number)</code></td><td>der <strong>Parameter</strong>: eine Variable, die erst beim Aufruf ihren Wert bekommt.</td></tr>
+ <tr><td><code>return number * 2;</code></td><td>gibt das Ergebnis zurück und beendet die Methode.</td></tr>
+ </table>
+ </div>
+
+ <p>Parameter und Rückgabewert sind optional. Das ergibt <strong>genau vier Sorten</strong>,
+ hier alle in einem Programm:</p>
+ </section>
+
+ <section class="widget">
+ <h3>Vier Sorten in einem Programm</h3>
+ <p class="widget-hinweis">Klick auf eine Methode oder ihren Aufruf: Beide leuchten gemeinsam auf. Dann „Ausführen“.</p>
+ <div class="klickcode">
+ <div class="codebox runner" data-out="Welcome to the cinema!\nNow showing: Zombie Academy\nFree seats: 42\n3 tickets: 25.5 euros">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Cinema.java</p>
+<pre><code class="java klick">public class Cinema {
+
+    <span data-teil="s1">static void greet()</span> {
+        System.out.println("Welcome to the cinema!");
+    }
+
+    <span data-teil="s2">static void showMovie(String title)</span> {
+        System.out.println("Now showing: " + title);
+    }
+
+    <span data-teil="s3">static int freeSeats()</span> {
+        <span data-teil="ret">return</span> 42;
+    }
+
+    <span data-teil="s4">static double price(int tickets)</span> {
+        <span data-teil="ret">return</span> tickets * 8.5;
+    }
+
+    <span data-teil="main">public static void main(String[] args)</span> {
+        <span data-teil="s1">greet();</span>
+        <span data-teil="s2">showMovie("Zombie Academy");</span>
+        <span data-teil="s3">int free = freeSeats();</span>
+        System.out.println("Free seats: " + free);
+        <span data-teil="s4">double sum = price(3);</span>
+        System.out.println("3 tickets: " + sum + " euros");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="aufbau-info">Parameter und Rückgabewert sind jeweils optional, das ergibt vier Sorten. Die Methoden stehen neben der main, aufgerufen werden sie in der main.</p>
+ <div hidden data-erkl="s1"><strong>Sorte 1: nichts hinein, nichts heraus.</strong> Rückgabetyp <code>void</code>, leere Klammern. Aufgerufen wird sie als eigene Anweisung: <code>greet();</code></div>
+ <div hidden data-erkl="s2"><strong>Sorte 2: etwas hinein, nichts heraus.</strong> Der Parameter <code>String title</code> bekommt beim Aufruf den Wert aus den Klammern: <code>showMovie("Zombie Academy");</code> Rückgabetyp <code>void</code>, also kommt nichts zurück.</div>
+ <div hidden data-erkl="s3"><strong>Sorte 3: nichts hinein, etwas heraus.</strong> Leere Klammern, Rückgabetyp <code>int</code>. Den Rückgabewert speicherst du beim Aufruf in einer Variablen vom selben Typ: <code>int free = freeSeats();</code></div>
+ <div hidden data-erkl="s4"><strong>Sorte 4: etwas hinein, etwas heraus.</strong> Parameter <code>int tickets</code>, Rückgabetyp <code>double</code>. <code>price(3)</code> rechnet <code>3 * 8.5</code> und gibt <code>25.5</code> zurück, der Wert landet in <code>sum</code>.</div>
+ <div hidden data-erkl="ret"><strong><code>return</code></strong> gibt den Wert dahinter zurück und beendet die Methode. Der Wert muss zum Rückgabetyp passen. Methoden mit <code>void</code> brauchen kein <code>return</code>.</div>
+ <div hidden data-erkl="main"><strong>Die main</strong> ruft die Methoden der Reihe nach auf. Die Methoden selbst stehen daneben in derselben Klasse, nicht in der main.</div>
+ </div>
+ </section>
+
+ <section class="block">
+ <div class="oaky">
+ <img class="figur" src="../img/kapitel/oaky-zeigt.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p><strong>Zwei Methoden kennst du schon:</strong> <code>main</code> ruft Java automatisch auf,
+ <code>System.out.println(…)</code> rufst du seit Kapitel 2 selbst auf. Neu ist nur:
+ <strong>Du baust deine eigenen.</strong></p>
+ </div>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Signatur lesen: <strong>Rückgabetyp · Name · Parameter.</strong> <code>void</code> heißt: Es kommt nichts zurück.</p>
+ </div>
+
+ <div class="codebox cloze">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Tickets.java: vervollständige das Programm</p>
+<pre><code class="nohl luecken">public class Tickets {
+
+    // gibt nichts zurück, bekommt einen Namen
+    static <input class="cz" data-a="void" size="6"> greet(String name) {
+        System.out.println("Hello " + name + "!");
+    }
+
+    // bekommt eine Anzahl, gibt den Preis zurück
+    static int price(<input class="cz" data-a="int" size="5"> count) {
+        <input class="cz" data-a="return" size="8"> count * 8;
+    }
+
+    public static void main(String[] args) {
+        greet("Mia");
+        <input class="cz" data-a="int" size="5"> sum = price(3);
+        System.out.println("3 tickets cost " + sum + " euros.");
+    }
+
+}</code></pre>
+ <div class="cloze-leiste">
+ <button class="btn btn-klein cloze-check" type="button">Prüfen </button>
+ <p class="cloze-meldung"></p>
+ </div>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="wo-wohnen-methoden-direkt-neben-der-main"><span class="nr">4.2</span> Methodenaufrufe und Rückgabewerte</h2>
+ <p class="wozu">Eine Methode läuft erst, wenn jemand sie <strong>aufruft</strong>: mit ihrem Namen und den Werten in der
+ Klammer. Was sie mit <code>return</code> zurückgibt, fängst du in einer Variable auf oder rechnest direkt damit weiter.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><var data-teil="name">name</var>(<var data-teil="arg">Argumente</var>);
+<var data-teil="typ">Typ</var> <var data-teil="variable">variable</var> <span data-teil="zuweisung">=</span> <var data-teil="name">name</var>(<var data-teil="arg">Argumente</var>);</code></pre>
+ <p class="aufbau-info">Eigene Methoden schreibst du <strong>in dieselbe Klasse wie die main</strong>: daneben, nicht hinein. Die erste Zeile ruft eine Methode auf und lässt sie arbeiten, die zweite fängt zusätzlich ihren Rückgabewert auf.</p>
+ <div hidden data-erkl="name"><strong>Name der Methode:</strong> genau so geschrieben wie in der Signatur, Groß- und Kleinschreibung inklusive. Die runden Klammern gehören zu jedem Aufruf, auch ohne Argumente: <code>rollDie()</code>.</div>
+ <div hidden data-erkl="arg"><strong>Argumente:</strong> die Werte für die Parameter, durch Kommas getrennt, etwa <code>"Aylin"</code> oder <code>2, 3</code>. Anzahl, Reihenfolge und Typen müssen zur Parameterliste passen. Der Typ steht beim Aufruf nicht davor: <code>sayHello("Ben")</code>, nicht <code>sayHello(String "Ben")</code>.</div>
+ <div hidden data-erkl="typ"><strong>Typ der Variablen:</strong> muss zum Rückgabetyp der Methode passen. Liefert <code>rollDie()</code> ein <code>int</code>, schreibst du <code>int pips = rollDie();</code>. Eine <code>void</code>-Methode liefert keinen Wert, ihr Aufruf kann deshalb nicht rechts vom <code>=</code> stehen.</div>
+ <div hidden data-erkl="variable"><strong>Variable:</strong> ein frei gewählter Name, unter dem der Rückgabewert gespeichert wird. Danach arbeitest du mit ihr wie mit jeder anderen Variable, etwa <code>System.out.println(pips);</code>.</div>
+ <div hidden data-erkl="zuweisung"><strong>Das Gleichheitszeichen</strong> weist zu: Zuerst wird die Methode ausgeführt, dann wird ihr Rückgabewert in der Variablen links gespeichert.</div>
+ </div>
+
+ <div class="codebox runner" data-out="Hi, Aylin!\nHi, Ben!\nHi, Ben!">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>ZombieApocalypse.java</p>
+<pre><code class="java">public class ZombieApocalypse {
+
+    public static void main(String[] args) {
+        sayHello("Aylin");        // Aufruf 1
+        sayHello("Ben");          // Aufruf 2, gleicher Code, other Wert!
+        sayHello("Ben");          // geht auch doppelt. Ben freut sich.
+    }
+
+    static void sayHello(String name) {
+        System.out.println("Hi, " + name + "!");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>sayHello("Aylin");</code></td><td>der Aufruf: Java springt in die Methode, der Parameter <code>name</code> bekommt den Wert <code>"Aylin"</code>. Danach geht es in der main weiter.</td></tr>
+ <tr><td><code>sayHello("Ben");</code></td><td>derselbe Code mit einem anderen Wert. Ein Aufruf statt einer Kopie, und das gern auch zweimal.</td></tr>
+ <tr><td><code>void sayHello(String name)</code></td><td>steht neben der main, nicht in ihr. <code>void</code>: Die Methode gibt etwas aus, zurück kommt nichts.</td></tr>
+ </table>
+ </div>
+
+ <p>Ändert sich die Begrüßung, änderst du sie an <strong>genau einer Stelle</strong>.</p>
+ <p>Die Regel dahinter heißt <span class="hl">DRY, „Don't Repeat Yourself“</span>, wiederhole dich nicht.
+ Gemeint ist nicht „tippe wenig“, sondern: <strong>Jedes Stück Wissen steht an genau einer
+ Stelle.</strong> Steht der Steckbrief fünfmal im Code, vergisst du beim Ändern irgendwann eine
+ Stelle. Nicht vielleicht: sicher.</p>
+ </section>
+
+ <section class="widget">
+ <h3>Der Sprung-Stepper: Was passiert bei einem Aufruf WIRKLICH?</h3>
+ <p class="widget-hinweis">Das Schwierigste ist unsichtbar: Java <em>springt</em> beim Aufruf in die Methode und danach zurück. Hier in Zeitlupe.</p>
+
+ <div class="wflex">
+ <div style="flex:2 1 300px">
+ <div class="codebox flach" style="margin:0">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Sprung.java</p>
+<pre><code class="nohl" style="background:none;border:none;padding:0;white-space:pre;color:#f0eef7;font-size:0.88rem;line-height:2">public static void main(String[] args) {
+    <span id="js-l1" class="st-part">int a = twice(5);</span>
+    <span id="js-l2" class="st-part">System.out.println(a);</span>
+}
+
+<span id="js-sig" class="st-part">static int twice(int x)</span> {
+    <span id="js-ret" class="st-part">return x * 2;</span>
+}</code></pre>
+ </div>
+ <p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-klein" id="js-step">Schritt </button>
+ <button class="btn btn-klein" id="js-reset"> Reset</button></p>
+ </div>
+ <div style="flex:1 1 200px">
+ <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+ <div class="var-box" style="width:110px;min-height:80px">
+ <span class="var-type">int</span>
+ <span class="var-name">a (in main)</span>
+ <span class="var-value" id="js-a">: </span>
+ </div>
+ <div class="var-box" style="width:110px;min-height:80px">
+ <span class="var-type" style="background:var(--ueber)">int</span>
+ <span class="var-name">x (Parameter)</span>
+ <span class="var-value" id="js-x">: </span>
+ </div>
+ </div>
+ <p class="statuszeile" id="js-status" style="text-align:center;margin-top:12px">Bereit. Drück „Schritt“.</p>
+ </div>
+ </div>
+ <div class="sim-konsole" id="js-out" style="margin-top:14px"></div>
+ </section>
+
+ <section class="block">
+ <div class="baustein selbst">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>Erst du, dann Java</p>
+ <p>Rückgabewerte kann man <strong>weiterverrechnen</strong>, direkt im println. Was kommt raus? Notier deine Vermutung, bevor du ausführst.</p>
+ </div>
+
+ <div class="codebox runner" data-trace data-out="10\n9">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Square.java (Ausschnitt)</p>
+<pre><code class="java">static int square(int x) {
+    return x * x;
+}
+
+System.out.println(square(3) + 1);      // ???
+System.out.println(square(2 + 1));      // ??? (Achtung, Klammern!)</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <p><code>10</code> und <code>9</code>. Bei <code>square(3) + 1</code> wird erst quadriert (9), dann addiert.
+ Bei <code>square(2 + 1)</code> kommt erst die Klammer (3), <strong>dann</strong> wird quadriert.</p>
+
+ <div class="baustein kern" id="merksaetze-zu-den-vier-sorten">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <ul>
+ <li><code>void</code>: <span class="hl">Es kommt nichts zurück.</span> Die Methode <em>tut</em> nur etwas
+ (z. B. ausgeben). Speichern kann man nichts, es gibt kein Ergebnis.</li>
+ <li>Typ statt void (z. B. <code>int</code>): Die Methode <strong>muss</strong> per <code>return</code>
+ einen passenden Wert liefern. Den fängst du auf: <code>int pips = rollDie();</code></li>
+ <li>Parameter sind Variablen, die <strong>beim Aufruf</strong> ihren Wert bekommen. Die Werte, die du übergibst,
+ heißen <strong>Argumente</strong>. Der Compiler prüft ihre Typen so streng wie bei jeder Zuweisung.</li>
+ <li><code>return</code> beendet die Methode <strong>sofort</strong>. Code direkt danach lehnt der Compiler ab (<code>unreachable statement</code>).</li>
+ </ul>
+ </div>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Was soll dieses static überall?</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p><code>static</code> heißt „gehört fest zur Klasse, funktioniert ohne Vorbereitung“. Die main ist
+ static und kann nur andere static-Methoden direkt aufrufen: deshalb steht es vor jeder Methode. Ein Beispiel aus
+ der Java-Welt: <code>Math.random()</code>.</p>
+ <p>Methoden <em>ohne</em> static gehören einzelnen <strong>Objekten</strong> und greifen auf deren
+ Daten zu (Kapitel 9).</p>
+ <p>Und <strong><code>final</code></strong>? Kennst du aus Kapitel 3: Konstanten.</p>
+ <div class="codebox flach">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Konstanten</p>
+<pre><code class="java">static final double VAT = 0.19;   // Konvention: GROSSBUCHSTABEN
+// VAT = 0.25;   Compiler-Fehler. final heißt final.</code></pre>
+ </div>
+ </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <h2 id="wo-eine-variable-gilt"><span class="nr">4.3</span> Gültigkeitsbereich von Variablen</h2>
+ <p class="wozu">Eine Variable gilt in dem Block <code>{ … }</code>, in dem sie deklariert wurde: von ihrer
+ Zeile bis zur schließenden Klammer. Das ist ihr <strong>Gültigkeitsbereich</strong>. Er erklärt,
+ warum es Parameter und <code>return</code> braucht.</p>
+ <div class="klickcode">
+ <div class="codebox runner" data-out="10">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Zone.java</p>
+<pre><code class="java klick"><span class="zl">public class Zone {
+</span><span class="zl">
+</span><span class="zl">    static int doubleIt(<span data-teil="wert">int value</span>) {
+</span><span class="zl">        <span data-teil="ergebnis">int result</span> = <span data-teil="wert">value</span> * 2;
+</span><span class="zl">        return <span data-teil="ergebnis">result</span>;
+</span><span class="zl">    }
+</span><span class="zl">
+</span><span class="zl">    public static void main(String[] args) {
+</span><span class="zl">        <span data-teil="vorrat">int supply</span> = 5;
+</span><span class="zl">        System.out.println(doubleIt(<span data-teil="vorrat">supply</span>));
+</span><span class="zl">    }
+</span><span class="zl">
+</span><span class="zl">}
+</span></code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="aufbau-info">Klick auf eine Variable im Code. Hervorgehoben bleiben die Zeilen, in denen sie gilt: ihr <strong>Gültigkeitsbereich</strong>.</p>
+ <div hidden data-erkl="wert" data-gilt="3-6"><strong><code>value</code></strong> ist ein Parameter und gilt in <code>doubleIt</code>, bis zu deren schließender Klammer. Die main kennt ihn nicht. Beim Aufruf bekommt er eine <strong>Kopie</strong> des Arguments, hier die 5 aus <code>supply</code>.</div>
+ <div hidden data-erkl="ergebnis" data-gilt="4-6"><strong><code>result</code></strong> gilt ab seiner Deklaration bis zum Ende von <code>doubleIt</code>. Mit <code>return</code> verlässt nur der <strong>Wert</strong> 10 die Methode, die Variable selbst gibt es draußen nicht.</div>
+ <div hidden data-erkl="vorrat" data-gilt="9-11"><strong><code>supply</code></strong> gilt in der main, ab seiner Zeile bis zur schließenden Klammer der main. <code>doubleIt</code> kennt den Namen nicht, rechnet aber mit der 5: Sie wurde als Kopie übergeben.</div>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <p>Zwischen Methoden gibt es für Werte nur <strong>zwei Wege</strong>: hinein über die
+ <strong>Parameter</strong>, heraus über <code>return</code>. Alle anderen Variablen gelten nur in ihrer eigenen Methode.</p>
+ </div>
+
+ <h3>Aufgabe 4.3.1: Wo gilt was?</h3>
+ <p>Zwei Zeilen mehr, und es übersetzt nicht. Was sagt <code>javac</code>?</p>
+ <div class="codebox runner" data-fehler="Zone.java:13: error: cannot find symbol&#10;        System.out.println(result);&#10;                           ^&#10;  symbol:   variable result&#10;  location: class Zone&#10;1 error">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Zone.java: two Zeilen mehr</p>
+<pre><code class="java">public class Zone {
+
+    static int doubleIt(int value) {
+        int result = value * 2;
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int supply = 5;
+        int doubled = doubleIt(supply);
+
+        System.out.println(doubled);
+        System.out.println(result);
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Übersetzen</button>
+ <span class="run-hinweis">JAVAC</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <div class="oaky">
+ <img class="figur" src="../img/kapitel/oaky-finger.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p>Die häufigste Ursache für <code>cannot find symbol</code> (Platz 3 im
+ <a href="../panik.html">Panik-Wörterbuch</a>): Der Name ist richtig geschrieben, gilt an
+ dieser Stelle aber nicht.</p>
+ </div>
+ </div>
+ </section>
+
+ <section class="block">
+ <h2 id="ueberladen"><span class="nr">4.4</span> Überladen von Methoden</h2>
+ <p class="wozu">Zwei Methoden dürfen denselben Namen tragen, wenn der Compiler sie an der
+ <strong>Parameterliste</strong> unterscheiden kann. Das heißt <strong>Überladen</strong>.
+ Du nutzt es seit Kapitel 2: <code>System.out.println</code> akzeptiert Text, ganze Zahlen,
+ Kommazahlen, <code>boolean</code>. Keine Zauberei: Es gibt <code>println</code> <strong>zehnmal</strong>, einmal je Sorte.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code>static <var data-teil="typ">Typ</var> <var data-teil="name">name</var>(<var data-teil="liste-a">Parameterliste A</var>) <span data-teil="rumpf">{ … }</span>
+static <var data-teil="typ">Typ</var> <var data-teil="name">name</var>(<var data-teil="liste-b">Parameterliste B</var>) <span data-teil="rumpf">{ … }</span></code></pre>
+ <p class="aufbau-info">Die Parameterlisten müssen sich in Anzahl, Typen oder Reihenfolge unterscheiden. Welche Fassung läuft, entscheidet der Compiler beim <strong>Aufruf</strong> an Anzahl und Typ der Argumente.</p>
+ <div hidden data-erkl="typ"><strong>Rückgabetyp:</strong> darf bei beiden Fassungen gleich oder verschieden sein. Er allein unterscheidet sie aber nicht: Zwei Methoden mit gleichem Namen und gleicher Parameterliste lehnt der Compiler ab, auch wenn ihre Rückgabetypen verschieden sind.</div>
+ <div hidden data-erkl="name"><strong>Derselbe Name</strong> in beiden Zeilen, genau gleich geschrieben. Das ist Überladen: ein Name für dieselbe Aufgabe mit verschiedenen Parametern, etwa <code>add</code> für zwei oder für drei Zahlen.</div>
+ <div hidden data-erkl="liste-a"><strong>Parameterliste A:</strong> die Parameter der ersten Fassung, etwa <code>int a, int b</code>. Der Aufruf <code>add(2, 3)</code> führt diese Fassung aus.</div>
+ <div hidden data-erkl="liste-b"><strong>Parameterliste B:</strong> muss sich von A unterscheiden, etwa <code>int a, int b, int c</code> oder <code>double a, double b</code>. Andere Parameternamen allein reichen nicht: <code>int x, int y</code> gilt als dieselbe Liste wie <code>int a, int b</code>.</div>
+ <div hidden data-erkl="rumpf"><strong>Der Methodenrumpf</strong> <code>{ … }</code>: Jede Fassung ist eine vollständige Methode mit eigenem Rumpf. Die Punkte stehen hier nur als Platzhalter für die Anweisungen.</div>
+ </div>
+
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Adder.java (Ausschnitt)</p>
+<pre><code class="java">static int add(int a, int b) {
+    return a + b;
+}
+
+static int add(int a, int b, int c) {
+    return a + b + c;
+}
+
+static double add(double a, double b) {
+    return a + b;
+}</code></pre>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>add(int a, int b)</code></td><td>zwei ganze Zahlen. Läuft bei <code>add(2, 3)</code>.</td></tr>
+ <tr><td><code>add(int a, int b, int c)</code></td><td>drei ganze Zahlen. Läuft bei <code>add(2, 3, 4)</code>.</td></tr>
+ <tr><td><code>add(double a, double b)</code></td><td>zwei Kommazahlen. Läuft bei <code>add(2.5, 3.5)</code>.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <ul>
+ <li>Es zählt die <strong>Parameterliste</strong>: Anzahl, Typen, Reihenfolge.</li>
+ <li>Der <strong>Rückgabetyp zählt nicht.</strong> Unterscheiden sich zwei Methoden nur darin, ist das
+ kein Überladen, sondern ein Übersetzungsfehler.</li>
+ </ul>
+ </div>
+ <p>Warum? Der Compiler wählt die Fassung an der <strong>Aufrufstelle</strong>, und dort stehen nur die Argumente.</p>
+
+ <h3>Aufgabe 4.4.1: Welche wird aufgerufen?</h3>
+ <p>Sag die Konsole voraus. Spannend ist die letzte Zeile: Ein <code>add(int, double)</code> gibt es gar nicht.</p>
+ <div class="codebox runner" data-trace data-out="5\n9\n6.0\n5.5">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Adder.java</p>
+<pre><code class="java">public class Adder {
+
+    static int add(int a, int b) {
+        return a + b;
+    }
+
+    static int add(int a, int b, int c) {
+        return a + b + c;
+    }
+
+    static double add(double a, double b) {
+        return a + b;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(add(2, 3));
+        System.out.println(add(2, 3, 4));
+        System.out.println(add(2.5, 3.5));
+        System.out.println(add(2, 3.5));
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn">Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p>Beim letzten Aufruf <code>add(2, 3.5)</code> läuft auch die dritte Fassung: Java macht aus der <code>2</code> eine <code>2.0</code>.</p>
+ </section>
+
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Das reicht für jetzt</p>
+ <ul>
+ <li>Methode = Code mit Namen: einmal schreiben, beliebig oft aufrufen. Hausregel (<strong>DRY</strong>): Wer Code kopieren will, schreibt eine Methode.</li>
+ <li>Signatur lesen: Rückgabetyp · Name · Parameter.</li>
+ <li>void = nichts kommt zurück. Sonst liefert <code>return</code> den Wert und beendet die Methode sofort.</li>
+ <li>Rückgabewerte kann man auffangen und weiterverrechnen.</li>
+ <li>Eine Variable gilt nur in ihrem Block. Werte kommen nur über Parameter hinein und über <code>return</code> heraus.</li>
+ <li><strong>Überladen</strong>: gleicher Name, andere <strong>Parameterliste</strong>. Der Rückgabetyp zählt nicht.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="baustein uebung quiz">
+ <h3>Checkpoint</h3>
+ <p class="widget-hinweis">4 Fragen zu Methoden.</p>
+
+ <div class="qq">
+ <p class="qq-text">1. Was verrät dir <code>static int countZombies()</code> über die Methode?</p>
+ <div class="qq-opt">
+ <button data-ok>Sie gibt einen int zurück und braucht keine Parameter</button>
+ <button data-why="Fast spiegelverkehrt gelesen: Der Typ VOR dem Namen ist der Rückgabetyp. Parameter stünden IN den Klammern, und die sind leer.">Sie gibt nichts zurück und braucht einen int als Parameter</button>
+ <button data-why="Wie oft eine Methode aufgerufen werden darf, steht nirgends in der Signatur. Methoden sind beliebig oft benutzbar. Das ist ja ihr Sinn.">Sie kann nur einmal aufgerufen werden</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Rückgabetyp int (vor dem Namen), leere Klammern = keine Parameter.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">2. Eine Methode ist als <code>void</code> deklariert. Was folgt daraus?</p>
+ <div class="qq-opt">
+ <button data-why="void und Parameter haben nichts miteinander zu tun: void sayHello(String name) ist völlig okay. Parameter sind erlaubt, nur ein Rückgabewert fehlt.">Sie darf keine Parameter haben</button>
+ <button data-ok>Sie gibt nichts zurück, man kann ihr Ergebnis nicht in einer Variable speichern</button>
+ <button data-why="Ob eine Methode von überall nutzbar ist, regeln andere Schlüsselwörter. void betrifft nur den Rückgabewert: Es gibt keinen.">Sie ist geheim und nur intern nutzbar</button>
+ </div>
+ <p class="qq-erklaerung" hidden>void = kein Rückgabewert. Die Methode tut etwas, liefert aber nichts. Parameter darf sie trotzdem haben.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">3. Gegeben: <code>static void sayHello(String name)</code>. Was passiert bei <code>sayHello(42);</code>?</p>
+ <div class="qq-opt">
+ <button data-why="Beim Methodenaufruf wird ein int nicht von selbst zum String. Der Compiler prüft Argumente genauso streng wie jede Zuweisung.">Java macht aus der 42 automatisch den Text "42"</button>
+ <button data-ok>Compiler-Fehler: 42 ist ein int, der Parameter verlangt einen String</button>
+ <button data-why="So weit kommt es gar nicht: Der Compiler meldet den Fehler schon beim Übersetzen, nicht erst beim Ausführen.">Die Methode läuft, gibt aber nichts aus</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Argumente müssen zu den Parameter-Typen passen. Falscher Typ &rarr; das Programm kompiliert erst gar nicht.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">4. Was macht <code>return</code>?</p>
+ <div class="qq-opt">
+ <button data-why="return startet nichts neu, im Gegenteil, es ist der Schlusspunkt: Wert zurückgeben, Methode beenden.">Es startet die Methode neu</button>
+ <button data-ok>Es gibt den Wert zurück und beendet die Methode sofort</button>
+ <button data-why="Auf die Konsole druckt nur System.out.println. return übergibt den Wert unsichtbar an den Aufrufer, ob der ihn druckt, speichert oder weiterrechnet, ist dessen Sache.">Es druckt den Wert auf die Konsole</button>
+ </div>
+ <p class="qq-erklaerung" hidden>return gibt das Ergebnis an den Aufrufer zurück und beendet die Methode. Drucken ist Sache von System.out.println.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+ <div class="kapitel-ende">
+ <div class="blaettern">
+      <a class="btn" href="03-variablen.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Kapitel 3</a>
+      <a class="btn btn-haupt" href="05-strings-eingabe.html">Kapitel 5: Strings &amp; Input<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </div>
+ </div>
+
+</main>
+
+<footer class="seitenfuss">
+ <div class="seitenfuss-innen">
+ <p><strong>Cheat Sheet: Java</strong> ·
+      Java-Grundlagen für Lernfeld 5,
+ „Software zur Verwaltung von Daten anpassen“, IT-Berufe, Jahrgangsstufe 10.</p>
+ </div>
+</footer>
+
+<script src="../js/app.js"></script>
+<script>
+(function () {
+ var $ = CC.$, $$ = CC.$$;
+
+ /* ---------- Sprung-Stepper ---------- */
+
+ var JS_STEPS = [
+ { line: 'js-l1', a: ', ', x: ', ', status: '1 main erreicht den Aufruf: twice(5). Der Wert 5 wird als Argument übergeben.' },
+ { line: 'js-sig', a: ', ', x: '5', status: '2 SPRUNG! Java springt in die Methode. Der Parameter x bekommt den Wert 5.' },
+ { line: 'js-ret', a: ', ', x: '5', status: '3 Rechnen: x * 2 = 10. return gibt die 10 zurück und beendet die Methode.' },
+ { line: 'js-l1', a: '10', x: '', status: '4 RÜCKSPRUNG! Die 10 wird in a gespeichert. Den Parameter x gibt es nicht mehr, er galt nur während dieses Aufrufs.' },
+ { line: 'js-l2', a: '10', x: '', status: '5 Weiter in der main: println gibt a aus.', print: '10' }
+ ];
+ var jsPos = 0;
+
+ function jsRender() {
+ ['js-l1', 'js-l2', 'js-sig', 'js-ret'].forEach(function (id) {
+ var el = $('#' + id);
+ var on = jsPos > 0 && JS_STEPS[jsPos - 1].line === id;
+ el.style.background = on ? 'var(--blau-ink)' : 'transparent';
+ el.style.color = on ? '#fff' : '';
+ el.style.borderRadius = '6px';
+ el.style.padding = '1px 4px';
+ });
+ if (jsPos > 0) {
+ var st = JS_STEPS[jsPos - 1];
+ $('#js-a').textContent = st.a;
+ $('#js-x').textContent = st.x;
+ $('#js-status').textContent = st.status;
+ if (st.print) $('#js-out').textContent = st.print;
+ } else {
+ $('#js-a').textContent = ', ';
+ $('#js-x').textContent = ', ';
+ $('#js-status').textContent = 'Bereit. Drück „Schritt“.';
+ $('#js-out').textContent = '';
+ }
+ }
+
+ $('#js-step').addEventListener('click', function () {
+ if (jsPos >= JS_STEPS.length) {
+ $('#js-status').textContent = ' Fertig. Aufruf, Sprung, return, Rücksprung. Genau das passiert bei JEDEM Methodenaufruf.';
+ return;
+ }
+ jsPos++;
+ jsRender();
+ var box = $('#js-' + (jsPos === 2 ? 'x' : jsPos === 4 ? 'a' : ''));
+ 
+ });
+ $('#js-reset').addEventListener('click', function () { jsPos = 0; jsRender(); });
+ jsRender();
+})();
+</script>
+</body>
+</html>

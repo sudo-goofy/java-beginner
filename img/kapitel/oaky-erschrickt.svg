@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 148" width="128" height="148" role="img">
+  <rect width="128" height="148" fill="none"/>
+  <g transform="translate(0,0) scale(1.0)">
+  <g transform="rotate(-9 64 56)">
+  <path d="M52 90 l-12 42" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M36 132 h10" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M76 90 l13 40" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M85 130 h10" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M28.8 63.5 c-12 -10 -17 -24 -17 -38" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M99.2 63.5 c12 -10 17 -24 17 -38" fill="none" stroke="#14110C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="64" cy="56" r="36.0" fill="none" stroke="#14110C" stroke-width="4.2"/>
+  <circle cx="48.16" cy="48.8" r="6.6000000000000005" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="79.84" cy="48.8" r="6.6000000000000005" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  <circle cx="64" cy="68.36" r="5.6" fill="#14110C" stroke="#14110C" stroke-width="0"/>
+  </g>
+  </g>
+</svg>

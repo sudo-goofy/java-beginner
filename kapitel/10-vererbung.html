@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapitel 10 · Vererbung & abstrakte Klassen · Cheat Sheet: Java</title>
+<meta name="description" content="extends und super, abstrakte Klassen und der Moment, in dem Polymorphie plötzlich Sinn ergibt.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="../img/favicon.svg"><link rel="stylesheet" href="../css/style.css"></head>
+<body>
+
+<!--icons-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<!-- Cheat Sheet: Java Icon-System · 24×24 · Strich 2 · eine Farbe · erzeugt aus tools/bilder.py -->
+<symbol id="i-merk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Merksatz: Lesezeichen</title><path d="M6 3h12v18l-6-4.5L6 21z"/></symbol>
+<symbol id="i-denk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kurz nachgedacht: Frage an dich</title><path d="M3.2 4h17.6v11.4h-9.8L6.2 19.2v-3.8H3.2z"/><path d="M9.4 8.1a2.6 2.6 0 1 1 2.9 2.58v1.22"/><path d="M12.3 13.9h.01"/></symbol>
+<symbol id="i-aufgabe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufgabe: Stift</title><path d="M3 21l1.2-4.2L15.8 5.2a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L7.2 19.8z"/><path d="M14.4 6.6l3 3"/></symbol>
+<symbol id="i-projekt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Projektaufgabe ZombieApocalypse: Zombiekopf</title><path d="M3.4 10.6a8.6 8.6 0 0 1 17.2 0c0 3-1.5 5-3 6v3.1a1.4 1.4 0 0 1-1.4 1.4H8.8a1.4 1.4 0 0 1-1.4-1.4v-3.1c-1.5-1-3-3-3-6z"/><path d="M7.6 8.4l3 3"/><path d="M10.6 8.4l-3 3"/><circle cx="15.8" cy="9.9" r="2.2"/><path d="M9.4 17.4h5.2"/></symbol>
+<symbol id="i-pruefung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Handlungsorientierte Aufgabe: Stoppuhr</title><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.8"/><path d="M9.5 2.5h5"/><path d="M12 2.5V6"/><path d="M18.6 7.4l1.8-1.8"/></symbol>
+<symbol id="i-extra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Optional: Fahne</title><path d="M5.5 21V3"/><path d="M5.5 4.2h12l-2.6 4 2.6 4h-12z"/></symbol>
+<symbol id="i-anders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nochmal anders erklärt: Wiederholung</title><path d="M20.2 12a8.2 8.2 0 1 1-2.6-6"/><path d="M20.8 3.4V9h-5.6"/></symbol>
+<symbol id="i-loesung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Auflösung: Schlüssel</title><circle cx="6.8" cy="12" r="4.3"/><path d="M11.1 12H21"/><path d="M17.4 12v3.6"/><path d="M20.4 12v2.4"/></symbol>
+<symbol id="i-zusammenfassung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Das Wichtigste in Kürze: Seite mit Eselsohr</title><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7"/><path d="M8.5 16h4.5"/></symbol>
+<symbol id="i-ziel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Lernziele: Zielscheibe</title><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="0.6"/></symbol>
+<symbol id="i-konsole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Konsole: Prompt</title><path d="M4 6l5 5-5 5"/><path d="M12.5 17.5H20"/></symbol>
+<symbol id="i-ide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Entwicklungsumgebung: Editorfenster mit Seitenleiste</title><path d="M2.6 4.4h18.8v15.2H2.6z"/><path d="M2.6 8.2h18.8"/><path d="M8.4 8.2v11.4"/></symbol>
+<symbol id="i-fehler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fehlermeldung: Käfer</title><path d="M12 7.4c2.6 0 4.7 2.3 4.7 5.2v1.6c0 2.9-2.1 5.2-4.7 5.2s-4.7-2.3-4.7-5.2v-1.6c0-2.9 2.1-5.2 4.7-5.2z"/><path d="M8.1 9.3a4.6 4.6 0 0 1 7.8 0"/><path d="M9.9 6.2 8.3 3.6"/><path d="M14.1 6.2l1.6-2.6"/><path d="M7.3 12.6H3.4"/><path d="M20.6 12.6h-3.9"/><path d="M8.2 17.2 5.4 19.6"/><path d="M15.8 17.2l2.8 2.4"/></symbol>
+<symbol id="i-richtig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Richtig: Haken</title><path d="M4 12.8L9.4 18 20 6.6"/></symbol>
+<symbol id="i-falsch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Falsch: Kreuz</title><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/></symbol>
+<symbol id="i-zeit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Dauer: Uhr</title><circle cx="12" cy="12" r="9"/><path d="M12 6.6V12l3.6 2.4"/></symbol>
+<symbol id="i-kapitel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Kapitel: aufgeschlagenes Heft</title><path d="M12 6.2C10.2 4.7 7.8 4 4.5 4v14c3.3 0 5.7.7 7.5 2.2 1.8-1.5 4.2-2.2 7.5-2.2V4c-3.3 0-5.7.7-7.5 2.2z"/><path d="M12 6.2v14"/></symbol>
+<symbol id="i-inhalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Inhaltsverzeichnis</title><path d="M4 6h3"/><path d="M11 6h9"/><path d="M4 12h3"/><path d="M11 12h9"/><path d="M4 18h3"/><path d="M11 18h6"/></symbol>
+<symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Weiter</title><path d="M4 12h15.5"/><path d="M13.5 6l6 6-6 6"/></symbol>
+<symbol id="i-pfeil-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Zurück</title><path d="M20 12H4.5"/><path d="M10.5 6l-6 6 6 6"/></symbol>
+<symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nach unten</title><path d="M12 4v15.5"/><path d="M6 13.5l6 6 6-6"/></symbol>
+<symbol id="i-aufklappen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Aufklappbar</title><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-oeffnen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Öffnet ein Fenster</title><path d="M14 4h6v6"/><path d="M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Nachtschicht</title><path d="M20.4 14.6A8.8 8.8 0 0 1 9.4 3.6a8.8 8.8 0 1 0 11 11z"/></symbol>
+<symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Tagesansicht</title><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.6"/><path d="M12 19.4V22"/><path d="M2 12h2.6"/><path d="M19.4 12H22"/><path d="M5 5l1.8 1.8"/><path d="M17.2 17.2L19 19"/><path d="M19 5l-1.8 1.8"/><path d="M6.8 17.2L5 19"/></symbol>
+<symbol id="i-zuruecksetzen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Fortschritt löschen</title><path d="M4 6.5h16"/><path d="M9 6.5V4h6v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10.5 10.5v6"/><path d="M13.5 10.5v6"/></symbol>
+<symbol id="i-drucken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Drucken</title><path d="M7 9V3h10v6"/><path d="M4 9h16v8h-3"/><path d="M7 17H4"/><path d="M7 13h10v8H7z"/></symbol>
+</svg>
+<!--/icons-->
+
+<a class="skiplink" href="#inhalt">Zum Inhalt springen</a>
+
+<nav class="topbar" aria-label="Hauptnavigation">
+ <div class="topbar-innen">
+ <a class="marke" href="../index.html">
+ <img class="oakymarke" src="../img/kapitel/oaky.svg" alt="" width="128" height="148">
+ Cheat Sheet: Java
+ </a>
+ <span class="topbar-titel">Kapitel 10 · extends, super, abstract</span>
+ <span class="topbar-rechts"><a class="btn btn-klein" href="../index.html">Lernpfad</a><!--sprache--><details class="sprache"><summary class="btn btn-klein" aria-label="Sprache wählen"><span>DE</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary><ul class="sprache-liste"><li><a href="10-vererbung.html" lang="de" hreflang="de" aria-current="true">Deutsch</a></li><li><a href="../en/kapitel/10-vererbung.html" lang="en" hreflang="en">English</a></li></ul></details><!--/sprache--></span>
+ </div>
+ <div class="lesebalken" id="lesebalken"></div>
+</nav>
+
+<main id="inhalt" class="raster">
+
+ <header class="kapitel-kopf">
+ <p class="kicker">Kapitel 10 von 11 · extends, super, abstract, Polymorphie</p>
+ <h1>Vererbung &amp; abstrakte Klassen</h1>
+ <p class="vorspann">Drei Klassen, die sich zu achtzig Prozent gleichen: Das ist kein Zufall, sondern ein Hinweis.</p>
+ <p class="kapitel-meta"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-zeit"></use></svg>ca. 40 min</span></p>
+ </header>
+
+ <section class="einstieg" aria-label="Einstieg: das Problem">
+ <p class="einstieg-kopf">DAS PROBLEM</p>
+ <p class="einstieg-frage">Circle und Rectangle lassen sich verschieben. Der Code dafür ist kopiert. Wo landen beide?</p>
+ <div class="einstieg-ohne">
+ <div class="codebox runner" data-out="Circle at (15, 10)\nRectangle at (15, 15)">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Moving.java</p>
+<pre><code class="java">class Circle {
+    int x = 10, y = 10;
+    void move(int dx, int dy) { x = x + dx; y = y + dy; }
+}
+
+class Rectangle {
+    int x = 10, y = 10;
+    void move(int dx, int dy) { x = x + dx; y = y + dx; }
+}
+
+public class Moving {
+
+    public static void main(String[] args) {
+        Circle k = new Circle();
+        Rectangle r = new Rectangle();
+        k.move(5, 0);
+        r.move(5, 0);
+        System.out.println("Circle at (" + k.x + ", " + k.y + ")");
+        System.out.println("Rectangle at (" + r.x + ", " + r.y + ")");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ </div>
+ <div class="einstieg-haken">
+ <p>Das Rectangle ist schräg verrutscht: In der kopierten Methode steht <code>dx</code> statt <code>dy</code>. Derselbe Code steht zweimal, also kann er auch an zwei Stellen falsch sein.</p>
+ <button class="btn einstieg-knopf" type="button">Mit einer Oberklasse</button>
+ </div>
+ <div class="einstieg-mit">
+ <div class="codebox runner" data-out="Circle at (15, 10)\nRectangle at (15, 10)">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Moving.java</p>
+<pre><code class="java">class Shape {
+    int x = 10, y = 10;
+    void move(int dx, int dy) { x = x + dx; y = y + dy; }
+}
+
+class Circle extends Shape { }
+
+class Rectangle extends Shape { }
+
+public class Moving {
+
+    public static void main(String[] args) {
+        Circle k = new Circle();
+        Rectangle r = new Rectangle();
+        k.move(5, 0);
+        r.move(5, 0);
+        System.out.println("Circle at (" + k.x + ", " + k.y + ")");
+        System.out.println("Rectangle at (" + r.x + ", " + r.y + ")");
+    }
+
+}</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+ <p class="einstieg-pointe">Was beide gemeinsam haben, steht einmal in der Oberklasse <code>Shape</code>. Circle und Rectangle erben es. Wie Vererbung funktioniert, zeigt dieses Kapitel.</p>
+ </div>
+ </section>
+
+
+
+ <nav class="kapitel-inhalt" id="kapitel-inhalt" aria-label="Inhalt dieses Kapitels">
+ <h2 id="in-diesem-kapitel">In diesem Kapitel</h2>
+ </nav>
+
+ <details class="baustein ziele">
+   <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ziel"></use></svg>Danach kannst du<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+   <div class="inhalt">
+     <ul>
+ <li>mit <code>extends</code> eine Klasse von einer anderen <strong>erben</strong> lassen</li>
+ <li>erklären, was <code>super</code>, <code>protected</code> und <code>abstract</code> tun</li>
+ <li>den Begriff <strong>Polymorphie</strong> nicht nur kennen, sondern verstehen</li>
+ </ul>
+   </div>
+ </details>
+
+
+ <section class="block">
+ <h2 id="das-problem-copy-paste-klassen"><span class="nr">10.1</span> Vererbung mit extends</h2>
+ <p class="wozu">Ein Zeichenprogramm hat die Klassen <code>Circle</code> und <code>Rectangle</code>.
+ Beide haben eine Position (x, y), beide kann man verschieben und zeichnen. Statt alles zweimal
+ zu schreiben, kommt <span class="hl">Gemeinsames in eine Oberklasse</span> (auch „Mutterklasse“),
+ und die <strong>Unterklassen</strong> (auch „Kindklassen“) erben es.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code>public class <var data-teil="kind">Unterklasse</var> <span data-teil="extends">extends</span> <var data-teil="mutter">Oberklasse</var> {
+    <var data-teil="eigenes">nur das, was die Unterklasse zusätzlich hat</var>
+}</code></pre>
+ <p class="aufbau-info"><code>extends</code> heißt „erbt von“. Was die Oberklasse hat, hat die Unterklasse auch, ohne es selbst zu deklarieren.</p>
+ <div hidden data-erkl="kind"><strong>Unterklasse:</strong> die neue, speziellere Klasse, etwa <code>Circle</code>. Ein Objekt der Unterklasse ist zugleich ein Objekt der Oberklasse: Jeder <code>Circle</code> ist eine <code>Shape</code>.</div>
+ <div hidden data-erkl="extends"><strong><code>extends</code></strong> verbindet die Unterklasse mit ihrer Oberklasse. Dahinter steht genau ein Klassenname, denn mehrere Oberklassen auf einmal erlaubt Java nicht.</div>
+ <div hidden data-erkl="mutter"><strong>Oberklasse:</strong> die allgemeinere Klasse mit dem, was alle Unterklassen gemeinsam haben, etwa <code>Shape</code> mit <code>x</code>, <code>y</code> und <code>move()</code>. Änderst du dort etwas, gilt die Änderung für alle Unterklassen.</div>
+ <div hidden data-erkl="eigenes"><strong>Klassenrumpf der Unterklasse:</strong> nur, was dazukommt: eigene Attribute wie <code>private int radius;</code>, ein eigener Konstruktor und eigene Fassungen von Methoden. Geerbte Attribute wie <code>x</code> deklarierst du hier nicht noch einmal.</div>
+ </div>
+
+ <div class="codebox">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Shape.java + Circle.java</p>
+<pre><code class="java">public abstract class Shape {              // die Oberklasse
+    protected int x;                        // protected: auch in Unterklassen sichtbar
+    protected int y;
+
+    public void move(int dx, int dy) {
+        x = x + dx;
+        y = y + dy;
+    }
+
+    public abstract void draw();         // Jede Unterklasse muss draw() überschreiben.
+}
+
+public class Circle extends Shape {          // extends = "erbt von"
+    private int radius;
+
+    public Circle(int x, int y, int radius) {
+        this.x = x;                          // x und y? Geerbt! Nie selbst deklariert.
+        this.y = y;
+        this.radius = radius;
+    }
+
+    @Override
+    public void draw() {
+        System.out.println(" Circle at (" + x + "," + y + "), r=" + radius);
+    }
+}</code></pre>
+ </div>
+
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>protected int x;</code></td><td>Die Position steht nur einmal, in der Oberklasse. <code>protected</code> macht sie auch für die Unterklassen sichtbar.</td></tr>
+ <tr><td><code>public void move(…)</code></td><td>Auch das Verschieben steht nur in <code>Shape</code>. Jeder Circle kann es trotzdem, <span class="hl">denn er erbt es.</span></td></tr>
+ <tr><td><code>public abstract void draw();</code></td><td>Jede Shape kann sich zeichnen, aber <strong>wie</strong>, legt erst die Unterklasse fest.</td></tr>
+ <tr><td><code>class Circle extends Shape</code></td><td><code>Circle</code> erbt alles von <code>Shape</code> und schreibt <strong>nur noch</strong>, was ihn besonders macht.</td></tr>
+ <tr><td><code>private int radius;</code></td><td>das Eigene: Einen Radius hat nur der Circle.</td></tr>
+ <tr><td><code>this.x = x;</code></td><td><code>x</code> und <code>y</code> sind geerbt, nie in <code>Circle</code> deklariert. <code>Circle</code> setzt sie hier von Hand, weil <code>protected</code> das erlaubt. Hat die Oberklasse einen eigenen Konstruktor, übernimmt das <code>super(…)</code>, so wie in allen weiteren Beispielen.</td></tr>
+ <tr><td><code>@Override</code></td><td>Hier füllt <code>Circle</code> sein eigenes <code>draw()</code> aus.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <ul>
+ <li><strong>Generalisierung</strong>: nach oben zusammenfassen. <strong>Spezialisierung</strong>: nach unten verfeinern.</li>
+ <li>Der Vererbungspfeil im UML zeigt <strong>zur Oberklasse</strong>: Circle &rarr; Shape.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="widget">
+ <h3>Die Klassenhierarchie</h3>
+ <p class="widget-hinweis">Die Hierarchie als Klassendiagramm: Geerbtes steht nur bei der Oberklasse, der Pfeil sagt, dass es dazugehört. Leg den Schalter um und sieh, was die Unterklassen trotzdem können.</p>
+
+ <p style="text-align:center"><label class="btn btn-klein" style="cursor:pointer">
+ <input type="checkbox" id="tree-toggle" style="accent-color:var(--blau-ink)"> geerbte Mitglieder anzeigen
+ </label></p>
+
+ <div class="tree" id="tree">
+ <div class="class-card abstract">
+ <div class="cc-head">« abstract »<br>Shape</div>
+ <ul>
+ <li># x: int</li>
+ <li># y: int</li>
+ </ul>
+ <ul>
+ <li>+ move(dx, dy)</li>
+ <li><em>+ draw() « abstract »</em></li>
+ </ul>
+ </div>
+ <div class="tree-link"></div>
+ <div class="tree-row">
+ <div class="class-card">
+ <div class="cc-head">Circle</div>
+ <ul>
+ <li>- radius: int</li>
+ <li class="inherited"># x: int</li>
+ <li class="inherited"># y: int</li>
+ </ul>
+ <ul>
+ <li>+ draw()</li>
+ <li class="inherited">+ move(dx, dy)</li>
+ </ul>
+ </div>
+ <div class="class-card">
+ <div class="cc-head">Rectangle</div>
+ <ul>
+ <li>- breite: int</li>
+ <li>- hoehe: int</li>
+ <li class="inherited"># x: int</li>
+ <li class="inherited"># y: int</li>
+ </ul>
+ <ul>
+ <li>+ draw()</li>
+ <li class="inherited">+ move(dx, dy)</li>
+ </ul>
+ </div>
+ </div>
+ </div>
+ <p class="statuszeile" id="tree-note" style="text-align:center;margin-top:12px">Der Vererbungspfeil im UML zeigt zur Oberklasse: Circle ── Shape. Das # bedeutet „protected“.</p>
+ </section>
+
+ <section class="block">
+ <h2 id="die-neuen-schluesselwoerter-im-schnelldurchlauf"><span class="nr">10.2</span> super, protected und abstrakte Klassen</h2>
+ <p class="wozu">Die Oberklasse vererbt nicht nur Attribute. Ihr Konstruktor richtet ihren Teil des Objekts ein (<code>super</code>),
+ sie kann Attribute für ihre Unterklassen freigeben (<code>protected</code>), und sie darf ein reines Konzept sein, das erst die
+ Unterklassen ausfüllen (<code>abstract</code>).</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code>public <span data-teil="abstract">abstract</span> class <var data-teil="mutter">Oberklasse</var> {
+    public <span data-teil="abstract">abstract</span> <var data-teil="signatur">Typ</var> <var data-teil="signatur">methode</var>();
+}
+
+public class <var data-teil="kind">Unterklasse</var> extends <var data-teil="mutter">Oberklasse</var> {
+    public <var data-teil="kind">Unterklasse</var>(<var data-teil="param">Parameter</var>) {
+        <span data-teil="super">super</span>(<var data-teil="super">Argumente</var>);
+    }
+
+    <span data-teil="override">@Override</span>
+    public <var data-teil="signatur">Typ</var> <var data-teil="signatur">methode</var>() {
+        <var data-teil="rumpf">wie die Unterklasse es macht</var>
+    }
+}</code></pre>
+ <p class="aufbau-info"><code>super(…)</code> steht in der ersten Zeile des Konstruktors der Unterklasse und ruft den Konstruktor der Oberklasse auf. Eine abstrakte Methode hat keinen Rumpf, nur ein Semikolon.</p>
+ <div hidden data-erkl="abstract"><strong><code>abstract</code></strong> vor <code>class</code>: Von dieser Klasse gibt es keine Objekte, bei <code>new Shape()</code> meldet der Compiler einen Fehler. <code>abstract</code> vor einer Methode: Sie besteht nur aus dem Methodenkopf, und jede nicht abstrakte Unterklasse muss sie überschreiben. Eine Klasse mit einer abstrakten Methode muss selbst <code>abstract</code> sein.</div>
+ <div hidden data-erkl="mutter"><strong>Oberklasse:</strong> die allgemeine Klasse, etwa <code>Zombie</code>. Sie legt fest, was alle Unterklassen gemeinsam haben, hier auch, dass jede die Methode besitzt. In der Unterklasse steht ihr Name hinter <code>extends</code>.</div>
+ <div hidden data-erkl="signatur"><strong>Rückgabetyp und Methodenname:</strong> In der Unterklasse stehen sie genau wie bei der abstrakten Methode, ebenso die Parameter, etwa <code>public void groan()</code>. Nur dann überschreibt die Unterklasse die Methode der Oberklasse.</div>
+ <div hidden data-erkl="kind"><strong>Unterklasse:</strong> die spezielle Klasse, etwa <code>Walker</code>. Ihr Konstruktor heißt genau wie sie und hat keinen Rückgabetyp: <code>public Walker(…)</code>.</div>
+ <div hidden data-erkl="param"><strong>Parameter:</strong> alle Werte, die ein neues Objekt der Unterklasse braucht, auch die für den geerbten Teil: <code>public Walker(String name, int age)</code>.</div>
+ <div hidden data-erkl="super"><strong><code>super(…)</code></strong> gibt die Argumente an den Konstruktor der Oberklasse weiter, der damit die geerbten Attribute setzt: <code>super(name, age);</code>. Anzahl und Typen müssen zu diesem Konstruktor passen. Hat die Oberklasse nur Konstruktoren mit Parametern und fehlt <code>super(…)</code>, meldet der Compiler einen Fehler.</div>
+ <div hidden data-erkl="override"><strong><code>@Override</code></strong> steht direkt über einer Methode, die eine Methode der Oberklasse überschreibt. Der Compiler prüft, ob es dort eine passende gibt: Bei einem Tippfehler wie <code>groans()</code> meldet er einen Fehler, statt still eine neue Methode anzulegen.</div>
+ <div hidden data-erkl="rumpf"><strong>Methodenrumpf:</strong> wie genau diese Unterklasse die Methode ausführt, etwa <code>System.out.println(name + " groans: Grrr!");</code>. Jede Unterklasse schreibt hier ihre eigene Fassung.</div>
+ </div>
+
+ <ul>
+ <li><code>extends</code>: „erbt von“. Die Unterklasse hat <strong>alles</strong> von der Oberklasse, plus Eigenes. Nur <strong>eine</strong> Oberklasse pro Klasse.</li>
+ <li><code>protected</code>: Stufe zwischen <code>private</code> und <code>public</code>. Die eigene Klasse <strong>und ihre Unterklassen</strong> dürfen zugreifen. (Auch Klassen im selben Paket dürfen zugreifen, ohne eigene Pakete also dein ganzes Projekt.)</li>
+ <li><code>super</code>: Mit <code>super(…)</code> ruft der Konstruktor der Unterklasse den Konstruktor der Oberklasse auf. Der richtet den geerbten Teil des Objekts ein. Mit <code>super.method()</code> rufst du die Fassung der Oberklasse auf.</li>
+ <li><code>abstract</code>: Bei Klassen: nur Konzept, nicht instanziierbar (<code>new Shape()</code> übersetzt nicht). Bei Methoden: kein Rumpf, nur Semikolon, jede Unterklasse muss sie implementieren.</li>
+ <li><code>@Override</code>: markiert eine Methode, die eine Methode der Oberklasse absichtlich überschreibt. Der Compiler prüft, ob es dort eine passende Methode gibt.</li>
+ </ul>
+
+ <div class="oaky">
+ <img class="figur" src="../img/kapitel/oaky-zeigt.svg" alt="" width="128" height="148">
+ <div class="text">
+ <p><strong>Warum abstract?</strong> Was wäre <code>new Shape()</code>: rund, eckig, beides?
+ Eine „Shape an sich“ gibt es nicht, nur konkrete Figuren. <code>abstract</code> sagt:
+ Diese Klasse ist nur ein <em>Konzept</em>. Teste es unten.</p>
+ </div>
+ </div>
+
+ <div class="baustein selbst">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-denk"></use></svg>Erst du, dann Java</p>
+ <p>Was erscheint bei <code>new Walker("Mia", 2);</code> <strong>zuerst</strong>: die Meldung der Oberklasse (<code>Zombie</code>) oder die der Unterklasse (<code>Walker</code>)?
+ Beide Konstruktoren melden sich per println. Sag die Reihenfolge voraus:</p>
+ </div>
+
+ <div class="codebox runner" data-trace data-out="Zombie part built\nWalker part built">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Baureihenfolge.java (Ausschnitt)</p>
+<pre><code class="java">public Zombie(String name, int age) {
+    this.name = name;
+    this.age = age;
+    System.out.println("Zombie part built");
+}
+
+public Walker(String name, int age) {
+    super(name, age);                       //  die entscheidende Zeile
+    System.out.println("Walker part built");
+}
+
+// in der main:
+new Walker("Mia", 2);</code></pre>
+ <div class="run-leiste">
+ <button class="btn btn-klein run-btn"> Ausführen</button>
+ <span class="run-hinweis">KONSOLE</span>
+ </div>
+ <div class="konsole"></div>
+ </div>
+
+ <details class="baustein">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-loesung"></use></svg> Auflösung: erst ausführen, dann aufklappen!<svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-aufklappen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Zuerst die <strong>Oberklasse</strong> (<code>Zombie part built</code>), dann die Unterklasse: <code>super(…)</code> steht in der ersten Zeile und ruft sofort den Konstruktor der Oberklasse auf.
+ <span class="hl">Der geerbte Teil des Objekts wird zuerst eingerichtet.</span></p>
+ </div>
+ </details>
+ </section>
+
+ <section class="block">
+ <h2 id="polymorphie"><span class="nr">10.3</span> Polymorphie und Überschreiben</h2>
+ <p class="wozu">Gleicher Aufruf, passende Antwort pro Objekt. Deshalb laufen Schleifen über den Obertyp
+ auch mit Klassen, die es heute noch nicht gibt.</p>
+
+ <div class="aufbau">
+ <p class="aufbau-kopf">AUFBAU · KLICK AUF EINEN TEIL</p>
+<pre><code><var data-teil="ober">Oberklasse</var>[] <var data-teil="name">name</var> = { <span data-teil="kinder">new</span> <var data-teil="kinder">Unterklasse</var>(…), <span data-teil="kinder">new</span> <var data-teil="kinder">andere Unterklasse</var>(…) };
+
+for (<var data-teil="ober">Oberklasse</var> <var data-teil="element">element</var> <span data-teil="dp">:</span> <var data-teil="name">name</var>) {
+    <var data-teil="element">element</var>.<var data-teil="methode">methode</var>();
+}</code></pre>
+ <p class="aufbau-info">Das Array hat den Typ der Oberklasse, seine Elemente sind Objekte der Unterklassen. Jedes bringt seine eigene Fassung der Methode mit.</p>
+ <div hidden data-erkl="ober"><strong>Oberklasse als Typ:</strong> Vorn hat das Array den Typ <code>Shape[]</code>, in der Schleife die Variable den Typ <code>Shape</code>. Eine Variable vom Typ der Oberklasse kann eine Referenz auf ein Objekt jeder Unterklasse speichern.</div>
+ <div hidden data-erkl="name"><strong>Name des Arrays:</strong> frei wählbar, etwa <code>picture</code>. Hinter dem Doppelpunkt der Schleife steht derselbe Name: Die Schleife geht genau dieses Array durch.</div>
+ <div hidden data-erkl="kinder"><strong>Objekte der Unterklassen:</strong> Jedes <code>new</code> erzeugt ein Objekt einer konkreten Unterklasse, etwa <code>new Circle(60, 45, 30)</code> oder <code>new Rectangle(150, 25, 90, 55)</code>. <code>new Shape(…)</code> geht nicht, denn von einer abstrakten Klasse gibt es keine Objekte.</div>
+ <div hidden data-erkl="element"><strong>Schleifenvariable:</strong> In jeder Runde enthält sie die Referenz auf das nächste Element, etwa <code>f</code>. Ihr Typ bleibt die Oberklasse, auch wenn gerade ein Circle an der Reihe ist.</div>
+ <div hidden data-erkl="dp"><strong>Der Doppelpunkt</strong> macht daraus eine for-each-Schleife, lies ihn als „in“: für jede Shape <code>f</code> in <code>picture</code>. Die Schleife nimmt nacheinander jedes Element, ganz ohne Index.</div>
+ <div hidden data-erkl="methode"><strong>Methode:</strong> Sie muss in der Oberklasse deklariert sein, sonst meldet der Compiler bei <code>f.draw()</code> einen Fehler, denn er kennt nur den Typ <code>Shape</code>. Welche Fassung läuft, entscheidet sich erst beim Ausführen am tatsächlichen Objekt: beim Circle die von <code>Circle</code>.</div>
+ </div>
+ </section>
+
+ <section class="widget">
+ <h3>Das Finale: Polymorphie live</h3>
+ <p class="widget-hinweis">Ein Array voller Figuren (geht, weil Circle und Rectangle beide „Figuren sind“). Alle bekommen denselben Aufruf <code>draw()</code>, jedes Objekt antwortet auf seine Art. Das is Polymorphie („Vielgestaltigkeit“).</p>
+
+ <div class="codebox flach">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>Leinwand.java</p>
+<pre><code class="java">Shape[] picture = { new Circle(60, 45, 30),
+                 new Rectangle(150, 25, 90, 55),
+                 new Circle(290, 50, 20) };
+
+for (Shape f : picture) {
+    f.draw();     // gleicher Aufruf, drei verschiedene Ergebnisse!
+}</code></pre>
+ </div>
+
+ <p style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" id="poly-run"> Schleife ausführen</button>
+ <button class="btn" id="poly-new-figur" style="font-family:var(--f-mono)">new Shape(): was passiert?</button></p>
+
+ <div class="feld" style="padding:0;overflow:hidden;margin-bottom:12px">
+ <svg id="poly-canvas" viewBox="0 0 360 100" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;background:#fffdf6"></svg>
+ </div>
+ <div class="sim-konsole" id="poly-out"></div>
+ <div class="crash" id="poly-crash"></div>
+ </section>
+
+ <section class="block">
+ <div class="zeilenweise">
+ <p class="zeilenweise-kopf">ZEILE FÜR ZEILE</p>
+ <table>
+ <tr><td><code>Shape[] picture = { … };</code></td><td>ein Array vom Typ der Oberklasse. Hinein darf jedes Objekt, das eine <code>Shape</code> ist: Kreise und Rechtecke.</td></tr>
+ <tr><td><code>for (Shape f : picture)</code></td><td>geht alle Elemente durch. Für die Schleife ist <code>f</code> einfach eine <code>Shape</code>.</td></tr>
+ <tr><td><code>f.draw();</code></td><td>derselbe Aufruf für alle. Ein Circle zeichnet sich als Circle, ein Rectangle als Rectangle.</td></tr>
+ </table>
+ </div>
+
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Merk dir das</p>
+ <ul>
+ <li>Die Schleife oben weiß <strong>nicht</strong>, welche Figuren im Array liegen. Muss sie auch nicht.</li>
+ <li>Kommt <code>Triangle extends Shape</code> dazu, läuft sie <strong>unverändert</strong>: Das Triangle zeichnet sich selbst.</li>
+ <li>Das Prinzip: <span class="hl">Programmiere gegen das Allgemeine (Shape), nicht gegen das Spezielle (Circle).</span>
+ So bleibt ein Programm erweiterbar, ohne dass man alten Code anfasst.</li>
+ </ul>
+ </div>
+ <p>In echten Projekten heißt das: „Feature in 2 Stunden“ statt „Feature in 2 Wochen“.</p>
+
+ <details class="baustein optional">
+ <summary><svg class="i" aria-hidden="true" focusable="false"><use href="#i-extra"></use></svg><span class="opt-titel">Level-Up: Woher weiß ich, dass mein Code stimmt? (Mini-Ausblick: Tests)</span><span class="opt-marke">optional</span><svg class="i auf" aria-hidden="true" focusable="false"><use href="#i-oeffnen"></use></svg></summary>
+ <div class="inhalt">
+ <p>Profis klicken ihr Programm nicht hundertmal von Hand durch. Sie schreiben <strong>Tests</strong>,
+ kleine Programme, die das eigene Programm prüfen. In Java mit <strong>JUnit</strong>:</p>
+ <div class="codebox flach">
+ <p class="codebox-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-konsole"></use></svg>FigurTest.java</p>
+<pre><code class="java">@Test
+void moveAddsCorrectly() {
+    Circle k = new Circle(10, 10, 5);
+    k.move(5, -3);
+    assertEquals(15, k.x);   // erwarte: x ist jetzt 15
+    assertEquals(7, k.y);    // erwarte: y ist jetzt 7 (protected: der Test liegt im selben Paket)
+}</code></pre>
+ </div>
+ <p>Grün: Die Logik stimmt. Rot: Du weißt sofort, wo’s klemmt. Zwei Sorten von Tests:</p>
+ <ul>
+ <li><strong>Blackbox-Tests</strong>: nur Eingabe und Ausgabe anschauen, Innenleben egal.</li>
+ <li><strong>Whitebox-Tests</strong>: gezielt alle Code-Wege prüfen.</li>
+ </ul>
+ <p>Mehr dazu im Unterricht.</p>
+ </div>
+ </details>
+ </section>
+
+
+ <section class="block">
+ <div class="baustein kern">
+ <p class="baustein-kopf"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-merk"></use></svg>Das reicht für jetzt</p>
+ <ul>
+ <li><strong>Gemeinsames in die Oberklasse.</strong> Unterklassen erben mit <code>extends</code> und ergänzen ihr Spezielles.</li>
+ <li><code>protected</code>: Auch die Unterklassen dürfen zugreifen.</li>
+ <li><code>super(…)</code>: Der Konstruktor der Oberklasse läuft zuerst.</li>
+ <li><code>abstract</code>: Konzept ohne Exemplare. <code>@Override</code>: absichtlich überschreiben.</li>
+ <li><strong>Polymorphie</strong>: gleicher Aufruf, passende Antwort pro Objekt.</li>
+ <li>Deshalb laufen Schleifen über den Obertyp auch mit Klassen, die es heute noch nicht gibt.</li>
+ </ul>
+ </div>
+ </section>
+
+ <section class="baustein uebung quiz">
+ <h3>Checkpoint</h3>
+ <p class="widget-hinweis">5 Fragen zu Vererbung und Polymorphie.</p>
+
+ <div class="qq">
+ <p class="qq-text">1. <code>public class Circle extends Shape</code>: was bedeutet das?</p>
+ <div class="qq-opt">
+ <button data-why="Es sind zwei eigenständige Klassen mit einer Beziehung: Circle IST EINE Shape, aber eine speziellere.">Circle und Shape sind dieselbe Klasse mit zwei Namen</button>
+ <button data-ok>Circle erbt alle Attribute und Methoden von Shape und kann Eigenes ergänzen</button>
+ <button data-why="Die Richtung ist festgelegt: Wer VOR dem extends steht, ist die Unterklasse. Circle erbt von Shape, nicht umgekehrt.">Shape erbt von Circle</button>
+ </div>
+ <p class="qq-erklaerung" hidden>extends = „erbt von“. Die Richtung: Die Unterklasse (Circle) steht vorne, die Oberklasse (Shape) hinten.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">2. Warum scheitert <code>new Shape()</code>?</p>
+ <div class="qq-opt">
+ <button data-why="Shape HAT Attribute (x und y). Das Problem ist ihr abstract, sie ist als reines Konzept markiert.">Weil Shape keine Attribute hat</button>
+ <button data-why="Von normalen Oberklassen darf man durchaus Objekte erzeugen! Nur ABSTRAKTE Klassen sperren die Instanziierung.">Weil man von Oberklassen nie Objekte erzeugen darf</button>
+ <button data-ok>Weil Shape abstract ist, von einem reinen Konzept gibt es keine Exemplare</button>
+ </div>
+ <p class="qq-erklaerung" hidden>abstract verhindert die Instanziierung. Von normalen (nicht-abstrakten) Oberklassen dürfte man durchaus Objekte erzeugen.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">3. Was macht <code>protected</code>?</p>
+ <div class="qq-opt">
+ <button data-ok>Zugriff für die eigene Klasse und ihre Unterklassen, aber nicht für alle</button>
+ <button data-why="Unveränderlichkeit ist der Job von final. protected regelt (wie public/private) nur, WER zugreifen darf.">Es schützt die Variable vor Veränderung, wie final</button>
+ <button data-why="Der Unterschied ist genau der Punkt: private sperrt sogar die eigenen Unterklassen aus, protected erlaubt ihnen den Zugriff.">Es ist nur ein anderes Wort für private</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Die Stufe zwischen den beiden: strenger als public, lockerer als private. Passend für Attribute, die Unterklassen brauchen (as x und y in Shape).</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">4. Circle und Rectangle haben beide ein eigenes <code>draw()</code>. In der Schleife wird <code>f.draw()</code> aufgerufen und jedes Objekt macht seins. Wie heißt das?</p>
+ <div class="qq-opt">
+ <button data-why="Rekursion wäre eine Methode, die SICH SELBST aufruft. Hier rufen verschiedene Objekte je ihre eigene Version, das ist Polymorphie.">Rekursion</button>
+ <button data-ok>Polymorphie</button>
+ <button data-why="Kompilieren ist das Übersetzen des Codes (Kapitel 1!). Dass zur Laufzeit jedes Objekt seine eigene Fassung der Methode ausführt, heißt Polymorphie.">Kompilierung</button>
+ </div>
+ <p class="qq-erklaerung" hidden>Polymorphie = Vielgestaltigkeit: gleicher Methodenaufruf, objektspezifisches Verhalten. Das Finale der OOP-Grundideen.</p>
+ </div>
+
+ <div class="qq">
+ <p class="qq-text">5. Wozu ruft der Konstruktor einer Unterklasse <code>super(x, y)</code> auf?</p>
+ <div class="qq-opt">
+ <button data-why="super(…) löscht nichts: Es ruft den Konstruktor der OBERKLASSE auf, der den geerbten Teil des Objekts einrichtet.">Um das Objekt sofort wieder zu löschen</button>
+ <button data-why="Ob die Oberklasse existiert, prüft der Compiler schon beim Übersetzen. super(…) RUFT ihren Konstruktor auf.">Um zu prüfen, ob die Oberklasse existiert</button>
+ <button data-ok>Um den Konstruktor der Oberklasse auszuführen, der die geerbten Attribute initialisiert</button>
+ </div>
+ <p class="qq-erklaerung" hidden>super(…) ruft den Konstruktor der Oberklasse auf. Der setzt x und y, der Konstruktor der Unterklasse nur noch radius &amp; Co.</p>
+ </div>
+
+ <div class="quiz-ergebnis" hidden></div>
+ </section>
+
+ <div class="kapitel-ende">
+ <div class="blaettern">
+      <a class="btn" href="09-objekte-klassen.html"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-links"></use></svg>Kapitel 9</a>
+      <a class="btn btn-haupt" href="11-ausnahmen.html">Kapitel 11<svg class="i" aria-hidden="true" focusable="false"><use href="#i-pfeil-rechts"></use></svg></a>
+    </div>
+ </div>
+
+</main>
+
+<footer class="seitenfuss">
+ <div class="seitenfuss-innen">
+ <p><strong>Cheat Sheet: Java</strong> ·
+      Java-Grundlagen für Lernfeld 5,
+ „Software zur Verwaltung von Daten anpassen“, IT-Berufe, Jahrgangsstufe 10.</p>
+ </div>
+</footer>
+
+<script src="../js/app.js"></script>
+<script>
+(function () {
+ var $ = CC.$;
+
+ /* ---------- Hierarchie-Toggle ---------- */
+
+ $('#tree-toggle').addEventListener('change', function () {
+ $('#tree').classList.toggle('zeigt-geerbtes', this.checked);
+ $('#tree-note').textContent = this.checked
+ ? 'Siehst du? Circle und Rectangle KÖNNEN verschieben() und HABEN x und y, obwohl es in ihrem Code nicht steht. Das ist Vererbung.'
+ : 'Der Vererbungspfeil im UML zeigt zur Oberklasse: Circle ── Shape. Das # bedeutet „protected“.';
+ });
+
+ /* ---------- Polymorphie ---------- */
+
+ var FIGUREN = [
+ { typ: 'Circle', draw: '<circle cx="60" cy="45" r="30" fill="#dfe5ff" stroke="#17150f" stroke-width="3"/>', log: ' Circle at (60,45), r=30' },
+ { typ: 'Rectangle', draw: '<rect x="150" y="25" width="90" height="55" fill="#ffe3dc" stroke="#17150f" stroke-width="3"/>', log: ' Rectangle at (150,25), 90×55' },
+ { typ: 'Circle', draw: '<circle cx="290" cy="50" r="20" fill="#d9f4ea" stroke="#17150f" stroke-width="3"/>', log: ' Circle at (290,50), r=20' }
+ ];
+
+ $('#poly-run').addEventListener('click', function () {
+ var btn = this; btn.disabled = true;
+ var svg = $('#poly-canvas'), out = $('#poly-out');
+ svg.innerHTML = ''; out.textContent = '';
+ $('#poly-crash').classList.remove('show');
+ var i = 0;
+ (function step() {
+ if (i >= FIGUREN.length) {
+ out.textContent += '// 1 Aufruf, 3 Verhalten. Polymorphie. ';
+ btn.disabled = false;
+ return;
+ }
+ var f = FIGUREN[i];
+ out.textContent += 'f.draw() \u2192 ' + f.log + '\n';
+ svg.innerHTML += f.draw;
+ i++;
+ setTimeout(step, 700);
+ })();
+ });
+
+ $('#poly-new-figur').addEventListener('click', function () {
+ var c = $('#poly-crash');
+ c.innerHTML = '<strong>Compiler-Fehler:</strong> Shape is abstract; cannot be instantiated'
+ + '<br><br> Genau wie angekündigt: Eine „Shape an sich“ gibt es nicht. Der Compiler meldet den Fehler schon beim Übersetzen, das Programm startet gar nicht. Erlaubt sind nur Objekte konkreter Unterklassen wie <code>new Circle(…)</code>.';
+ c.classList.remove('show'); void c.offsetWidth; c.classList.add('show');
+ });
+
+})();
+</script>
+</body>
+</html>
